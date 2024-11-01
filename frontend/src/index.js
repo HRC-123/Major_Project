@@ -1,12 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Year from "./Components/Year.jsx"
+import "./index.css"; 
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import Sem from './Components/Sem.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Year />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Year />} />
+        <Route path="/sem/:year/:branch" element={<Sem />} />
+      
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
