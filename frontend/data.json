@@ -1,0 +1,445 @@
+{
+    "years": [
+      {
+        "year": 1,
+        "branches": [
+          {
+            "branch": "Computer Science and Engineering",
+            "semesters": {
+              "semester_1": ["Math", "Physics", "Chemistry", "Computer Fundamentals", "Engineering Drawing", "English"],
+              "semester_2": ["Calculus", "Data Structures", "Digital Logic Design", "Mechanics", "Environmental Science", "Programming Fundamentals"]
+            }
+          },
+          {
+            "branch": "Electronics and Communication Engineering",
+            "semesters": {
+              "semester_1": ["Math", "Physics", "Chemistry", "Basic Electronics", "Engineering Drawing", "English"],
+              "semester_2": ["Calculus", "Electronic Circuits", "Signals and Systems", "Mechanics", "Environmental Science", "Programming Fundamentals"]
+            }
+          },
+          {
+            "branch": "Information Technology",
+            "semesters": {
+              "semester_1": ["Math", "Physics", "Chemistry", "Introduction to IT", "Engineering Drawing", "English"],
+              "semester_2": ["Calculus", "Data Structures", "Digital Logic", "Computer Architecture", "Environmental Science", "Programming Fundamentals"]
+            }
+          },
+          {
+            "branch": "Mechanical Engineering",
+            "semesters": {
+              "semester_1": ["Math", "Physics", "Chemistry", "Engineering Mechanics", "Engineering Drawing", "English"],
+              "semester_2": ["Calculus", "Thermodynamics", "Fluid Mechanics", "Mechanics of Materials", "Manufacturing Processes", "Environmental Science"]
+            }
+          },
+          {
+            "branch": "Electrical Engineering",
+            "semesters": {
+              "semester_1": ["Math", "Physics", "Chemistry", "Basic Electrical Engineering", "Engineering Drawing", "English"],
+              "semester_2": ["Calculus", "Circuits and Systems", "Electromagnetic Fields", "Signals and Systems", "Environmental Science", "Programming Fundamentals"]
+            }
+          },
+          {
+            "branch": "Instrumentation and Control Engineering",
+            "semesters": {
+              "semester_1": ["Math", "Physics", "Chemistry", "Basics of Instrumentation", "Engineering Drawing", "English"],
+              "semester_2": ["Calculus", "Instrumentation Devices", "Control Systems", "Mechanics", "Environmental Science", "Programming Fundamentals"]
+            }
+          },
+          {
+            "branch": "Industrial and Production Engineering",
+            "semesters": {
+              "semester_1": ["Math", "Physics", "Chemistry", "Manufacturing Processes", "Engineering Drawing", "English"],
+              "semester_2": ["Calculus", "Production Technology", "Operations Research", "Mechanics", "Environmental Science", "Programming Fundamentals"]
+            }
+          },
+          {
+            "branch": "Biotechnology",
+            "semesters": {
+              "semester_1": ["Math", "Physics", "Chemistry", "Biology", "Engineering Drawing", "English"],
+              "semester_2": ["Calculus", "Genetics", "Microbiology", "Organic Chemistry", "Environmental Science", "Programming Fundamentals"]
+            }
+          },
+          {
+            "branch": "Chemistry",
+            "semesters": {
+              "semester_1": ["Math", "Physics", "Inorganic Chemistry", "Organic Chemistry", "Analytical Chemistry", "English"],
+              "semester_2": ["Physical Chemistry", "Instrumental Analysis", "Biochemistry", "Environmental Chemistry", "Thermodynamics", "Programming Fundamentals"]
+            }
+          },
+          {
+            "branch": "Chemical Engineering",
+            "semesters": {
+              "semester_1": ["Math", "Physics", "Chemistry", "Introduction to Chemical Engineering", "Engineering Drawing", "English"],
+              "semester_2": ["Calculus", "Thermodynamics", "Fluid Mechanics", "Organic Chemistry", "Environmental Science", "Programming Fundamentals"]
+            }
+          },
+          {
+            "branch": "Mathematics and Computing",
+            "semesters": {
+              "semester_1": ["Math", "Physics", "Chemistry", "Discrete Mathematics", "Engineering Drawing", "English"],
+              "semester_2": ["Calculus", "Algorithms", "Data Structures", "Linear Algebra", "Environmental Science", "Programming Fundamentals"]
+            }
+          },
+          {
+            "branch": "Civil Engineering",
+            "semesters": {
+              "semester_1": ["Math", "Physics", "Chemistry", "Introduction to Civil Engineering", "Engineering Drawing", "English"],
+              "semester_2": ["Calculus", "Structural Analysis", "Fluid Mechanics", "Geology", "Environmental Science", "Surveying"]
+            }
+          },
+          {
+            "branch": "Humanities and Management",
+            "semesters": {
+              "semester_1": ["Sociology", "Psychology", "Economics", "Political Science", "History", "English"],
+              "semester_2": ["Organizational Behavior", "Management Theory", "Economics II", "Business Law", "Ethics", "Communication Skills"]
+            }
+          },
+          {
+            "branch": "Physics",
+            "semesters": {
+              "semester_1": ["Mechanics", "Waves and Optics", "Thermodynamics", "Mathematics I", "Programming Fundamentals", "English"],
+              "semester_2": ["Electromagnetism", "Quantum Mechanics", "Solid State Physics", "Mathematics II", "Environmental Science", "Computational Physics"]
+            }
+          },
+          {
+            "branch": "Textile Technology",
+            "semesters": {
+              "semester_1": ["Math", "Physics", "Chemistry", "Introduction to Textiles", "Engineering Drawing", "English"],
+              "semester_2": ["Calculus", "Yarn Manufacturing", "Fabric Manufacturing", "Textile Chemistry", "Environmental Science", "Polymer Science"]
+            }
+          }
+        ]
+      },
+      {
+        "year": 2,
+        "branches": [
+            {
+                "branch": "Computer Science and Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Computer Fundamentals", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Data Structures", "Digital Logic Design", "Mechanics", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Electronics and Communication Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Basic Electronics", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Electronic Circuits", "Signals and Systems", "Mechanics", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Information Technology",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Introduction to IT", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Data Structures", "Digital Logic", "Computer Architecture", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Mechanical Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Engineering Mechanics", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Thermodynamics", "Fluid Mechanics", "Mechanics of Materials", "Manufacturing Processes", "Environmental Science"]
+                }
+              },
+              {
+                "branch": "Electrical Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Basic Electrical Engineering", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Circuits and Systems", "Electromagnetic Fields", "Signals and Systems", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Instrumentation and Control Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Basics of Instrumentation", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Instrumentation Devices", "Control Systems", "Mechanics", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Industrial and Production Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Manufacturing Processes", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Production Technology", "Operations Research", "Mechanics", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Biotechnology",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Biology", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Genetics", "Microbiology", "Organic Chemistry", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Chemistry",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Inorganic Chemistry", "Organic Chemistry", "Analytical Chemistry", "English"],
+                  "semester_2": ["Physical Chemistry", "Instrumental Analysis", "Biochemistry", "Environmental Chemistry", "Thermodynamics", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Chemical Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Introduction to Chemical Engineering", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Thermodynamics", "Fluid Mechanics", "Organic Chemistry", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Mathematics and Computing",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Discrete Mathematics", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Algorithms", "Data Structures", "Linear Algebra", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Civil Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Introduction to Civil Engineering", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Structural Analysis", "Fluid Mechanics", "Geology", "Environmental Science", "Surveying"]
+                }
+              },
+              {
+                "branch": "Humanities and Management",
+                "semesters": {
+                  "semester_1": ["Sociology", "Psychology", "Economics", "Political Science", "History", "English"],
+                  "semester_2": ["Organizational Behavior", "Management Theory", "Economics II", "Business Law", "Ethics", "Communication Skills"]
+                }
+              },
+              {
+                "branch": "Physics",
+                "semesters": {
+                  "semester_1": ["Mechanics", "Waves and Optics", "Thermodynamics", "Mathematics I", "Programming Fundamentals", "English"],
+                  "semester_2": ["Electromagnetism", "Quantum Mechanics", "Solid State Physics", "Mathematics II", "Environmental Science", "Computational Physics"]
+                }
+              },
+              {
+                "branch": "Textile Technology",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Introduction to Textiles", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Yarn Manufacturing", "Fabric Manufacturing", "Textile Chemistry", "Environmental Science", "Polymer Science"]
+                }
+              }
+        ]
+      },
+      {
+        "year": 3,
+        "branches": [
+            {
+                "branch": "Computer Science and Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Computer Fundamentals", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Data Structures", "Digital Logic Design", "Mechanics", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Electronics and Communication Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Basic Electronics", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Electronic Circuits", "Signals and Systems", "Mechanics", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Information Technology",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Introduction to IT", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Data Structures", "Digital Logic", "Computer Architecture", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Mechanical Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Engineering Mechanics", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Thermodynamics", "Fluid Mechanics", "Mechanics of Materials", "Manufacturing Processes", "Environmental Science"]
+                }
+              },
+              {
+                "branch": "Electrical Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Basic Electrical Engineering", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Circuits and Systems", "Electromagnetic Fields", "Signals and Systems", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Instrumentation and Control Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Basics of Instrumentation", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Instrumentation Devices", "Control Systems", "Mechanics", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Industrial and Production Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Manufacturing Processes", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Production Technology", "Operations Research", "Mechanics", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Biotechnology",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Biology", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Genetics", "Microbiology", "Organic Chemistry", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Chemistry",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Inorganic Chemistry", "Organic Chemistry", "Analytical Chemistry", "English"],
+                  "semester_2": ["Physical Chemistry", "Instrumental Analysis", "Biochemistry", "Environmental Chemistry", "Thermodynamics", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Chemical Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Introduction to Chemical Engineering", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Thermodynamics", "Fluid Mechanics", "Organic Chemistry", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Mathematics and Computing",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Discrete Mathematics", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Algorithms", "Data Structures", "Linear Algebra", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Civil Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Introduction to Civil Engineering", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Structural Analysis", "Fluid Mechanics", "Geology", "Environmental Science", "Surveying"]
+                }
+              },
+              {
+                "branch": "Humanities and Management",
+                "semesters": {
+                  "semester_1": ["Sociology", "Psychology", "Economics", "Political Science", "History", "English"],
+                  "semester_2": ["Organizational Behavior", "Management Theory", "Economics II", "Business Law", "Ethics", "Communication Skills"]
+                }
+              },
+              {
+                "branch": "Physics",
+                "semesters": {
+                  "semester_1": ["Mechanics", "Waves and Optics", "Thermodynamics", "Mathematics I", "Programming Fundamentals", "English"],
+                  "semester_2": ["Electromagnetism", "Quantum Mechanics", "Solid State Physics", "Mathematics II", "Environmental Science", "Computational Physics"]
+                }
+              },
+              {
+                "branch": "Textile Technology",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Introduction to Textiles", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Yarn Manufacturing", "Fabric Manufacturing", "Textile Chemistry", "Environmental Science", "Polymer Science"]
+                }
+              }
+        ]
+      },
+      {
+        "year": 4,
+        "branches": [
+            {
+                "branch": "Computer Science and Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Computer Fundamentals", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Data Structures", "Digital Logic Design", "Mechanics", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Electronics and Communication Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Basic Electronics", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Electronic Circuits", "Signals and Systems", "Mechanics", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Information Technology",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Introduction to IT", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Data Structures", "Digital Logic", "Computer Architecture", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Mechanical Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Engineering Mechanics", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Thermodynamics", "Fluid Mechanics", "Mechanics of Materials", "Manufacturing Processes", "Environmental Science"]
+                }
+              },
+              {
+                "branch": "Electrical Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Basic Electrical Engineering", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Circuits and Systems", "Electromagnetic Fields", "Signals and Systems", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Instrumentation and Control Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Basics of Instrumentation", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Instrumentation Devices", "Control Systems", "Mechanics", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Industrial and Production Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Manufacturing Processes", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Production Technology", "Operations Research", "Mechanics", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Biotechnology",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Biology", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Genetics", "Microbiology", "Organic Chemistry", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Chemistry",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Inorganic Chemistry", "Organic Chemistry", "Analytical Chemistry", "English"],
+                  "semester_2": ["Physical Chemistry", "Instrumental Analysis", "Biochemistry", "Environmental Chemistry", "Thermodynamics", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Chemical Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Introduction to Chemical Engineering", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Thermodynamics", "Fluid Mechanics", "Organic Chemistry", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Mathematics and Computing",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Discrete Mathematics", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Algorithms", "Data Structures", "Linear Algebra", "Environmental Science", "Programming Fundamentals"]
+                }
+              },
+              {
+                "branch": "Civil Engineering",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Introduction to Civil Engineering", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Structural Analysis", "Fluid Mechanics", "Geology", "Environmental Science", "Surveying"]
+                }
+              },
+              {
+                "branch": "Humanities and Management",
+                "semesters": {
+                  "semester_1": ["Sociology", "Psychology", "Economics", "Political Science", "History", "English"],
+                  "semester_2": ["Organizational Behavior", "Management Theory", "Economics II", "Business Law", "Ethics", "Communication Skills"]
+                }
+              },
+              {
+                "branch": "Physics",
+                "semesters": {
+                  "semester_1": ["Mechanics", "Waves and Optics", "Thermodynamics", "Mathematics I", "Programming Fundamentals", "English"],
+                  "semester_2": ["Electromagnetism", "Quantum Mechanics", "Solid State Physics", "Mathematics II", "Environmental Science", "Computational Physics"]
+                }
+              },
+              {
+                "branch": "Textile Technology",
+                "semesters": {
+                  "semester_1": ["Math", "Physics", "Chemistry", "Introduction to Textiles", "Engineering Drawing", "English"],
+                  "semester_2": ["Calculus", "Yarn Manufacturing", "Fabric Manufacturing", "Textile Chemistry", "Environmental Science", "Polymer Science"]
+                }
+              }
+        ]
+      }
+    ]
+  }
+  
