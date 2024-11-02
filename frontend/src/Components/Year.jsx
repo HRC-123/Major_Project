@@ -1,82 +1,57 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 const Year = () => {
   const years = ["First Year", "Second Year", "Third Year", "Fourth Year"];
   const departments = [
     { abbreviation: "CSE", fullForm: "Computer Science and Engineering" },
-    {
-      abbreviation: "ECE",
-      fullForm: "Electronics and Communication Engineering",
-    },
+    { abbreviation: "ECE", fullForm: "Electronics and Communication Engineering" },
     { abbreviation: "IT", fullForm: "Information Technology" },
-
     { abbreviation: "ME", fullForm: "Mechanical Engineering" },
     { abbreviation: "EE", fullForm: "Electrical Engineering" },
-    {
-      abbreviation: "ICE",
-      fullForm: "Instrumentation and Control Engineering",
-    },
+    { abbreviation: "ICE", fullForm: "Instrumentation and Control Engineering" },
     { abbreviation: "IPE", fullForm: "Industrial and Production Engineering" },
     { abbreviation: "BT", fullForm: "Biotechnology" },
     { abbreviation: "Chemistry", fullForm: "Chemistry" },
     { abbreviation: "Chemical", fullForm: "Chemical Engineering" },
-    {
-      abbreviation: "Mathematics ",
-      fullForm: "Mathematics and Computing",
-    },
+    { abbreviation: "Mathematics", fullForm: "Mathematics and Computing" },
     { abbreviation: "Civil", fullForm: "Civil Engineering" },
-    {
-      abbreviation: "HM",
-      fullForm: "Humanities and Management",
-    },
-
+    { abbreviation: "HM", fullForm: "Humanities and Management" },
     { abbreviation: "Physics", fullForm: "Physics" },
     { abbreviation: "TT", fullForm: "Textile Technology" },
   ];
 
   const navigate = useNavigate();
-  
-
-  
   const [yearIndex, setYearIndex] = useState(0);
-  // const [branch, setBranch] = useState("");
 
   return (
-    <div className="h-screen w-screen flex justify-center items-center ">
-      <div className="w-2/3 flex-col items-center justify-center  ">
-        <div className="h-auto bg-[#1a2542] w-full text-white flex justify-center items-center p-4 gap-4 text-lg">
+    <div className="h-screen w-screen flex justify-center items-center bg-gray-100">
+      <div className="w-full max-w-4xl flex-col items-center justify-center">
+        <div className="flex justify-center items-center gap-4 mb-8">
           {years.map((year, index) => (
             <button
               key={index}
-              className={`p-4 w-40 text-center ${
-                index === yearIndex
-                  ? "bg-[#7c9aed] rounded-xl text-zinc-900 transition-transform duration-300 transform hover:scale-100"
-                  : "text-white transition-all duration-300"
-              }`}
-              onClick={() => {
-                setYearIndex(index);
-              }}
+              className={`px-5 py-3 text-sm font-semibold rounded-lg shadow-md transition-all duration-300 
+                ${index === yearIndex 
+                  ? "bg-blue-600 text-white hover:bg-blue-700" 
+                  : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-100"
+                }`}
+              onClick={() => setYearIndex(index)}
             >
               {year}
             </button>
           ))}
         </div>
 
-        <div className="border-black bg-white w-full p-4 flex flex-wrap  gap-6 justify-center text-md">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-4">
           {departments.map((dept, index) => (
             <button
               key={index}
-              className="relative p-4 border-2 border-black text-center rounded-lg shadow-md overflow-hidden group"
-              onClick={() => {
-                navigate(
-                  `/sem/${yearIndex+1}/${departments[index]?.abbreviation}`
-                );
-              }}
+              className="relative p-5 border border-gray-300 bg-white text-gray-700 text-center rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-xl group overflow-hidden"
+              onClick={() => navigate(`/sem/${yearIndex + 1}/${dept.abbreviation}`)}
             >
-              <span className="absolute inset-0 bg-black transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out" />
-
-              <span className="relative z-10 group-hover:text-white transition-colors duration-500">
+              <span className="absolute inset-0 bg-blue-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out" />
+              <span className="relative z-10 font-medium text-lg group-hover:text-white transition-colors duration-500">
                 {dept.fullForm}
               </span>
             </button>
