@@ -29,6 +29,13 @@ import AWS from 'aws-sdk';
 import data from "../data.json";
 const options = ["Notes", "Syllabus", "PPTs", "Previous Year Paper"];
 
+AWS.config.update({
+  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+  region: process.env.REACT_APP_AWS_REGION,
+});
+
+const s3 = new AWS.S3();
 function SemesterPage() {
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [showOptions, setShowOptions] = useState(false);
@@ -36,18 +43,12 @@ function SemesterPage() {
 
   useEffect(() => {
 
-    AWS.config.update({
-      accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-      region: process.env.REACT_APP_AWS_REGION,
-    });
-
-    const s3 = new AWS.S3();
     const fetchFiles = async () => {
-      const params = {
-        Bucket: process.env.REACT_APP_BUCKET_NAME,
-      };
       try {
+        const params = {
+          Bucket: process.env.REACT_APP_BUCKET_NAME,
+        };
+        console.log(process.env.REACT_APP_AWS_SECRET_ACCESS_KEY);
         const data = await s3.listObjectsV2(params).promise();
         console.log(data);
         const fileList = data.Contents.map(file => ({
