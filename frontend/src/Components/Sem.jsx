@@ -1,5 +1,6 @@
-import React, { useState,useRef } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import { useParams,useNavigate } from "react-router-dom";
+import AWS from 'aws-sdk';
 // const semesters = [
 //   {
 //     name: "Semester 1",
@@ -31,6 +32,41 @@ const options = ["Notes", "Syllabus", "PPTs", "Previous Year Paper"];
 function SemesterPage() {
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [showOptions, setShowOptions] = useState(false);
+  const [files, setFiles] = useState([]);
+
+  useEffect(() => {
+
+    AWS.config.update({
+      accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+      region: process.env.REACT_APP_AWS_REGION,
+    });
+
+    const s3 = new AWS.S3();
+    const fetchFiles = async () => {
+      const params = {
+        Bucket: process.env.REACT_APP_BUCKET_NAME,
+      };
+      try {
+        const data = await s3.listObjectsV2(params).promise();
+        console.log(data);
+        const fileList = data.Contents.map(file => ({
+          key: file.Key,
+          url: `https://${params.Bucket}.s3.${AWS.config.region}.amazonaws.com/${file.Key}`,
+        }));
+        setFiles(fileList);
+      } catch (error) {
+        console.error("Error fetching files:", error);
+      }
+    };
+
+    fetchFiles();
+  }, []);
+
+  const openFile = (url) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
 
   const handleSubjectClick = (subject) => {
     setSelectedSubject(subject);
@@ -108,6 +144,21 @@ function SemesterPage() {
            </ul>
          </div>
        )}
+
+      <div className="p-4">
+        <h1 className="text-2xl font-bold mb-4">Available Files</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {files.map(file => (
+          <button
+            key={file.key}
+            onClick={() => openFile(file.url)}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow"
+          >
+            {file.key}
+          </button>
+          ))}
+        </div>
+      </div>
      </div>
    );
 }
