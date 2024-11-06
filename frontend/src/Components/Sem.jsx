@@ -38,8 +38,10 @@ AWS.config.update({
 const s3 = new AWS.S3();
 function SemesterPage() {
   const [selectedSubject, setSelectedSubject] = useState(null);
+  const [option, setOptions] = useState(null);
   const [showOptions, setShowOptions] = useState(false);
   const [files, setFiles] = useState([]);
+  const [showDocs, setShowDocs] = useState(false);
 
   useEffect(() => {
 
@@ -72,10 +74,20 @@ function SemesterPage() {
   const handleSubjectClick = (subject) => {
     setSelectedSubject(subject);
     setShowOptions(true);
+    setOptions(null);
+    setShowDocs(false);
     setTimeout(() => {
       optionsRef.current?.scrollIntoView({ behavior: "smooth" });
     }, 100);
   };
+
+  const handleDocs = (option) => {
+    setOptions(option);
+    setShowDocs(true);
+     setTimeout(() => {
+       optionsRef.current?.scrollIntoView({ behavior: "smooth" });
+     }, 100);
+  }
 
   const optionsRef = useRef(null);
 
@@ -129,15 +141,18 @@ function SemesterPage() {
        {showOptions && (
          <div
            ref={optionsRef}
-            className="w-full max-w-md mt-8 p-8 bg-white bg-opacity-90 rounded-xl shadow-2xl"
+           className="flex flex-col w-full max-w-md mt-8 p-8 bg-white bg-opacity-90 rounded-xl shadow-2xl"
          >
            <h3 className="text-2xl font-semibold text-gray-700 mb-4 text-center">
              Options for {selectedSubject}
            </h3>
-           <ul className="space-y-3">
+           <ul className="flex flex-wrap gap-4">
              {options.map((option, index) => (
-               <li key={index}>
-                 <button className="w-full bg-gradient-to-r from-teal-500 to-blue-500 text-white py-3 rounded-lg shadow-md hover:from-blue-500 hover:to-teal-500 transition duration-300 transform hover:scale-105 font-medium">
+               <li key={index} className="flex-1 min-w-[150px]">
+                 <button
+                   className="w-full bg-gradient-to-r from-teal-500 to-blue-500 text-white py-3 rounded-lg shadow-md hover:from-blue-500 hover:to-teal-500 transition duration-300 transform hover:scale-105 font-medium"
+                   onClick={() => handleDocs(option)}
+                 >
                    {option}
                  </button>
                </li>
@@ -146,20 +161,22 @@ function SemesterPage() {
          </div>
        )}
 
-      <div className="p-4">
-        <h1 className="text-2xl font-bold mb-4">Available Files</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {files.map(file => (
-          <button
-            key={file.key}
-            onClick={() => openFile(file.url)}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow"
-          >
-            {file.key}
-          </button>
-          ))}
-        </div>
-      </div>
+       {showDocs && (
+         <div className="p-4">
+           <h1 className="text-2xl font-bold mb-4">Available Files</h1>
+           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+             {files.map((file) => (
+               <button
+                 key={file.key}
+                 onClick={() => openFile(file.url)}
+                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow"
+               >
+                 {file.key}
+               </button>
+             ))}
+           </div>
+         </div>
+       )}
      </div>
    );
 }

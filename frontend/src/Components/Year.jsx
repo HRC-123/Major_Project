@@ -1,39 +1,18 @@
-import { useState } from "react";
+// Year.js
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import data from "../data.json";
+import FileUpload from "./FileUpload";
+import { ToastContainer } from "react-toastify";
 
 const Year = () => {
-
   const year = data.year;
   const departments = data.departments;
-
-  // const year = ["First Year", "Second Year", "Third Year", "Fourth Year"];
-  //  const departments = [
-  //    { abbreviation: "CSE", fullForm: "Computer Science and Engineering" },
-  //    {
-  //      abbreviation: "ECE",
-  //      fullForm: "Electronics and Communication Engineering",
-  //    },
-  //    { abbreviation: "IT", fullForm: "Information Technology" },
-  //    { abbreviation: "ME", fullForm: "Mechanical Engineering" },
-  //    { abbreviation: "EE", fullForm: "Electrical Engineering" },
-  //    {
-  //      abbreviation: "ICE",
-  //      fullForm: "Instrumentation and Control Engineering",
-  //    },
-  //    { abbreviation: "IPE", fullForm: "Industrial and Production Engineering" },
-  //    { abbreviation: "BT", fullForm: "Biotechnology" },
-  //    { abbreviation: "Chemistry", fullForm: "Chemistry" },
-  //    { abbreviation: "Chemical", fullForm: "Chemical Engineering" },
-  //    { abbreviation: "Mathematics", fullForm: "Mathematics and Computing" },
-  //    { abbreviation: "Civil", fullForm: "Civil Engineering" },
-  //    { abbreviation: "HM", fullForm: "Humanities and Management" },
-  //    { abbreviation: "Physics", fullForm: "Physics" },
-  //    { abbreviation: "TT", fullForm: "Textile Technology" },
-  //  ];
-
   const navigate = useNavigate();
   const [yearIndex, setYearIndex] = useState(0);
+  const [showUpload, setShowUpload] = useState(false);
+
+  const toggleUploadPopup = () => setShowUpload((prev) => !prev);
 
   return (
     <div className="h-screen w-full flex justify-center items-center bg-gray-100">
@@ -71,6 +50,18 @@ const Year = () => {
             </button>
           ))}
         </div>
+
+        <div className="flex justify-center mt-8">
+          <button
+            onClick={toggleUploadPopup}
+            className="px-5 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition"
+          >
+            Upload File
+          </button>
+        </div>
+
+        {showUpload && <FileUpload onClose={toggleUploadPopup} />}
+        <ToastContainer />
       </div>
     </div>
   );

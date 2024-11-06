@@ -5,7 +5,7 @@ import "./index.css";
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import Sem from './Components/Sem.jsx';
-import Try from './Components/Try.jsx';
+import FileUpload from './Components/FileUpload.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,7 +14,7 @@ root.render(
       <Routes>
         <Route path="/" element={<Year />} />
         <Route path="/sem/:year/:branch" element={<Sem />} />
-        <Route path='/try' element={<Try/>} />
+        <Route path='/FileUpload' element={<FileUpload/>} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
