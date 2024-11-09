@@ -51,7 +51,16 @@ const FileUpload = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="max-w-md mx-auto p-8 bg-white shadow-lg rounded-lg">
+      <div className="relative max-w-md mx-auto p-8 bg-white shadow-lg rounded-lg">
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+          aria-label="Close"
+        >
+          ✕
+        </button>
+
         <h1 className="text-2xl font-semibold text-gray-700 text-center mb-4">
           Upload a PDF
         </h1>

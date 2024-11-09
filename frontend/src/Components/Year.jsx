@@ -15,7 +15,16 @@ const Year = () => {
   const toggleUploadPopup = () => setShowUpload((prev) => !prev);
 
   return (
-    <div className="h-screen w-full flex justify-center items-center bg-gray-100">
+    <div className="h-screen w-full flex justify-center items-center bg-gray-100 relative">
+      <div className="absolute top-4 right-4">
+        <button
+          onClick={toggleUploadPopup}
+          className="px-5 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition"
+        >
+          Upload File
+        </button>
+      </div>
+
       <div className="w-full max-w-4xl flex-col items-center justify-center">
         <div className="flex justify-center items-center gap-4 mt-6 mb-8">
           {year.map((year, index) => (
@@ -51,16 +60,13 @@ const Year = () => {
           ))}
         </div>
 
-        <div className="flex justify-center mt-8">
-          <button
-            onClick={toggleUploadPopup}
-            className="px-5 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition"
-          >
-            Upload File
-          </button>
-        </div>
+        {/* Background overlay and FileUpload popup */}
+        {showUpload && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20">
+            <FileUpload onClose={toggleUploadPopup} />
+          </div>
+        )}
 
-        {showUpload && <FileUpload onClose={toggleUploadPopup} />}
         <ToastContainer />
       </div>
     </div>
