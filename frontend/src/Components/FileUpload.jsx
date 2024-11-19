@@ -20,29 +20,29 @@ const FileUpload = ({ onClose }) => {
 
   const uploadFile = async () => {
     if (!file) return alert("Please select a file to upload.");
-  
+
     if (!selectedYear || !selectedBranch || !selectedSubject || !selectedType) {
       return alert("Please select all dropdown options.");
     }
-  
+
     setUploading(true);
-  
+
     const s3 = new AWS.S3({
       accessKeyId: process.env.REACT_APP_UPLOAD_AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.REACT_APP_UPLOAD_AWS_SECRET_ACCESS_KEY,
       region: process.env.REACT_APP_AWS_REGION,
     });
-  
+
     // Construct the S3 Key using dropdown selections as folders
-   const key = `${selectedYear}/${selectedBranch}/${selectedSubject}/${selectedType}/${file.name}`;
-  
+    const key = `${selectedYear}/${selectedBranch}/${selectedSubject}/${selectedType}/${file.name}`;
+
     const params = {
       Bucket: process.env.REACT_APP_BUCKET_NAME,
       Key: key, // Hierarchical S3 Key
       Body: file,
       ContentType: file.type,
     };
-  
+
     s3.upload(params)
       .on("httpUploadProgress", (evt) => {
         setUploadProgress(Math.round((evt.loaded / evt.total) * 100));
@@ -58,7 +58,7 @@ const FileUpload = ({ onClose }) => {
         setUploading(false);
         setFile(null);
         setUploadProgress(0);
-        setSelectedYear ("");
+        setSelectedYear("");
         setSelectedBranch("");
         setSelectedSubject("");
         setSelectedType("");
@@ -71,14 +71,12 @@ const FileUpload = ({ onClose }) => {
     const branchData = yearData?.branches.find(
       (b) => b.branch === selectedBranch
     );
-   return branchData?.semesters[`Semester_${selectedSemester}`] || [];
-
+    return branchData?.semesters[`Semester_${selectedSemester}`] || [];
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center ">
-      <div className="relative max-w-md mx-auto p-8 bg-white shadow-lg rounded-lg max-h-[90vh] overflow-auto"
-      >
+      <div className="relative max-w-md mx-auto p-8 bg-white shadow-lg rounded-lg max-h-[90vh] overflow-auto">
         <button
           onClick={onClose}
           className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 mr-2"
@@ -132,13 +130,11 @@ const FileUpload = ({ onClose }) => {
             disabled={!selectedYear || !selectedBranch}
           >
             <option value="">Select Semester</option>
-            {[2*selectedYear-1,2*selectedYear].map(
-              (sem, index) => (
-                <option key={index} value={sem}>
-                  {sem}
-                </option>
-              )
-            )}
+            {[2 * selectedYear - 1, 2 * selectedYear].map((sem, index) => (
+              <option key={index} value={sem}>
+                {sem}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -167,11 +163,13 @@ const FileUpload = ({ onClose }) => {
             onChange={(e) => setSelectedType(e.target.value)}
           >
             <option value="">Select Type</option>
-            {["Notes", "PPT", "Assignments", "PreviousYearPapers"].map((type, index) => (
-              <option key={index} value={type}>
-                {type}
-              </option>
-            ))}
+            {["Notes", "PPT", "Assignments", "PreviousYearPapers"].map(
+              (type, index) => (
+                <option key={index} value={type}>
+                  {type}
+                </option>
+              )
+            )}
           </select>
         </div>
 
