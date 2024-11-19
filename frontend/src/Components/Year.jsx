@@ -62,7 +62,7 @@ const Year = () => {
 
         {/* Background overlay and FileUpload popup */}
         {showUpload && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20 ">
             <FileUpload onClose={toggleUploadPopup} />
           </div>
         )}

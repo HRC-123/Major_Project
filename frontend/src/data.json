@@ -441,7 +441,9 @@
         ]
       }
     ],
+
     "year":["First Year", "Second Year", "Third Year", "Fourth Year"],
+    "sems":["1","2","3","4","5","6","7","8"],
     "departments" : [
       { "abbreviation": "CSE", "fullForm": "Computer Science and Engineering" },
       {

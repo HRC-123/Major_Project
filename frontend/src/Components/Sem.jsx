@@ -1,6 +1,7 @@
 import React, { useEffect, useState,useRef } from "react";
 import { useParams,useNavigate } from "react-router-dom";
 import AWS from 'aws-sdk';
+
 // const semesters = [
 //   {
 //     name: "Semester 1",
@@ -42,6 +43,7 @@ function SemesterPage() {
   const [showOptions, setShowOptions] = useState(false);
   const [files, setFiles] = useState([]);
   const [showDocs, setShowDocs] = useState(false);
+  const { year, branch } = useParams();
 
   useEffect(() => {
 
@@ -49,6 +51,7 @@ function SemesterPage() {
       try {
         const params = {
           Bucket: process.env.REACT_APP_BUCKET_NAME,
+          Prefix: `${year}/${branch}/${selectedSubject}/${option}/`,
         };
         console.log(process.env.REACT_APP_AWS_SECRET_ACCESS_KEY);
         const data = await s3.listObjectsV2(params).promise();
@@ -64,7 +67,7 @@ function SemesterPage() {
     };
 
     fetchFiles();
-  }, []);
+  }, [option]);
 
   const openFile = (url) => {
     window.open(url, '_blank', 'noopener,noreferrer');
@@ -91,7 +94,6 @@ function SemesterPage() {
 
   const optionsRef = useRef(null);
 
-  const { year, branch } = useParams();
 
   const navigate = useNavigate();
  const yearData = data.years.find((y) => y.year === parseInt(year));
@@ -163,7 +165,7 @@ function SemesterPage() {
 
        {showDocs && (
          <div className="p-4">
-           <h1 className="text-2xl font-bold mb-4">Available Files</h1>
+           <h1 className="text-2xl font-bold mb-4 text-center">Available Files</h1>
            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
              {files.map((file) => (
                <button
@@ -171,7 +173,7 @@ function SemesterPage() {
                  onClick={() => openFile(file.url)}
                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow"
                >
-                 {file.key}
+                 {file.key.split("/").pop()} {/* Extract only the file name */}
                </button>
              ))}
            </div>
