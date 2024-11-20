@@ -1,472 +1,1463 @@
 {
-    "years": [
-      {
-        "year": 1,
-        "branches": [
-          {
-            "branch": "CSE",
-            "semesters": {
-              "Semester_1": ["Math", "Phy", "Chem", "Computer Fundamentals", "Engineering Drawing", "English"],
-              "Semester_2": ["Calculus", "Data Structures", "Digital Logic Design", "Mechanics", "Environmental Science", "Programming Fundamentals"]
-            }
-          },
-          {
-            "branch": "ECE",
-            "semesters": {
-              "Semester_1": ["Math", "Phy", "Chem", "Basic Electronics", "Engineering Drawing", "English"],
-              "Semester_2": ["Calculus", "Electronic Circuits", "Signals and Systems", "Mechanics", "Environmental Science", "Programming Fundamentals"]
-            }
-          },
-          {
-            "branch": "IT",
-            "semesters": {
-              "Semester_1": ["Math", "Phy", "Chem", "Introduction to IT", "Engineering Drawing", "English"],
-              "Semester_2": ["Calculus", "Data Structures", "Digital Logic", "Computer Architecture", "Environmental Science", "Programming Fundamentals"]
-            }
-          },
-          {
-            "branch": "ME",
-            "semesters": {
-              "Semester_1": ["Math", "Phy", "Chem", "Engineering Mechanics", "Engineering Drawing", "English"],
-              "Semester_2": ["Calculus", "Thermodynamics", "Fluid Mechanics", "Mechanics of Materials", "Manufacturing Processes", "Environmental Science"]
-            }
-          },
-          {
-            "branch": "EE",
-            "semesters": {
-              "Semester_1": ["Math", "Phy", "Chem", "Basic EE", "Engineering Drawing", "English"],
-              "Semester_2": ["Calculus", "Circuits and Systems", "Electromagnetic Fields", "Signals and Systems", "Environmental Science", "Programming Fundamentals"]
-            }
-          },
-          {
-            "branch": "ICE",
-            "semesters": {
-              "Semester_1": ["Math", "Phy", "Chem", "Basics of Instrumentation", "Engineering Drawing", "English"],
-              "Semester_2": ["Calculus", "Instrumentation Devices", "Control Systems", "Mechanics", "Environmental Science", "Programming Fundamentals"]
-            }
-          },
-          {
-            "branch": "IPE",
-            "semesters": {
-              "Semester_1": ["Math", "Phy", "Chem", "Manufacturing Processes", "Engineering Drawing", "English"],
-              "Semester_2": ["Calculus", "Production Technology", "Operations Research", "Mechanics", "Environmental Science", "Programming Fundamentals"]
-            }
-          },
-          {
-            "branch": "BT",
-            "semesters": {
-              "Semester_1": ["Math", "Phy", "Chem", "Biology", "Engineering Drawing", "English"],
-              "Semester_2": ["Calculus", "Genetics", "Microbiology", "Organic Chem", "Environmental Science", "Programming Fundamentals"]
-            }
-          },
-          {
-            "branch": "Chem",
-            "semesters": {
-              "Semester_1": ["Math", "Phy", "Inorganic Chem", "Organic Chem", "Analytical Chem", "English"],
-              "Semester_2": ["Physical Chem", "Instrumental Analysis", "BioChem", "Environmental Chem", "Thermodynamics", "Programming Fundamentals"]
-            }
-          },
-          {
-            "branch": "CE",
-            "semesters": {
-              "Semester_1": ["Math", "Phy", "Chem", "Introduction to CE", "Engineering Drawing", "English"],
-              "Semester_2": ["Calculus", "Thermodynamics", "Fluid Mechanics", "Organic Chem", "Environmental Science", "Programming Fundamentals"]
-            }
-          },
-          {
-            "branch": "MC",
-            "semesters": {
-              "Semester_1": ["Math", "Phy", "Chem", "Discrete Mathematics", "Engineering Drawing", "English"],
-              "Semester_2": ["Calculus", "Algorithms", "Data Structures", "Linear Algebra", "Environmental Science", "Programming Fundamentals"]
-            }
-          },
-          {
-            "branch": "CE",
-            "semesters": {
-              "Semester_1": ["Math", "Phy", "Chem", "Introduction to CE", "Engineering Drawing", "English"],
-              "Semester_2": ["Calculus", "Structural Analysis", "Fluid Mechanics", "Geology", "Environmental Science", "Surveying"]
-            }
-          },
-          {
-            "branch": "HM",
-            "semesters": {
-              "Semester_1": ["Sociology", "Psychology", "Economics", "Political Science", "History", "English"],
-              "Semester_2": ["Organizational Behavior", "Management Theory", "Economics II", "Business Law", "Ethics", "Communication Skills"]
-            }
-          },
-          {
-            "branch": "Phy",
-            "semesters": {
-              "Semester_1": ["Mechanics", "Waves and Optics", "Thermodynamics", "Mathematics I", "Programming Fundamentals", "English"],
-              "Semester_2": ["Electromagnetism", "Quantum Mechanics", "Solid State Phy", "Mathematics II", "Environmental Science", "Computational Phy"]
-            }
-          },
-          {
-            "branch": "TT",
-            "semesters": {
-              "Semester_1": ["Math", "Phy", "Chem", "Introduction to Textiles", "Engineering Drawing", "English"],
-              "Semester_2": ["Calculus", "Yarn Manufacturing", "Fabric Manufacturing", "Textile Chem", "Environmental Science", "Polymer Science"]
-            }
+  "years": [
+    {
+      "year": 1,
+      "branches": [
+        {
+          "branch": "CSE",
+          "semesters": {
+            "Semester_1": [
+              "Applied Chemistry",
+              "Applied Mathematics-I",
+              "Basic Electrical Science",
+              "English Communicate & Report Writing",
+              "Manufacturing Process",
+              "Product Realization through Manufacturing Laboratory",
+              "English Communication Lab",
+              "Applied Chemistry-B",
+              "Environmental Science and Technology"
+            ],
+            "Semester_2": [
+              "Applied Physics-B",
+              "Data Structures",
+              "Computer Programming",
+              "Applied Mathematics-II",
+              "Management, Principles & Practices",
+              "Engineering Graphics & CADD",
+              "Applied Physics-B Lab",
+              "Computer Programming Lab"
+            ]
           }
-        ]
-      },
-      {
-        "year": 2,
-        "branches": [
-            {
-                "branch": "CSE",
-                "semesters": {
-                  "semester_3": ["Math", "Phy", "Chem", "Computer Fundamentals", "Engineering Drawing", "English"],
-                  "semester_4": ["Calculus", "Data Structures", "Digital Logic Design", "Mechanics", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "ECE",
-                "semesters": {
-                  "semester_3": ["Math", "Phy", "Chem", "Basic Electronics", "Engineering Drawing", "English"],
-                  "semester_4": ["Calculus", "Electronic Circuits", "Signals and Systems", "Mechanics", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "IT",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Introduction to IT", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Data Structures", "Digital Logic", "Computer Architecture", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "ME",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Engineering Mechanics", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Thermodynamics", "Fluid Mechanics", "Mechanics of Materials", "Manufacturing Processes", "Environmental Science"]
-                }
-              },
-              {
-                "branch": "EE",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Basic EE", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Circuits and Systems", "Electromagnetic Fields", "Signals and Systems", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "ICE",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Basics of Instrumentation", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Instrumentation Devices", "Control Systems", "Mechanics", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "IPE",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Manufacturing Processes", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Production Technology", "Operations Research", "Mechanics", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "BT",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Biology", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Genetics", "Microbiology", "Organic Chem", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "Chem",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Inorganic Chem", "Organic Chem", "Analytical Chem", "English"],
-                  "Semester_2": ["Physical Chem", "Instrumental Analysis", "BioChem", "Environmental Chem", "Thermodynamics", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "CE",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Introduction to CE", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Thermodynamics", "Fluid Mechanics", "Organic Chem", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "MC",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Discrete Mathematics", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Algorithms", "Data Structures", "Linear Algebra", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "CE",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Introduction to CE", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Structural Analysis", "Fluid Mechanics", "Geology", "Environmental Science", "Surveying"]
-                }
-              },
-              {
-                "branch": "HM",
-                "semesters": {
-                  "Semester_1": ["Sociology", "Psychology", "Economics", "Political Science", "History", "English"],
-                  "Semester_2": ["Organizational Behavior", "Management Theory", "Economics II", "Business Law", "Ethics", "Communication Skills"]
-                }
-              },
-              {
-                "branch": "Phy",
-                "semesters": {
-                  "Semester_1": ["Mechanics", "Waves and Optics", "Thermodynamics", "Mathematics I", "Programming Fundamentals", "English"],
-                  "Semester_2": ["Electromagnetism", "Quantum Mechanics", "Solid State Phy", "Mathematics II", "Environmental Science", "Computational Phy"]
-                }
-              },
-              {
-                "branch": "TT",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Introduction to Textiles", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Yarn Manufacturing", "Fabric Manufacturing", "Textile Chem", "Environmental Science", "Polymer Science"]
-                }
-              }
-        ]
-      },
-      {
-        "year": 3,
-        "branches": [
-            {
-                "branch": "CSE",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Computer Fundamentals", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Data Structures", "Digital Logic Design", "Mechanics", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "ECE",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Basic Electronics", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Electronic Circuits", "Signals and Systems", "Mechanics", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "IT",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Introduction to IT", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Data Structures", "Digital Logic", "Computer Architecture", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "ME",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Engineering Mechanics", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Thermodynamics", "Fluid Mechanics", "Mechanics of Materials", "Manufacturing Processes", "Environmental Science"]
-                }
-              },
-              {
-                "branch": "EE",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Basic EE", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Circuits and Systems", "Electromagnetic Fields", "Signals and Systems", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "ICE",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Basics of Instrumentation", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Instrumentation Devices", "Control Systems", "Mechanics", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "IPE",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Manufacturing Processes", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Production Technology", "Operations Research", "Mechanics", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "BT",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Biology", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Genetics", "Microbiology", "Organic Chem", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "Chem",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Inorganic Chem", "Organic Chem", "Analytical Chem", "English"],
-                  "Semester_2": ["Physical Chem", "Instrumental Analysis", "BioChem", "Environmental Chem", "Thermodynamics", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "CE",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Introduction to CE", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Thermodynamics", "Fluid Mechanics", "Organic Chem", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "MC",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Discrete Mathematics", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Algorithms", "Data Structures", "Linear Algebra", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "CE",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Introduction to CE", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Structural Analysis", "Fluid Mechanics", "Geology", "Environmental Science", "Surveying"]
-                }
-              },
-              {
-                "branch": "HM",
-                "semesters": {
-                  "Semester_1": ["Sociology", "Psychology", "Economics", "Political Science", "History", "English"],
-                  "Semester_2": ["Organizational Behavior", "Management Theory", "Economics II", "Business Law", "Ethics", "Communication Skills"]
-                }
-              },
-              {
-                "branch": "Phy",
-                "semesters": {
-                  "Semester_1": ["Mechanics", "Waves and Optics", "Thermodynamics", "Mathematics I", "Programming Fundamentals", "English"],
-                  "Semester_2": ["Electromagnetism", "Quantum Mechanics", "Solid State Phy", "Mathematics II", "Environmental Science", "Computational Phy"]
-                }
-              },
-              {
-                "branch": "TT",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Introduction to Textiles", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Yarn Manufacturing", "Fabric Manufacturing", "Textile Chem", "Environmental Science", "Polymer Science"]
-                }
-              }
-        ]
-      },
-      {
-        "year": 4,
-        "branches": [
-            {
-                "branch": "CSE",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Computer Fundamentals", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Data Structures", "Digital Logic Design", "Mechanics", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "ECE",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Basic Electronics", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Electronic Circuits", "Signals and Systems", "Mechanics", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "IT",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Introduction to IT", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Data Structures", "Digital Logic", "Computer Architecture", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "ME",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Engineering Mechanics", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Thermodynamics", "Fluid Mechanics", "Mechanics of Materials", "Manufacturing Processes", "Environmental Science"]
-                }
-              },
-              {
-                "branch": "EE",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Basic EE", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Circuits and Systems", "Electromagnetic Fields", "Signals and Systems", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "ICE",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Basics of Instrumentation", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Instrumentation Devices", "Control Systems", "Mechanics", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "IPE",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Manufacturing Processes", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Production Technology", "Operations Research", "Mechanics", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "BT",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Biology", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Genetics", "Microbiology", "Organic Chem", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "Chem",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Inorganic Chem", "Organic Chem", "Analytical Chem", "English"],
-                  "Semester_2": ["Physical Chem", "Instrumental Analysis", "BioChem", "Environmental Chem", "Thermodynamics", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "CE",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Introduction to CE", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Thermodynamics", "Fluid Mechanics", "Organic Chem", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "MC",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Discrete Mathematics", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Algorithms", "Data Structures", "Linear Algebra", "Environmental Science", "Programming Fundamentals"]
-                }
-              },
-              {
-                "branch": "CE",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Introduction to CE", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Structural Analysis", "Fluid Mechanics", "Geology", "Environmental Science", "Surveying"]
-                }
-              },
-              {
-                "branch": "HM",
-                "semesters": {
-                  "Semester_1": ["Sociology", "Psychology", "Economics", "Political Science", "History", "English"],
-                  "Semester_2": ["Organizational Behavior", "Management Theory", "Economics II", "Business Law", "Ethics", "Communication Skills"]
-                }
-              },
-              {
-                "branch": "Phy",
-                "semesters": {
-                  "Semester_1": ["Mechanics", "Waves and Optics", "Thermodynamics", "Mathematics I", "Programming Fundamentals", "English"],
-                  "Semester_2": ["Electromagnetism", "Quantum Mechanics", "Solid State Phy", "Mathematics II", "Environmental Science", "Computational Phy"]
-                }
-              },
-              {
-                "branch": "TT",
-                "semesters": {
-                  "Semester_1": ["Math", "Phy", "Chem", "Introduction to Textiles", "Engineering Drawing", "English"],
-                  "Semester_2": ["Calculus", "Yarn Manufacturing", "Fabric Manufacturing", "Textile Chem", "Environmental Science", "Polymer Science"]
-                }
-              }
-        ]
-      }
-    ],
-
-    "year":["First Year", "Second Year", "Third Year", "Fourth Year"],
-    "sems":["1","2","3","4","5","6","7","8"],
-    "departments" : [
-      { "abbreviation": "CSE", "fullForm": "Computer Science and Engineering" },
-      {
-        "abbreviation": "ECE",
-        "fullForm": "Electronics and Communication Engineering"
-      },
-      { "abbreviation": "IT", "fullForm": "Information Technology" },
-      { "abbreviation": "ME", "fullForm": "Mechanical Engineering" },
-      { "abbreviation": "EE", "fullForm": "Electrical Engineering" },
-      {
-        "abbreviation": "ICE",
-        "fullForm": "Instrumentation and Control Engineering"
-      },
-      { "abbreviation": "IPE", "fullForm": "Industrial and Production Engineering" },
-      { "abbreviation": "BT", "fullForm": "Biotechnology" },
-      { "abbreviation": "Chemistry", "fullForm": "Chemistry" },
-      { "abbreviation": "Chemical", "fullForm": "Chemical Engineering" },
-      { "abbreviation": "Mathematics", "fullForm": "Mathematics and Computing" },
-      { "abbreviation": "Civil", "fullForm": "Civil Engineering" },
-      { "abbreviation": "HM", "fullForm": "Humanities and Management" },
-      { "abbreviation": "Physics", "fullForm": "Physics" },
-      { "abbreviation": "TT", "fullForm": "Textile Technology" }
-    ]
-    
-  }
-  
+        },
+        {
+          "branch": "ECE",
+          "semesters": {
+            "Semester_1": [
+              "Applied Chemistry",
+              "Applied Mathematics-I",
+              "Basic Electrical Science",
+              "English Communicate & Report Writing",
+              "Manufacturing Process",
+              "Product Realization through Manufacturing Laboratory",
+              "English Communication Lab",
+              "Applied Chemistry-B",
+              "Environmental Science and Technology"
+            ],
+            "Semester_2": [
+              "Applied Physics-B",
+              "Data Structures",
+              "Computer Programming",
+              "Applied Mathematics-II",
+              "Management, Principles & Practices",
+              "Engineering Graphics & CADD",
+              "Applied Physics-B Lab",
+              "Computer Programming Lab"
+            ]
+          }
+        },
+        {
+          "branch": "IT",
+          "semesters": {
+            "Semester_1": [
+              "Applied Chemistry",
+              "Applied Mathematics-I",
+              "Basic Electrical Science",
+              "English Communicate & Report Writing",
+              "Manufacturing Process",
+              "Product Realization through Manufacturing Laboratory",
+              "English Communication Lab",
+              "Applied Chemistry-B",
+              "Environmental Science and Technology"
+            ],
+            "Semester_2": [
+              "Applied Physics-B",
+              "Data Structures",
+              "Computer Programming",
+              "Applied Mathematics-II",
+              "Management, Principles & Practices",
+              "Engineering Graphics & CADD",
+              "Applied Physics-B Lab",
+              "Computer Programming Lab"
+            ]
+          }
+        },
+        {
+          "branch": "ME",
+          "semesters": {
+            "Semester_1": [
+              "Applied Chemistry",
+              "Applied Mathematics-I",
+              "Basic Electrical Science",
+              "English Communicate & Report Writing",
+              "Manufacturing Process",
+              "Product Realization through Manufacturing Laboratory",
+              "English Communication Lab",
+              "Applied Chemistry-B",
+              "Environmental Science and Technology"
+            ],
+            "Semester_2": [
+              "Applied Physics-B",
+              "Data Structures",
+              "Computer Programming",
+              "Applied Mathematics-II",
+              "Management, Principles & Practices",
+              "Engineering Graphics & CADD",
+              "Applied Physics-B Lab",
+              "Computer Programming Lab"
+            ]
+          }
+        },
+        {
+          "branch": "EE",
+          "semesters": {
+            "Semester_1": [
+              "Applied Chemistry",
+              "Applied Mathematics-I",
+              "Basic Electrical Science",
+              "English Communicate & Report Writing",
+              "Manufacturing Process",
+              "Product Realization through Manufacturing Laboratory",
+              "English Communication Lab",
+              "Applied Chemistry-B",
+              "Environmental Science and Technology"
+            ],
+            "Semester_2": [
+              "Applied Physics-B",
+              "Elements of Mechanical Engineering",
+              "Computer Programming",
+              "Applied Mathematics-II",
+              "Management, Principles & Practices",
+              "Engineering Graphics & CADD",
+              "Applied Physics-B Lab",
+              "Computer Programming Lab"
+            ]
+          }
+        },
+        {
+          "branch": "ICE",
+          "semesters": {
+            "Semester_1": [
+              "Applied Chemistry",
+              "Applied Mathematics-I",
+              "Basic Electrical Science",
+              "English Communicate & Report Writing",
+              "Manufacturing Process",
+              "Product Realization through Manufacturing Laboratory",
+              "English Communication Lab",
+              "Applied Chemistry-B",
+              "Environmental Science and Technology"
+            ],
+            "Semester_2": [
+              "Applied Physics-B",
+              "Data Structures",
+              "Computer Programming",
+              "Applied Mathematics-II",
+              "Management, Principles & Practices",
+              "Engineering Graphics & CADD",
+              "Applied Physics-B Lab",
+              "Computer Programming Lab"
+            ]
+          }
+        },
+        {
+          "branch": "IPE",
+          "semesters": {
+            "Semester_1": [
+              "Applied Chemistry",
+              "Applied Mathematics-I",
+              "Basic Electrical Science",
+              "English Communicate & Report Writing",
+              "Manufacturing Process",
+              "Product Realization through Manufacturing Laboratory",
+              "English Communication Lab",
+              "Applied Chemistry-B",
+              "Environmental Science and Technology"
+            ],
+            "Semester_2": [
+              "Applied Physics-B",
+              "Data Structures",
+              "Computer Programming",
+              "Applied Mathematics-II",
+              "Management, Principles & Practices",
+              "Engineering Graphics & CADD",
+              "Applied Physics-B Lab",
+              "Computer Programming Lab"
+            ]
+          }
+        },
+        {
+          "branch": "BT",
+          "semesters": {
+            "Semester_1": [
+              "Applied Chemistry",
+              "Applied Mathematics-I",
+              "Basic Electrical Science",
+              "English Communicate & Report Writing",
+              "Manufacturing Process",
+              "Product Realization through Manufacturing Laboratory",
+              "English Communication Lab",
+              "Applied Chemistry-B",
+              "Environmental Science and Technology"
+            ],
+            "Semester_2": [
+              "Applied Physics-B",
+              "Data Structures",
+              "Computer Programming",
+              "Applied Mathematics-II",
+              "Management, Principles & Practices",
+              "Engineering Graphics & CADD",
+              "Applied Physics-B Lab",
+              "Computer Programming Lab"
+            ]
+          }
+        },
+        {
+          "branch": "Chem",
+          "semesters": {
+            "Semester_1": [
+              "Applied Chemistry",
+              "Applied Mathematics-I",
+              "Basic Electrical Science",
+              "English Communicate & Report Writing",
+              "Manufacturing Process",
+              "Product Realization through Manufacturing Laboratory",
+              "English Communication Lab",
+              "Applied Chemistry-B",
+              "Environmental Science and Technology"
+            ],
+            "Semester_2": [
+              "Applied Physics-B",
+              "Data Structures",
+              "Computer Programming",
+              "Applied Mathematics-II",
+              "Management, Principles & Practices",
+              "Engineering Graphics & CADD",
+              "Applied Physics-B Lab",
+              "Computer Programming Lab"
+            ]
+          }
+        },
+        {
+          "branch": "CE",
+          "semesters": {
+            "Semester_1": [
+              "Applied Chemistry",
+              "Applied Mathematics-I",
+              "Basic Electrical Science",
+              "English Communicate & Report Writing",
+              "Manufacturing Process",
+              "Product Realization through Manufacturing Laboratory",
+              "English Communication Lab",
+              "Applied Chemistry-B",
+              "Environmental Science and Technology"
+            ],
+            "Semester_2": [
+              "Applied Physics-B",
+              "Data Structures",
+              "Computer Programming",
+              "Applied Mathematics-II",
+              "Management, Principles & Practices",
+              "Engineering Graphics & CADD",
+              "Applied Physics-B Lab",
+              "Computer Programming Lab"
+            ]
+          }
+        },
+        {
+          "branch": "MC",
+          "semesters": {
+            "Semester_1": [
+              "Applied Chemistry",
+              "Applied Mathematics-I",
+              "Basic Electrical Science",
+              "English Communicate & Report Writing",
+              "Manufacturing Process",
+              "Product Realization through Manufacturing Laboratory",
+              "English Communication Lab",
+              "Applied Chemistry-B",
+              "Environmental Science and Technology"
+            ],
+            "Semester_2": [
+              "Applied Physics-B",
+              "Data Structures",
+              "Computer Programming",
+              "Applied Mathematics-II",
+              "Management, Principles & Practices",
+              "Engineering Graphics & CADD",
+              "Applied Physics-B Lab",
+              "Computer Programming Lab"
+            ]
+          }
+        },
+        {
+          "branch": "HM",
+          "semesters": {
+            "Semester_1": [
+              "Applied Chemistry",
+              "Applied Mathematics-I",
+              "Basic Electrical Science",
+              "English Communicate & Report Writing",
+              "Manufacturing Process",
+              "Product Realization through Manufacturing Laboratory",
+              "English Communication Lab",
+              "Applied Chemistry-B",
+              "Environmental Science and Technology"
+            ],
+            "Semester_2": [
+              "Applied Physics-B",
+              "Data Structures",
+              "Computer Programming",
+              "Applied Mathematics-II",
+              "Management, Principles & Practices",
+              "Engineering Graphics & CADD",
+              "Applied Physics-B Lab",
+              "Computer Programming Lab"
+            ]
+          }
+        },
+        {
+          "branch": "Phy",
+          "semesters": {
+            "Semester_1": [
+              "Classical Mechanics",
+              "Mathematical Physics",
+              "Electronics",
+              "Computational Techniques",
+              "Electronics Lab.",
+              "Computer Lab."
+            ],
+            "Semester_2": [
+              "Quantum Mechanics-I",
+              "Solid State Physics-I",
+              "Statistical Physics",
+              "Electrodynamics",
+              "Elective-I",
+              "Solid State Physics Lab."
+            ]
+          }
+        },
+        {
+          "branch": "TT",
+          "semesters": {
+            "Semester_1": [
+              "Applied Chemistry",
+              "Applied Mathematics-I",
+              "Basic Electrical Science",
+              "English Communicate & Report Writing",
+              "Manufacturing Process",
+              "Product Realization through Manufacturing Laboratory",
+              "English Communication Lab",
+              "Applied Chemistry-B",
+              "Environmental Science and Technology"
+            ],
+            "Semester_2": [
+              "Applied Physics-B",
+              "Data Structures",
+              "Computer Programming",
+              "Applied Mathematics-II",
+              "Management, Principles & Practices",
+              "Engineering Graphics & CADD",
+              "Applied Physics-B Lab",
+              "Computer Programming Lab"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "year": 2,
+      "branches": [
+        {
+          "branch": "CSE",
+          "semesters": {
+            "semester_3": [
+              "Digital Circuits and Logic Design",
+              "Object Oriented Programming",
+              "Data Structures and Algorithms",
+              "Computer Networks",
+              "Discrete Structures",
+              "Numerical Methods",
+              "Digital Circuits and Logic Design Laboratory",
+              "Object Oriented Programming Laboratory",
+              "Data Structures and Algorithm Laboratory",
+              "Computer Networks Laboratory"f
+            ],
+            "semester_4": [
+              "Database Management System",
+              "Machine Learning",
+              "Design and Analysis of Algorithms",
+              "Computer Organization and Architecture",
+              "Microprocessor and Microcontroller",
+              "Economics for Engineering",
+              "Database Management System Laboratory",
+              "Machine Learning Laboratory",
+              "Design and Analysis of Algorithms Laboratory",
+              "Microprocessor and Microcontroller Laboratory"
+            ]
+          }
+        },
+        {
+          "branch": "ECE",
+          "semesters": {
+            "semester_3": [
+              "Analysis and Sysnthesis of Network",
+              "Electronic Devices and Circuits",
+              "Signal and Systems",
+              "Numerical Methods",
+              "Digital Electronics",
+              "Electronic Devices and Circuits lab",
+              "Digital Electronics",
+              "Professional Ethics & Wholistic Well Being"
+            ],
+            "semester_4": [
+              "Analog Communication Systems",
+              "Analog Integrated Circuits",
+              "Electronic Measurements and Instrumentation",
+              "Electromagnetic Feild Theory and Transmission Lines",
+              "Database Management System",
+              "Operating Systems",
+              "Analog Communication Systems",
+              "Analog Integrated Circuits Lab"
+            ]
+          }
+        },
+        {
+          "branch": "IT",
+          "semesters": {
+            "Semester_3": [
+              "Object Oriented Programming Concepts",
+              "Data Structures",
+              "Data Communication and Networking",
+              "Fundamentals of Database Management Systems",
+              "Computer System Architecture",
+              "Numerical Methods",
+              "Object Oriented Programming Concepts Lab",
+              "Data Structures Lab",
+              "Data Communication and Networking Lab",
+              "Fundamentals of Database Management Systems Lab"
+            ],
+            "Semester_4": [
+              "Introduction to Design and Analysis of Algorithms",
+              "Operating System Concepts",
+              "Java Programming",
+              "Data Mining and Data Warehousing Concepts",
+              "Formal Language and Automata Theory",
+              "Economics for Engineers",
+              "Introduction to Design and Analysis of Algorithms Lab",
+              "Operating System Concepts Lab",
+              "Java Programming Lab",
+              "Data Mining and Data Warehousing Concepts Lab"
+            ]
+          }
+        },
+        {
+          "branch": "ME",
+          "semesters": {
+            "Semester_3": [
+              "Strength of Materials",
+              "Theory of Machines",
+              "Machine Drawing",
+              "Applied Thermodynamics-I",
+              "Material Science and Metallurgy",
+              "Fluid Mechanics-I",
+              "Strength of Material and Material Characterization Lab",
+              "Theory of Machines Lab"
+            ],
+            "Semester_4": [
+              "Applied Thermodynamics-II",
+              "Dynamics of Machines",
+              "Mechanics of Deformable Bodies",
+              "Production Processes",
+              "Fluid Mechanics-II",
+              "Mathematics-III",
+              "Production Processes Lab"
+            ]
+          }
+        },
+        {
+          "branch": "EE",
+          "semesters": {
+            "Semester_3": [
+              "Circuit Theory",
+              "Electrical Measurements and Measuring Instruments",
+              "Electronic Devices and Analog Integrated Circuits",
+              "EMF Theory",
+              "Digital Electronics",
+              "Electrical Measurements Laboratory",
+              "Circuit Theory Laboratory"
+            ],
+            "Semester_4": [
+              "Electrical Machines - I",
+              "Electronic Instrumentation and Measurement",
+              "Generation of Electric Power",
+              "Data Structures and Algorithms",
+              "Numerical Methods",
+              "Economics for Engineers",
+              "Professional Ethics and Holistic Wellbeing",
+              "Electrical Machines Lab-I",
+              "Instrumentation Laboratory"
+            ]
+          }
+        },
+        {
+          "branch": "ICE",
+          "semesters": {
+            "Semester_3": [
+              "Circuit Theory",
+              "Electrical Measurements and Measuring Instruments",
+              "Electronic Devices and Analog Integrated Circuits",
+              "EMF Theory",
+              "Numerical Methods",
+              "Circuits Theory Laboratory",
+              "Electrical Measurements and Measuring Instruments Laboratory"
+            ],
+            "Semester_4": [
+              "Electrical Machines",
+              "Transducers and Signal Conditioning",
+              "Electrical Power System",
+              "Digital Electronics",
+              "Economics for Engineers",
+              "Data Structure and Algorithms",
+              "Professional Ethics & Holistic Wellbeing",
+              "Electrical Machines Laboratory",
+              "Transducers and Signal Conditioning Laboratory",
+              "Electronics Devices and Digital Electronics Laboratory"
+            ]
+          }
+        },
+        {
+          "branch": "IPE",
+          "semesters": {
+            "Semester_3": [
+              "Math",
+              "Phy",
+              "Chem",
+              "Manufacturing Processes",
+              "Engineering Drawing",
+              "English"
+            ],
+            "Semester_4": [
+              "Calculus",
+              "Production Technology",
+              "Operations Research",
+              "Mechanics",
+              "Environmental Science",
+              "Programming Fundamentals"
+            ]
+          }
+        },
+        {
+          "branch": "BT",
+          "semesters": {
+            "Semester_3": [
+              "Math",
+              "Phy",
+              "Chem",
+              "Biology",
+              "Engineering Drawing",
+              "English"
+            ],
+            "Semester_4": [
+              "Calculus",
+              "Genetics",
+              "Microbiology",
+              "Organic Chem",
+              "Environmental Science",
+              "Programming Fundamentals"
+            ]
+          }
+        },
+        {
+          "branch": "Chem",
+          "semesters": {
+            "Semester_3": [
+              "Math",
+              "Phy",
+              "Inorganic Chem",
+              "Organic Chem",
+              "Analytical Chem",
+              "English"
+            ],
+            "Semester_4": [
+              "Physical Chem",
+              "Instrumental Analysis",
+              "BioChem",
+              "Environmental Chem",
+              "Thermodynamics",
+              "Programming Fundamentals"
+            ]
+          }
+        },
+        {
+          "branch": "MC",
+          "semesters": {
+            "Semester_3": [
+              "Math",
+              "Phy",
+              "Chem",
+              "Discrete Mathematics",
+              "Engineering Drawing",
+              "English"
+            ],
+            "Semester_4": [
+              "Calculus",
+              "Algorithms",
+              "Data Structures",
+              "Linear Algebra",
+              "Environmental Science",
+              "Programming Fundamentals"
+            ]
+          }
+        },
+        {
+          "branch": "CE",
+          "semesters": {
+            "Semester_3": [
+              "Highway and Traffic Engineering",
+              "Surveying",
+              "Concrete Technology",
+              "Strength of Materials",
+              "Building Construction",
+              "Water Supply Engineering",
+              "Highway and Traffic Engineering Laboratory",
+              "Concrete Technology Laboratory",
+              "Surveying Laboratory"
+            ],
+            "Semester_4": [
+              "Human Resource Management",
+              "Numerical Methods",
+              "Structural Analysis-I",
+              "Wastewater Engineering",
+              "Earth Sciences",
+              "Fluid Mechanics",
+              "Fluid Mechanics Laboratory",
+              "Structural Analysis-I Laboratory",
+              "Wastewater Engineering Laboratory"
+            ]
+          }
+        },
+        {
+          "branch": "HM",
+          "semesters": {
+            "Semester_3": [
+              "Sociology",
+              "Psychology",
+              "Economics",
+              "Political Science",
+              "History",
+              "English"
+            ],
+            "Semester_4": [
+              "Organizational Behavior",
+              "Management Theory",
+              "Economics II",
+              "Business Law",
+              "Ethics",
+              "Communication Skills"
+            ]
+          }
+        },
+        {
+          "branch": "Phy",
+          "semesters": {
+            "Semester_3": [
+              "Quantum Mechanics-II",
+              "Solid State Physics-II",
+              "Plasma Physics",
+              "Nuclear Physics",
+              "Nuclear Physics Lab.",
+              "Plasma Lab."
+            ],
+            "Semester_4": [
+              "Particle Physics",
+              "Atomic and Molecular Spectroscopy",
+              "Elective-II",
+              "Spectroscopy Lab.",
+              "Project"
+            ]
+          }
+        },
+        {
+          "branch": "TT",
+          "semesters": {
+            "Semester_3": [
+              "Math",
+              "Phy",
+              "Chem",
+              "Introduction to Textiles",
+              "Engineering Drawing",
+              "English"
+            ],
+            "Semester_4": [
+              "Calculus",
+              "Yarn Manufacturing",
+              "Fabric Manufacturing",
+              "Textile Chem",
+              "Environmental Science",
+              "Polymer Science"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "year": 3,
+      "branches": [
+        {
+          "branch": "CSE",
+          "semesters": {
+            "Semester_5": [
+              "Theory of Computation",
+              "Operating Systems",
+              "Software Engineering",
+              "Information Security System",
+              "Probability Theory for Data Analytics",
+              "DE-I",
+              "Operating Systems Laboratory",
+              "Software Engineering Laboratory",
+              "Information Security Laboratory",
+              "DE-I Laboratory",
+              "Minor Project, Phase-I"
+            ],
+            "Semester_6": [
+              "Data Analytics",
+              "Cloud Computing",
+              "Network Security and Cyber Forensics",
+              "Data Mining and Data Warehousing",
+              "DE-II",
+              "OE-I",
+              "Data Analytics Laboratory",
+              "Network Security and Cyber Forensics Laboratory",
+              "Data Mining and Data Warehousing Laboratory",
+              "DE-II Laboratory",
+              "Minor Project, Phase-II"
+            ]
+          }
+        },
+        {
+          "branch": "ECE",
+          "semesters": {
+            "Semester_5": [
+              "Microprocessor",
+              "VLSI Circuit Design",
+              "Information Theory and Coding",
+              "Control Engineering",
+              "Economics for Engineer",
+              "Antenna and Wave Propagation",
+              "Minor Project(Phase 1)",
+              "Microprocessor and its Applications Lab",
+              "Scientific Computing Lab"
+            ],
+            "Semester_6": [
+              "Digital System Design",
+              "Digital Communication Systems",
+              "Digital Signal Processing",
+              "Advance Microcontroller and Microprocessors",
+              "Program Elective - I",
+              "Open Elective",
+              "Digital System Design Lab",
+              "Digital Communication System Lab",
+              "Digital Signal Processing Lab",
+              "Advanced Microprocessors and Microcontrollers Lab",
+              "Minor Project(Phase II)"
+            ]
+          }
+        },
+        {
+          "branch": "IT",
+          "semesters": {
+            "Semester_5": [
+              "Cryptography and Network Security",
+              "Software Engineering Concepts",
+              "Web Design Technologies",
+              "Computer Graphics and Applications",
+              "Discrete Mathematics",
+              "DE - I",
+              "Cryptography and Network Security Lab",
+              "Software Engineering Concepts Lab",
+              "Web Design Technologies Lab",
+              "Computer Graphics and Applications Lab",
+              "Minor Project Phase-I"
+            ],
+            "Semester_6": [
+              "Soft Computing Concepts",
+              "Object-Oriented Modeling and Design with UML",
+              "Mobile Application Development",
+              "Machine Learning Concepts",
+              "DE - II",
+              "OE - I",
+              "Soft Computing Concepts Lab",
+              "Object-Oriented Modeling and Design with UML Lab",
+              "Mobile Application Development Lab",
+              "Minor Project Phase-II"
+            ]
+          }
+        },
+        {
+          "branch": "ME",
+          "semesters": {
+            "Semester_5": [
+              "Design of Machine Elements-I",
+              "Heat Transfer",
+              "I. C. Engines and Emission Control",
+              "Mechanical Measurement & Metrology",
+              "Mechatronics",
+              "Entrepreneurship Development and Management",
+              "Applied Thermodynamics Lab",
+              "Design of Machine Elements-I Lab",
+              "Heat Transfer Lab",
+              "Mechanical Measurement & Metrology Lab",
+              "Minor Project, Phase-I"
+            ],
+            "Semester_6": [
+              "Fluid Machinery",
+              "Industrial Automation",
+              "Open Elective-I",
+              "Programme Elective-I",
+              "Design of Machine Elements-II",
+              "Numerical Methods in Mechanical Engineering",
+              "Fluid Mechanics and Fluid Machinery Lab",
+              "Industrial Automation & Mechatronics Lab",
+              "Design of Machine Elements-II Lab",
+              "Minor Project, Phase-II"
+            ]
+          }
+        },
+        {
+          "branch": "EE",
+          "semesters": {
+            "Semester_5": [
+              "Microprocessors and Interfacing",
+              "Control System Engineering",
+              "Power Electronics",
+              "Electrical Machines-II",
+              "Transmission and Distribution of Electric Power",
+              "Program Elective-I",
+              "Microprocessors and Interfacing Laboratory",
+              "Control System Engineering Laboratory",
+              "Electrical Machines Laboratory-II",
+              "Minor Project"
+            ],
+            "Semester_6": [
+              "Power System Analysis",
+              "Digital Signal Processing",
+              "PLC, DCS, SCADA",
+              "Program Elective-II",
+              "Program Elective-III",
+              "Open Elective-I",
+              "Power System Laboratory",
+              "Digital Signal Processing Laboratory",
+              "Minor Project"
+            ]
+          }
+        },
+        {
+          "branch": "ICE",
+          "semesters": {
+            "Semester_5": [
+              "Microprocessors and Interfacing",
+              "Control System Engineering",
+              "Signal Processing",
+              "Industrial Measurement Systems",
+              "Data Acquisition and Telemetry",
+              "Program Elective-I",
+              "Signal Processing Laboratory",
+              "Microprocessors and Interfacing Laboratory",
+              "Control System Engineering Laboratory",
+              "Minor Project"
+            ],
+            "Semester_6": [
+              "Process Dynamics and Control",
+              "Analytical Instrumentation",
+              "Modern Control System",
+              "Program Elective-II",
+              "Program Elective-III",
+              "Open Elective-I",
+              "Simulation Laboratory",
+              "Analytical Instrumentation Laboratory",
+              "Minor Project"
+            ]
+          }
+        },
+        {
+          "branch": "IPE",
+          "semesters": {
+            "Semester_5": [
+              "Math",
+              "Phy",
+              "Chem",
+              "Computer Fundamentals",
+              "Engineering Drawing",
+              "English"
+            ],
+            "Semester_6": [
+              "Calculus",
+              "Data Structures",
+              "Digital Logic Design",
+              "Mechanics",
+              "Environmental Science",
+              "Programming Fundamentals"
+            ]
+          }
+        },
+        {
+          "branch": "BT",
+          "semesters": {
+            "Semester_5": [
+              "Math",
+              "Phy",
+              "Chem",
+              "Computer Fundamentals",
+              "Engineering Drawing",
+              "English"
+            ],
+            "Semester_6": [
+              "Calculus",
+              "Data Structures",
+              "Digital Logic Design",
+              "Mechanics",
+              "Environmental Science",
+              "Programming Fundamentals"
+            ]
+          }
+        },
+        {
+          "branch": "Chem",
+          "semesters": {
+            "Semester_5": [
+              "Math",
+              "Phy",
+              "Chem",
+              "Computer Fundamentals",
+              "Engineering Drawing",
+              "English"
+            ],
+            "Semester_6": [
+              "Calculus",
+              "Data Structures",
+              "Digital Logic Design",
+              "Mechanics",
+              "Environmental Science",
+              "Programming Fundamentals"
+            ]
+          }
+        },
+        {
+          "branch": "CE",
+          "semesters": {
+            "Semester_5": [
+              "Design of Concrete Structures-I",
+              "Railway, Airport and Harbour Engineering",
+              "Soil Mechanics",
+              "Structural Analysis-II",
+              "Construction Management",
+              "Irrigation Engineering",
+              "Soil Mechanics Laboratory",
+              "Minor Project, Phase-I"
+            ],
+            "Semester_6": [
+              "Foundation Engineering",
+              "Design of Concrete Structures-II",
+              "Design of Steel Structures-I",
+              "Elements of Earthquake Engineering",
+              "Departmental Elective-I",
+              "Open Elective-I",
+              "Concrete Structures-II Drawing",
+              "Minor Project (Phase-II)",
+              "Survey Camp"
+            ]
+          }
+        },
+        {
+          "branch": "MC",
+          "semesters": {
+            "Semester_5": [
+              "Math",
+              "Phy",
+              "Chem",
+              "Computer Fundamentals",
+              "Engineering Drawing",
+              "English"
+            ],
+            "Semester_6": [
+              "Calculus",
+              "Data Structures",
+              "Digital Logic Design",
+              "Mechanics",
+              "Environmental Science",
+              "Programming Fundamentals"
+            ]
+          }
+        },
+        {
+          "branch": "HM",
+          "semesters": {
+            "Semester_5": [
+              "Math",
+              "Phy",
+              "Chem",
+              "Computer Fundamentals",
+              "Engineering Drawing",
+              "English"
+            ],
+            "Semester_6": [
+              "Calculus",
+              "Data Structures",
+              "Digital Logic Design",
+              "Mechanics",
+              "Environmental Science",
+              "Programming Fundamentals"
+            ]
+          }
+        },
+        {
+          "branch": "Phy",
+          "semesters": {
+            "Semester_5": [
+              "Math",
+              "Phy",
+              "Chem",
+              "Computer Fundamentals",
+              "Engineering Drawing",
+              "English"
+            ],
+            "Semester_6": [
+              "Calculus",
+              "Data Structures",
+              "Digital Logic Design",
+              "Mechanics",
+              "Environmental Science",
+              "Programming Fundamentals"
+            ]
+          }
+        },
+        {
+          "branch": "TT",
+          "semesters": {
+            "Semester_5": [
+              "Math",
+              "Phy",
+              "Chem",
+              "Computer Fundamentals",
+              "Engineering Drawing",
+              "English"
+            ],
+            "Semester_6": [
+              "Calculus",
+              "Data Structures",
+              "Digital Logic Design",
+              "Mechanics",
+              "Environmental Science",
+              "Programming Fundamentals"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "year": 4,
+      "branches": [
+        {
+          "branch": "CSE",
+          "semesters": {
+            "Semester_7": [
+              "Software Project Management",
+              "Computer Graphics and Image Processing",
+              "Artificial Intelligence",
+              "DE-III",
+              "OE-II",
+              "Computer Graphics and Image Processing Laboratory",
+              "Industrial Practical Training",
+              "Project (Phase-I)"
+            ],
+            "Semester_8": [
+              "System Programming and Compiler Design",
+              "DE-IV",
+              "DE-V",
+              "OE-III",
+              "System Programming and Compiler Design Laboratory",
+              "Project (Phase-II)",
+              "Industrial Lecture"
+            ]
+          }
+        },
+        {
+          "branch": "ECE",
+          "semesters": {
+            "Semester_7": [
+              "Microwave Engineering",
+              "Biomedical Signal Processing and Telemedicine",
+              "Program Elective-II",
+              "Program Elective-III",
+              "Open Elective-II",
+              "Microwave Engineering Lab",
+              "Biomedical Signal Processing and Telemedicine Lab",
+              "Industrial Practical Training",
+              "Major Project Phase-I"
+            ],
+            "Semester_8": [
+              "Advance Communication Systems",
+              "Microelectronics",
+              "Program Elective-IV",
+              "Program Elective-V",
+              "Open Elective-III",
+              "Project(Phase-II)",
+              "Industrial Lecture"
+            ]
+          }
+        },
+        {
+          "branch": "IT",
+          "semesters": {
+            "Semester_7": [
+              "Software Testing",
+              "Cloud Computing",
+              "DE - III",
+              "DE - IV",
+              "OE - II",
+              "Software Testing Lab",
+              "Cloud Computing Lab",
+              "Industrial Practical Training",
+              "Major Project (Phase I)"
+            ],
+            "Semester_8": [
+              "Introduction to System Programming",
+              "E-Commerce",
+              "Decision Support Systems Methodology",
+              "DE - V",
+              "OE - III",
+              "Introduction to System Programming Lab",
+              "Industrial Lecture",
+              "Major Project (Phase II)"
+            ]
+          }
+        },
+        {
+          "branch": "ME",
+          "semesters": {
+            "Semester_7": [
+              "Refrigeration and Air Conditioning",
+              "Vibrations and Control",
+              "Programme Elective-II",
+              "Programme Elective-III",
+              "Open Elective-II",
+              "Industrial Lecture",
+              "Major Project (Phase-I)",
+              "Refrigeration and Air Conditioning Lab",
+              "Vibrations and Control Lab",
+              "Industrial Practical Training"
+            ],
+            "Semester_8": [
+              "Programme Elective-IV",
+              "Programme Elective-V",
+              "Programme Elective-VI",
+              "Programme Elective-VII",
+              "Open Elective-III",
+              "Major Project (Phase-II)"
+            ]
+          }
+        },
+        {
+          "branch": "EE",
+          "semesters": {
+            "Semester_7": [
+              "Switchgear and Protection",
+              "Power System Operation and Control",
+              "Program Elective-IV",
+              "Program Elective-V",
+              "Open Elective-II",
+              "Power System Operation and Control Laboratory",
+              "Major Project",
+              "Summer Training"
+            ],
+            "Semester_8": [
+              "Electric Drives & Control",
+              "Flexible AC Transmission System",
+              "Utilization of Electrical Energy and Electric Traction",
+              "Program Elective-VI",
+              "Open Elective-III",
+              "Electric Drives & Control Laboratory",
+              "Major Project",
+              "Industrial Lectures"
+            ]
+          }
+        },
+        {
+          "branch": "ICE",
+          "semesters": {
+            "Semester_7": [
+              "PLC, DCS and SCADA",
+              "Biomedical Instrumentation",
+              "Program Elective-IV",
+              "Program Elective-V",
+              "Open Elective-II",
+              "Biomedical Instrumentation Laboratory",
+              "PLC, DCS and SCADA Laboratory",
+              "Major Project",
+              "Summer Training"
+            ],
+            "Semester_8": [
+              "Advanced Process Control",
+              "Virtual Instrumentation",
+              "Industrial Automation and Robotics",
+              "Program Elective-VI",
+              "Open Elective-III",
+              "Industrial Automation and Robotics Laboratory",
+              "Major Project",
+              "Industrial Lectures"
+            ]
+          }
+        },
+        {
+          "branch": "IPE",
+          "semesters": {
+            "Semester_7": [
+              "Math",
+              "Phy",
+              "Chem",
+              "Computer Fundamentals",
+              "Engineering Drawing",
+              "English"
+            ],
+            "Semester_8": [
+              "Calculus",
+              "Data Structures",
+              "Digital Logic Design",
+              "Mechanics",
+              "Environmental Science",
+              "Programming Fundamentals"
+            ]
+          }
+        },
+        {
+          "branch": "BT",
+          "semesters": {
+            "Semester_7": [
+              "Math",
+              "Phy",
+              "Chem",
+              "Computer Fundamentals",
+              "Engineering Drawing",
+              "English"
+            ],
+            "Semester_8": [
+              "Calculus",
+              "Data Structures",
+              "Digital Logic Design",
+              "Mechanics",
+              "Environmental Science",
+              "Programming Fundamentals"
+            ]
+          }
+        },
+        {
+          "branch": "Chem",
+          "semesters": {
+            "Semester_7": [
+              "Math",
+              "Phy",
+              "Chem",
+              "Computer Fundamentals",
+              "Engineering Drawing",
+              "English"
+            ],
+            "Semester_8": [
+              "Calculus",
+              "Data Structures",
+              "Digital Logic Design",
+              "Mechanics",
+              "Environmental Science",
+              "Programming Fundamentals"
+            ]
+          }
+        },
+        {
+          "branch": "CE",
+          "semesters": {
+            "Semester_7": [
+              "Design of Hydraulic Structures",
+              "Design of Steel Structures-II",
+              "Departmental Elective-II",
+              "Departmental Elective-III",
+              "Open Elective-II",
+              "CAD Laboratory",
+              "Hydraulic Structures Drawing",
+              "Industrial Practical Training",
+              "Major Project (Phase-I)"
+            ],
+            "Semester_8": [
+              "Estimating and Costing",
+              "Departmental Elective-IV",
+              "Departmental Elective-V",
+              "Open Elective-III",
+              "Industrial Lecture",
+              "Major Project (Phase-II)"
+            ]
+          }
+        },
+        {
+          "branch": "MC",
+          "semesters": {
+            "Semester_7": [
+              "Math",
+              "Phy",
+              "Chem",
+              "Computer Fundamentals",
+              "Engineering Drawing",
+              "English"
+            ],
+            "Semester_8": [
+              "Calculus",
+              "Data Structures",
+              "Digital Logic Design",
+              "Mechanics",
+              "Environmental Science",
+              "Programming Fundamentals"
+            ]
+          }
+        },
+        {
+          "branch": "HM",
+          "semesters": {
+            "Semester_7": [
+              "Math",
+              "Phy",
+              "Chem",
+              "Computer Fundamentals",
+              "Engineering Drawing",
+              "English"
+            ],
+            "Semester_8": [
+              "Calculus",
+              "Data Structures",
+              "Digital Logic Design",
+              "Mechanics",
+              "Environmental Science",
+              "Programming Fundamentals"
+            ]
+          }
+        },
+        {
+          "branch": "Phy",
+          "semesters": {
+            "Semester_7": [
+              "Math",
+              "Phy",
+              "Chem",
+              "Computer Fundamentals",
+              "Engineering Drawing",
+              "English"
+            ],
+            "Semester_8": [
+              "Calculus",
+              "Data Structures",
+              "Digital Logic Design",
+              "Mechanics",
+              "Environmental Science",
+              "Programming Fundamentals"
+            ]
+          }
+        },
+        {
+          "branch": "TT",
+          "semesters": {
+            "Semester_7": [
+              "Math",
+              "Phy",
+              "Chem",
+              "Computer Fundamentals",
+              "Engineering Drawing",
+              "English"
+            ],
+            "Semester_8": [
+              "Calculus",
+              "Data Structures",
+              "Digital Logic Design",
+              "Mechanics",
+              "Environmental Science",
+              "Programming Fundamentals"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "year": [
+    "First Year",
+    "Second Year",
+    "Third Year",
+    "Fourth Year"
+  ],
+  "sems": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8"
+  ],
+  "departments": [
+    {
+      "abbreviation": "CSE",
+      "fullForm": "Computer Science and Engineering"
+    },
+    {
+      "abbreviation": "ECE",
+      "fullForm": "Electronics and Communication Engineering"
+    },
+    {
+      "abbreviation": "IT",
+      "fullForm": "Information Technology"
+    },
+    {
+      "abbreviation": "ME",
+      "fullForm": "Mechanical Engineering"
+    },
+    {
+      "abbreviation": "EE",
+      "fullForm": "Electrical Engineering"
+    },
+    {
+      "abbreviation": "ICE",
+      "fullForm": "Instrumentation and Control Engineering"
+    },
+    {
+      "abbreviation": "IPE",
+      "fullForm": "Industrial and Production Engineering"
+    },
+    {
+      "abbreviation": "BT",
+      "fullForm": "Biotechnology"
+    },
+    {
+      "abbreviation": "Chemistry",
+      "fullForm": "Chemistry"
+    },
+    {
+      "abbreviation": "Chemical",
+      "fullForm": "Chemical Engineering"
+    },
+    {
+      "abbreviation": "Mathematics",
+      "fullForm": "Mathematics and Computing"
+    },
+    {
+      "abbreviation": "Civil",
+      "fullForm": "Civil Engineering"
+    },
+    {
+      "abbreviation": "HM",
+      "fullForm": "Humanities and Management"
+    },
+    {
+      "abbreviation": "Physics",
+      "fullForm": "Physics"
+    },
+    {
+      "abbreviation": "TT",
+      "fullForm": "Textile Technology"
+    }
+  ]
+}
