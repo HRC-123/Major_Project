@@ -1,0 +1,23 @@
+{
+  "name": "admin",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "type":"module",
+  "dependencies": {
+    "@adminjs/express": "^6.1.0",
+    "@adminjs/mongoose": "^4.1.0",
+    "adminjs": "^7.8.13",
+    "express": "^4.21.1",
+    "express-formidable": "^1.2.0",
+    "express-session": "^1.18.1",
+    "mongoose": "^8.8.2",
+    "nodemon": "^3.1.7",
+    "tslib": "^2.8.1"
+  }
+}
