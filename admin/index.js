@@ -1,19 +1,70 @@
-import AdminJS from 'adminjs'
-import AdminJSExpress from '@adminjs/express'
-import express from 'express'
-const PORT = 3000
+import express from "express";
+import AdminJS from "adminjs";
+import AdminJSExpress from "@adminjs/express";
+import mongoose from "mongoose";
+import * as AdminJSMongoose from "@adminjs/mongoose";
+// import { Subject } from "./models/subject.js";
+import { Year, Branch, Semester, Subject } from "./models/year.js";
+// import { File } from "./models/fileUpload.js";
+import { connectDB } from "./config/database.js";
 
-const start = async () => {
-  const app = express()
+// Initialize Express
+const app = express();
 
-  const admin = new AdminJS({})
+// Registering the Adapter
+AdminJS.registerAdapter({
+  Resource: AdminJSMongoose.Resource,
+  Database: AdminJSMongoose.Database,
+});
+// Use JSON middleware
+app.use(express.json());
 
-  const adminRouter = AdminJSExpress.buildRouter(admin)
-  app.use(admin.options.rootPath, adminRouter)
+// Connect to MongoDB
+await connectDB();
 
-  app.listen(PORT, () => {
-    console.log(`AdminJS started on http://localhost:${PORT}${admin.options.rootPath}`)
-  })
-}
+// Initialize AdminJS
+const adminJS = new AdminJS({
+  databases: [mongoose],
+  rootPath: "/admin",
+  // resources: [
+  //   {
+  //     resource: Subject,
+  //     options: { listProperties: ["name", "code", "semester", "branch"] },
+  //   },
+  //   { resource: Year, options: { listProperties: ["year", "semesters"] } },
+  //   {
+  //     resource: File,
+  //     options: {
+  //       listProperties: [
+  //         "year",
+  //         "semester",
+  //         "branch",
+  //         "subject",
+  //         "subjectCode",
+  //       ],
+  //     },
+  //   },
+  // ],
+  resources: [
+    { resource: Year },
+    { resource: Branch },
+    { resource: Semester },
+    { resource: Subject },
+  ],
+  branding: {
+    companyName: "My App",
+    softwareBrothers: false,
+  },
+});
 
-start()
+// Build AdminJS router
+const router = AdminJSExpress.buildRouter(adminJS);
+
+// Use AdminJS router as middleware
+app.use(adminJS.options.rootPath, router);
+
+// Start the Express server
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`AdminJS is running on http://localhost:${PORT}/admin`);
+});
