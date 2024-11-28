@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 // MongoDB connection string
 const dbURI =
-  "mongodb+srv://ramcharan2k4:pIYWLAcyUxgOGuD0@majorproject.zo9wo.mongodb.net/test?retryWrites=true&w=majority&appName=MajorProject";
+  "mongodb+srv://ramcharan2k4:pIYWLAcyUxgOGuD0@majorproject.zo9wo.mongodb.net/nitj?retryWrites=true&w=majority&appName=MajorProject";
 
 export const connectDB = async () => {
     try {
@@ -14,6 +14,6 @@ export const connectDB = async () => {
         });
         console.log("Connected to MongoDB successfully");
     } catch (error) {
-        console.error("Error connecting to MongoDB:");
+        console.error("Error connecting to MongoDB:" + error);
     }
 };
