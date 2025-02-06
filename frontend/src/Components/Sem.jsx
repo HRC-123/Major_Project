@@ -1,6 +1,6 @@
+import data from "../data.json";
 import React, { useEffect, useState,useRef } from "react";
 import { useParams,useNavigate } from "react-router-dom";
-import AWS from 'aws-sdk';
 
 // const semesters = [
 //   {
@@ -27,16 +27,10 @@ import AWS from 'aws-sdk';
 //   },
 // ];
 
-import data from "../data.json";
-const options = ["Notes", "Syllabus", "PPTs", "Previous Year Paper"];
+const options = ["Notes", "Syllabus", "PPT", "Previous Year Paper"];
+const { createClient } = require("@supabase/supabase-js");
 
-AWS.config.update({
-  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-  region: process.env.REACT_APP_AWS_REGION,
-});
 
-const s3 = new AWS.S3();
 function SemesterPage() {
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [option, setOptions] = useState(null);
@@ -50,16 +44,20 @@ function SemesterPage() {
     const fetchFiles = async () => {
       try {
         const params = {
-          Bucket: process.env.REACT_APP_BUCKET_NAME,
+          Bucket: process.env.REACT_APP_SUPABASE_BUCKET,
           Prefix: `${year}/${branch}/${selectedSubject}/${option}/`,
         };
-        console.log(process.env.REACT_APP_AWS_SECRET_ACCESS_KEY);
-        const data = await s3.listObjectsV2(params).promise();
-        console.log(data);
-        const fileList = data.Contents.map(file => ({
-          key: file.Key,
-          url: `https://${params.Bucket}.s3.${AWS.config.region}.amazonaws.com/${file.Key}`,
+        const supabase = createClient(process.env.REACT_APP_SUPABASE_URL, process.env.REACT_APP_SUPABASE_ANON_KEY);
+        const bucket_name = process.env.REACT_APP_SUPABASE_BUCKET
+        const { data, error } = await supabase.storage.from(params.Bucket).list(params.Prefix);
+        
+        if (error) throw error;
+        
+        const fileList = data.map(file => ({
+            key: file.name,
+            url: `${process.env.REACT_APP_SUPABASE_URL}/storage/v1/object/public/${params.Bucket}/${params.Prefix}${file.name}`
         }));
+        
         setFiles(fileList);
       } catch (error) {
         console.error("Error fetching files:", error);
