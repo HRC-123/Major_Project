@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import FileCard from "./FileCard";
 
-const options = ["Notes", "Syllabus", "PPT", "Previous Year Paper"];
+const options = ["Notes(or)PPT", "Books", "Assignments", "PreviousYearPapers"];
 
 function ViewFiles() {
   const { year, branch, subject } = useParams();

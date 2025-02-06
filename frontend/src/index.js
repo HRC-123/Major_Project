@@ -8,12 +8,16 @@ import Sem from './Components/Sem.jsx';
 import FileUpload from './Components/FileUpload.jsx';
 import ViewFiles from './Components/ViewFiles.jsx';
 
+import { ToastContainer } from "react-toastify";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
+    {/* ToastContainer added here to be globally accessible */}
+    <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       <Routes>
         <Route path="/" element={<Year />} />
+        <Route path="/upload" element={<FileUpload/>} />
         <Route path="/sem/:year/:branch" element={<Sem />} />
         <Route path="/sem/:year/:branch/:subject" element={<ViewFiles/>} />
         <Route path='/FileUpload' element={<FileUpload/>} />
