@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import AWS from "aws-sdk";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import data from "../data.json";
-
+const { createClient } = require("@supabase/supabase-js");
 const FileUpload = ({ onClose }) => {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -14,10 +13,6 @@ const FileUpload = ({ onClose }) => {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedType, setSelectedType] = useState("");
 
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
-  };
-
   const uploadFile = async () => {
     if (!file) return alert("Please select a file to upload.");
 
@@ -27,43 +22,33 @@ const FileUpload = ({ onClose }) => {
 
     setUploading(true);
 
-    const s3 = new AWS.S3({
-      accessKeyId: process.env.REACT_APP_UPLOAD_AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.REACT_APP_UPLOAD_AWS_SECRET_ACCESS_KEY,
-      region: process.env.REACT_APP_AWS_REGION,
-    });
+    const supabase = createClient(process.env.REACT_APP_SUPABASE_URL, process.env.REACT_APP_SUPABASE_ANON_KEY);
 
-    // Construct the S3 Key using dropdown selections as folders
-    const key = `${selectedYear}/${selectedBranch}/${selectedSubject}/${selectedType}/${file.name}`;
+    // Construct the file path using dropdown selections as folders
+    const filePath = `${selectedYear}/${selectedBranch}/${selectedSubject}/${selectedType}/${file.name}`;
 
-    const params = {
-      Bucket: process.env.REACT_APP_BUCKET_NAME,
-      Key: key, // Hierarchical S3 Key
-      Body: file,
-      ContentType: file.type,
-    };
+    const { data, error } = await supabase.storage.from(process.env.REACT_APP_SUPABASE_BUCKET).upload(filePath, file);
 
-    s3.upload(params)
-      .on("httpUploadProgress", (evt) => {
-        setUploadProgress(Math.round((evt.loaded / evt.total) * 100));
-      })
-      .send((err) => {
-        if (err) {
-          console.error(err);
-          toast.error("Upload failed!");
-        } else {
-          toast.success(`File uploaded successfully : ${file.name}`);
-          onClose(); // Close the component after upload
-        }
-        setUploading(false);
-        setFile(null);
-        setUploadProgress(0);
-        setSelectedYear("");
-        setSelectedBranch("");
-        setSelectedSubject("");
-        setSelectedType("");
-        // Reset dropdowns
-      });
+    if (error) {
+        console.error(error);
+        toast.error("Upload failed!");
+    } else {
+        toast.success(`File uploaded successfully: ${file.name}`);
+        onClose(); // Close the component after upload
+    }
+    
+    setUploading(false);
+    setFile(null);
+    setUploadProgress(0);
+    setSelectedYear("");
+    setSelectedBranch("");
+    setSelectedSubject("");
+    setSelectedType("");
+    // Reset dropdowns
+  };
+
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
   };
 
   const getSubjects = () => {
