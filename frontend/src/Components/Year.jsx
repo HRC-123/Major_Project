@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import data from "../data.json";
 import FileUpload from "./FileUpload";
-import { ToastContainer } from "react-toastify";
 
 const Year = () => {
   const year = data.year;
@@ -18,7 +17,7 @@ const Year = () => {
     <div className="h-screen w-full flex justify-center items-center bg-gray-100 relative">
       <div className="absolute top-4 right-4">
         <button
-          onClick={toggleUploadPopup}
+          onClick={()=> navigate('/upload')}
           className="px-5 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition"
         >
           Upload File
@@ -66,8 +65,6 @@ const Year = () => {
             <FileUpload onClose={toggleUploadPopup} />
           </div>
         )}
-
-        <ToastContainer />
       </div>
     </div>
   );

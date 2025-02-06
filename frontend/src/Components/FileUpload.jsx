@@ -1,8 +1,8 @@
 import data from "../data.json";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
-import { createClient } from "@supabase/supabase-js";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 
 const FileUpload = ({ onClose }) => {
@@ -18,7 +18,7 @@ const FileUpload = ({ onClose }) => {
   const [authorName, setAuthorName] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-
+  const navigate = useNavigate();
   const uploadFile = async () => {
     if (!file) return alert("Please select a file to upload.");
     if (!selectedYear || !selectedBranch || !selectedSubject || !selectedType || !authorName || !title || !description) {
@@ -57,6 +57,7 @@ const FileUpload = ({ onClose }) => {
     } finally {
       setUploading(false);
       setFile(null);
+      navigate('/')
     }
   };
   
@@ -74,22 +75,14 @@ const FileUpload = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="relative w-[45%] mx-auto p-8 bg-white shadow-lg rounded-lg max-h-[90vh] overflow-auto ">
-        <button
-          onClick={onClose}
-          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 mr-2"
-          aria-label="Close"
-        >
-          ✕
-        </button>
+    <div className="flex flex-col px-36 py-16 gap-4">
 
         <div className="font-bold p-4 pl-0 text-xl">
           Enter the details of the Document:
         </div>
 
         {/* Title Input */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           <label className="font-semibold">Title</label>
           <input
             type="text"
@@ -101,7 +94,7 @@ const FileUpload = ({ onClose }) => {
         </div>
 
         {/* Author Name Input */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           <label className="font-semibold">Author Name</label>
           <input
             type="text"
@@ -113,7 +106,7 @@ const FileUpload = ({ onClose }) => {
         </div>
 
         {/* Description Input */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           <label className="font-semibold">Description</label>
           <textarea
             value={description}
@@ -124,7 +117,7 @@ const FileUpload = ({ onClose }) => {
         </div>
 
         {/* Year Selection */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           <label className="font-semibold">Year</label>
           <select
             className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
@@ -141,7 +134,7 @@ const FileUpload = ({ onClose }) => {
         </div>
 
         {/* Branch Selection */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           <label className="font-semibold">Branch</label>
           <select
             className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
@@ -158,7 +151,7 @@ const FileUpload = ({ onClose }) => {
         </div>
 
         {/* Semester Selection */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           <label className="font-semibold">Semester</label>
           <select
             className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
@@ -176,7 +169,7 @@ const FileUpload = ({ onClose }) => {
         </div>
 
         {/* Subject Selection */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           <label className="font-semibold">Subject</label>
           <select
             className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
@@ -194,7 +187,7 @@ const FileUpload = ({ onClose }) => {
         </div>
 
         {/* Type Selection */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           <label className="font-semibold">Type</label>
           <select
             className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
@@ -202,7 +195,7 @@ const FileUpload = ({ onClose }) => {
             onChange={(e) => setSelectedType(e.target.value)}
           >
             <option value="">Select Type</option>
-            {["Notes", "PPT", "Assignments", "PreviousYearPapers"].map(
+            {["Notes(or)PPT", "Books", "Assignments", "PreviousYearPapers"].map(
               (type, index) => (
                 <option key={index} value={type}>
                   {type}
@@ -248,7 +241,6 @@ const FileUpload = ({ onClose }) => {
           >
             {uploading ? `Uploading... ${uploadProgress}%` : "Upload File"}
           </button>
-        </div>
       </div>
     </div>
   );
