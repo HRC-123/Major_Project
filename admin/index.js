@@ -24,6 +24,7 @@ import { connectDB } from "./config/database.js";
 // import { Year } from "./models/academics.js";
 
 import { departments } from "./models/departments.js";
+import { files } from "./models/file.js";
 import createSubSchema from "./models/subjects.js";
 import { branchCache,branchList,getBranches } from "./models/subjects.js";
 import { createFileModel } from "./models/files.js";
@@ -316,7 +317,7 @@ const adminJs = new AdminJS({
       resource: departments,
       options: {
         properties: {
-          _id:{isVisible:false},
+          _id: { isVisible: false },
           branch: { isVisible: true }, // Display the branch field
         },
       },
@@ -327,6 +328,7 @@ const adminJs = new AdminJS({
       resource: await createSubSchema(), // Your subjects model
       options: {
         properties: {
+          _id: { isVisible: false },
           year: {
             isVisible: { list: true, filter: true, show: true, edit: true },
           },
@@ -344,9 +346,10 @@ const adminJs = new AdminJS({
     },
 
     {
-      resource: await createFileModel(), // Dynamically create the file model
+      resource: files, // Dynamically create the file model
       options: {
         properties: {
+          _id: { isVisible: false },
           year: {
             isVisible: { list: true, filter: true, show: true, edit: true },
           },
@@ -359,19 +362,18 @@ const adminJs = new AdminJS({
           subject: {
             isVisible: { list: true, filter: true, show: true, edit: true },
           },
-          fileTitle: {
+          title: {
             isVisible: { list: true, filter: true, show: true, edit: true },
           },
-          fileDescription: {
+          description: {
             isVisible: { list: true, filter: true, show: true, edit: true },
           },
-          fileLink: {
+          link: {
             isVisible: { list: true, filter: true, show: true, edit: true },
           },
         },
       },
     },
-      
   ],
   rootPath: "/admin",
 });
