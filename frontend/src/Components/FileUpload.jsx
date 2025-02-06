@@ -1,9 +1,12 @@
-import React, { useState } from "react";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import data from "../data.json";
-const { createClient } = require("@supabase/supabase-js");
+import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
+import { createClient } from "@supabase/supabase-js";
+import { toast } from "react-toastify";
+
+
 const FileUpload = ({ onClose }) => {
+  
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -12,45 +15,56 @@ const FileUpload = ({ onClose }) => {
   const [selectedSemester, setSelectedSemester] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedType, setSelectedType] = useState("");
+  const [authorName, setAuthorName] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
   const uploadFile = async () => {
     if (!file) return alert("Please select a file to upload.");
-
-    if (!selectedYear || !selectedBranch || !selectedSubject || !selectedType) {
-      return alert("Please select all dropdown options.");
+    if (!selectedYear || !selectedBranch || !selectedSubject || !selectedType || !authorName || !title || !description) {
+      return alert("Please fill in all the fields.");
     }
-
+  
     setUploading(true);
-
-    const supabase = createClient(process.env.REACT_APP_SUPABASE_URL, process.env.REACT_APP_SUPABASE_ANON_KEY);
-
-    // Construct the file path using dropdown selections as folders
-    const filePath = `${selectedYear}/${selectedBranch}/${selectedSubject}/${selectedType}/${file.name}`;
-
-    const { data, error } = await supabase.storage.from(process.env.REACT_APP_SUPABASE_BUCKET).upload(filePath, file);
-
-    if (error) {
-        console.error(error);
-        toast.error("Upload failed!");
-    } else {
-        toast.success(`File uploaded successfully: ${file.name}`);
-        onClose(); // Close the component after upload
+  
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("year", selectedYear);
+    formData.append("branch", selectedBranch);
+    formData.append("semester", selectedSemester);
+    formData.append("subject", selectedSubject);
+    formData.append("type", selectedType);
+    formData.append("author", authorName);
+    formData.append("title", title);
+    formData.append("description", description);
+  
+    try {
+      const response = await fetch("http://localhost:5000/upload", {
+        method: "POST",
+        body: formData,
+      });
+  
+      const result = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(result.error || "File upload failed");
+      }
+  
+      toast.success(`File uploaded successfully: ${file.name}`);
+    } catch (error) {
+      console.error(error);
+      toast.error("Upload failed!");
+    } finally {
+      setUploading(false);
+      setFile(null);
     }
-    
-    setUploading(false);
-    setFile(null);
-    setUploadProgress(0);
-    setSelectedYear("");
-    setSelectedBranch("");
-    setSelectedSubject("");
-    setSelectedType("");
-    // Reset dropdowns
   };
-
+  
+  
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
-
+  
   const getSubjects = () => {
     const yearData = data.years.find((y) => y.year === parseInt(selectedYear));
     const branchData = yearData?.branches.find(
@@ -60,8 +74,8 @@ const FileUpload = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center ">
-      <div className="relative max-w-md mx-auto p-8 bg-white shadow-lg rounded-lg max-h-[90vh] overflow-auto">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+      <div className="relative w-[45%] mx-auto p-8 bg-white shadow-lg rounded-lg max-h-[90vh] overflow-auto ">
         <button
           onClick={onClose}
           className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 mr-2"
@@ -74,6 +88,42 @@ const FileUpload = ({ onClose }) => {
           Enter the details of the Document:
         </div>
 
+        {/* Title Input */}
+        <div className="flex flex-col gap-2">
+          <label className="font-semibold">Title</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
+            placeholder="Enter document title"
+          />
+        </div>
+
+        {/* Author Name Input */}
+        <div className="flex flex-col gap-2">
+          <label className="font-semibold">Author Name</label>
+          <input
+            type="text"
+            value={authorName}
+            onChange={(e) => setAuthorName(e.target.value)}
+            className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
+            placeholder="Enter author name"
+          />
+        </div>
+
+        {/* Description Input */}
+        <div className="flex flex-col gap-2">
+          <label className="font-semibold">Description</label>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
+            placeholder="Enter a brief description of the document"
+          />
+        </div>
+
+        {/* Year Selection */}
         <div className="flex flex-col gap-2">
           <label className="font-semibold">Year</label>
           <select
@@ -82,14 +132,15 @@ const FileUpload = ({ onClose }) => {
             onChange={(e) => setSelectedYear(e.target.value)}
           >
             <option value="">Select Year</option>
-            {data.year.map((y, index) => (
-              <option key={index} value={index + 1}>
-                {y}
-              </option>
+             {data.year.map((y, index) => (
+               <option key={index} value={index + 1}>
+                 {y}
+               </option>
             ))}
           </select>
         </div>
 
+        {/* Branch Selection */}
         <div className="flex flex-col gap-2">
           <label className="font-semibold">Branch</label>
           <select
@@ -106,6 +157,7 @@ const FileUpload = ({ onClose }) => {
           </select>
         </div>
 
+        {/* Semester Selection */}
         <div className="flex flex-col gap-2">
           <label className="font-semibold">Semester</label>
           <select
@@ -123,6 +175,7 @@ const FileUpload = ({ onClose }) => {
           </select>
         </div>
 
+        {/* Subject Selection */}
         <div className="flex flex-col gap-2">
           <label className="font-semibold">Subject</label>
           <select
@@ -140,6 +193,7 @@ const FileUpload = ({ onClose }) => {
           </select>
         </div>
 
+        {/* Type Selection */}
         <div className="flex flex-col gap-2">
           <label className="font-semibold">Type</label>
           <select
@@ -158,6 +212,8 @@ const FileUpload = ({ onClose }) => {
           </select>
         </div>
 
+
+        {/* File Upload Section */}
         <div>
           <h1 className="text-2xl font-semibold text-gray-700 text-center mb-4">
             Upload a PDF
@@ -188,11 +244,7 @@ const FileUpload = ({ onClose }) => {
             onClick={uploadFile}
             disabled={!file || uploading}
             className={`w-full py-2 px-4 mt-4 rounded-lg text-white font-semibold 
-              ${
-                !file || uploading
-                  ? "bg-blue-300 cursor-not-allowed"
-                  : "bg-blue-500 hover:bg-blue-600"
-              }`}
+              ${!file || uploading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
           >
             {uploading ? `Uploading... ${uploadProgress}%` : "Upload File"}
           </button>

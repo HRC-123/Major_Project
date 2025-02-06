@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import Sem from './Components/Sem.jsx';
 import FileUpload from './Components/FileUpload.jsx';
+import ViewFiles from './Components/ViewFiles.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,6 +15,7 @@ root.render(
       <Routes>
         <Route path="/" element={<Year />} />
         <Route path="/sem/:year/:branch" element={<Sem />} />
+        <Route path="/sem/:year/:branch/:subject" element={<ViewFiles/>} />
         <Route path='/FileUpload' element={<FileUpload/>} />
       </Routes>
     </BrowserRouter>
