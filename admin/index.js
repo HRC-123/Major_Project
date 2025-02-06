@@ -25,8 +25,8 @@ import { connectDB } from "./config/database.js";
 
 import { departments } from "./models/departments.js";
 import createSubSchema from "./models/subjects.js";
-import { getBranches } from "./models/subjects.js";
-import { createFileModel } from "./models/files.js";
+import { branchList } from "./models/subjects.js";
+// import { createFileModel } from "./models/files.js";
 
 // Initialize Express
 const app = express();
@@ -329,9 +329,7 @@ const adminJs = new AdminJS({
           },
           branch: {
             isVisible: { list: true, filter: true, show: true, edit: true },
-            availableValues: await getBranches().then((branches) =>
-              branches.map((branch) => ({ value: branch, label: branch }))
-            ),
+            availableValues: branchList
           },
           sem: {
             isVisible: { list: true, filter: true, show: true, edit: true },
@@ -343,34 +341,34 @@ const adminJs = new AdminJS({
       },
     },
 
-    {
-      resource: await createFileModel(), // Dynamically create the file model
-      options: {
-        properties: {
-          year: {
-            isVisible: { list: true, filter: true, show: true, edit: true },
-          },
-          branch: {
-            isVisible: { list: true, filter: true, show: true, edit: true },
-          },
-          sem: {
-            isVisible: { list: true, filter: true, show: true, edit: true },
-          },
-          subject: {
-            isVisible: { list: true, filter: true, show: true, edit: true },
-          },
-          fileTitle: {
-            isVisible: { list: true, filter: true, show: true, edit: true },
-          },
-          fileDescription: {
-            isVisible: { list: true, filter: true, show: true, edit: true },
-          },
-          fileLink: {
-            isVisible: { list: true, filter: true, show: true, edit: true },
-          },
-        },
-      },
-    },
+    // {
+    //   resource: await createFileModel(), // Dynamically create the file model
+    //   options: {
+    //     properties: {
+    //       year: {
+    //         isVisible: { list: true, filter: true, show: true, edit: true },
+    //       },
+    //       branch: {
+    //         isVisible: { list: true, filter: true, show: true, edit: true },
+    //       },
+    //       sem: {
+    //         isVisible: { list: true, filter: true, show: true, edit: true },
+    //       },
+    //       subject: {
+    //         isVisible: { list: true, filter: true, show: true, edit: true },
+    //       },
+    //       fileTitle: {
+    //         isVisible: { list: true, filter: true, show: true, edit: true },
+    //       },
+    //       fileDescription: {
+    //         isVisible: { list: true, filter: true, show: true, edit: true },
+    //       },
+    //       fileLink: {
+    //         isVisible: { list: true, filter: true, show: true, edit: true },
+    //       },
+    //     },
+    //   },
+    // },
       
   ],
   rootPath: "/admin",

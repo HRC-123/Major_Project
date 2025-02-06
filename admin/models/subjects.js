@@ -52,23 +52,23 @@ export default createSubSchema;
 
 
 // Function to fetch subjects from the 'subjects' collection
-export async function getSubjects({ year, branch, sem } = {}) {
-  const SubModel = await createSubSchema(); // Get the 'subjects' model
+// export async function getSubjects({ year, branch, sem } = {}) {
+//   const SubModel = await createSubSchema(); // Get the 'subjects' model
 
-  try {
-    // Build the filter object dynamically
-    const filter = {};
-    if (year) filter.year = year; // Add year filter if provided
-    if (branch) filter.branch = branch; // Add branch filter if provided
-    if (sem) filter.sem = sem; // Add sem filter if provided
+//   try {
+//     // Build the filter object dynamically
+//     const filter = {};
+//     if (year) filter.year = year; // Add year filter if provided
+//     if (branch) filter.branch = branch; // Add branch filter if provided
+//     if (sem) filter.sem = sem; // Add sem filter if provided
 
-    // Query to fetch subjects based on the filter
-    const subjects = await SubModel.find(filter).lean();
+//     // Query to fetch subjects based on the filter
+//     const subjects = await SubModel.find(filter).lean();
 
-    // Ensure subjects is always an array
-    return Array.isArray(subjects) ? subjects : []; // Return subjects or an empty array if no subjects
-  } catch (error) {
-    console.error("Error fetching subjects:", error);
-    throw error; // Throw error if something goes wrong
-  }
-}
+//     // Ensure subjects is always an array
+//     return Array.isArray(subjects) ? subjects : []; // Return subjects or an empty array if no subjects
+//   } catch (error) {
+//     console.error("Error fetching subjects:", error);
+//     throw error; // Throw error if something goes wrong
+//   }
+// }
