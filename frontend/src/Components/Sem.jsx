@@ -70,18 +70,7 @@ function SemesterPage() {
   const openFile = (url) => {
     window.open(url, '_blank', 'noopener,noreferrer');
   };
-
-
-  const handleSubjectClick = (subject) => {
-    setSelectedSubject(subject);
-    setShowOptions(true);
-    setOptions(null);
-    setShowDocs(false);
-    setTimeout(() => {
-      optionsRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 100);
-  };
-
+  
   const handleDocs = (option) => {
     setOptions(option);
     setShowDocs(true);
@@ -92,6 +81,20 @@ function SemesterPage() {
 
   const optionsRef = useRef(null);
 
+  const handleSubjectClick = (subject) => {
+    setSelectedSubject(subject);
+    setShowOptions(true);
+    setOptions(null);
+    setShowDocs(false);
+    
+    // Add the selected subject to the URL dynamically
+    navigate(`/sem/${year}/${branch}/${subject}`);
+    
+    setTimeout(() => {
+      optionsRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  };
+  
 
   const navigate = useNavigate();
  const yearData = data.years.find((y) => y.year === parseInt(year));
