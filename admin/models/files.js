@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
-import {branchList,  getSubjects } from "./subjects.js";
-
+import { branchList,branchCache,getBranches } from "./subjects.js";
 // Define your fileSchema with dynamic subject enum
 
 // const branchList = await getBranches();
+
+
 const fileSchema = new mongoose.Schema({
   year: {
     type: Number,
@@ -14,7 +15,7 @@ const fileSchema = new mongoose.Schema({
   branch: {
     type: String,
     required: true,
-    enum: branchList, // This will be populated dynamically if needed
+    enum: branchCache, // This will be populated dynamically if needed
   },
   sem: {
     type: String,
@@ -33,7 +34,7 @@ const fileSchema = new mongoose.Schema({
   subject: {
     type: String,
     required: true,
-    enum: [], // This will be populated dynamically if needed
+    enum: branchCache, // This will be populated dynamically if needed
   },
   fileTitle: {
     type: String,
@@ -48,6 +49,12 @@ const fileSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+// (async () => {
+//   if (branchList.length === 0) {
+//     branchCache = await getBranches();
+//   }
+// })();
 
 // Function to update the subject enum dynamically based on user input
 async function updateSubjectEnum(year, branch, sem) {
@@ -69,10 +76,10 @@ async function updateSubjectEnum(year, branch, sem) {
 
 // Function to create the model based on dynamic input
 export async function createFileModel(year, branch, sem) {
-  const subjectEnum = await updateSubjectEnum(year, branch, sem); // Dynamically fetch subjects
-
+  // const subjectEnum = await updateSubjectEnum(year, branch, sem); // Dynamically fetch subjects
+console.log("files.js", branchCache);
   // Define the file schema again, but this time update the enum for subject dynamically
-  fileSchema.path("subject").enum = subjectEnum;
+  // fileSchema.path("subject").enum = subjectEnum;
 
   // Now create the model with the updated schema
   const FileModel = mongoose.model("File", fileSchema);

@@ -1,7 +1,7 @@
 import express from "express";
 import AdminJS from "adminjs";
 import AdminJSExpress from "@adminjs/express";
-import mongoose from "mongoose";
+import mongoose, { isValidObjectId } from "mongoose";
 import * as AdminJSMongoose from "@adminjs/mongoose";
 
 // import path from "path";
@@ -25,8 +25,8 @@ import { connectDB } from "./config/database.js";
 
 import { departments } from "./models/departments.js";
 import createSubSchema from "./models/subjects.js";
-import { branchList } from "./models/subjects.js";
-// import { createFileModel } from "./models/files.js";
+import { branchCache,branchList,getBranches } from "./models/subjects.js";
+import { createFileModel } from "./models/files.js";
 
 // Initialize Express
 const app = express();
@@ -39,8 +39,10 @@ AdminJS.registerAdapter({
 // Use JSON middleware
 app.use(express.json());
 
-// Connect to MongoDB
 await connectDB();
+await getBranches();
+console.log("index.js -> branchList", branchList,branchCache);
+// Connect to MongoDB
 
 // Custom action to download file
 // const downloadFileAction = {
@@ -314,6 +316,7 @@ const adminJs = new AdminJS({
       resource: departments,
       options: {
         properties: {
+          _id:{isVisible:false},
           branch: { isVisible: true }, // Display the branch field
         },
       },
@@ -329,7 +332,6 @@ const adminJs = new AdminJS({
           },
           branch: {
             isVisible: { list: true, filter: true, show: true, edit: true },
-            availableValues: branchList
           },
           sem: {
             isVisible: { list: true, filter: true, show: true, edit: true },
@@ -341,34 +343,34 @@ const adminJs = new AdminJS({
       },
     },
 
-    // {
-    //   resource: await createFileModel(), // Dynamically create the file model
-    //   options: {
-    //     properties: {
-    //       year: {
-    //         isVisible: { list: true, filter: true, show: true, edit: true },
-    //       },
-    //       branch: {
-    //         isVisible: { list: true, filter: true, show: true, edit: true },
-    //       },
-    //       sem: {
-    //         isVisible: { list: true, filter: true, show: true, edit: true },
-    //       },
-    //       subject: {
-    //         isVisible: { list: true, filter: true, show: true, edit: true },
-    //       },
-    //       fileTitle: {
-    //         isVisible: { list: true, filter: true, show: true, edit: true },
-    //       },
-    //       fileDescription: {
-    //         isVisible: { list: true, filter: true, show: true, edit: true },
-    //       },
-    //       fileLink: {
-    //         isVisible: { list: true, filter: true, show: true, edit: true },
-    //       },
-    //     },
-    //   },
-    // },
+    {
+      resource: await createFileModel(), // Dynamically create the file model
+      options: {
+        properties: {
+          year: {
+            isVisible: { list: true, filter: true, show: true, edit: true },
+          },
+          branch: {
+            isVisible: { list: true, filter: true, show: true, edit: true },
+          },
+          sem: {
+            isVisible: { list: true, filter: true, show: true, edit: true },
+          },
+          subject: {
+            isVisible: { list: true, filter: true, show: true, edit: true },
+          },
+          fileTitle: {
+            isVisible: { list: true, filter: true, show: true, edit: true },
+          },
+          fileDescription: {
+            isVisible: { list: true, filter: true, show: true, edit: true },
+          },
+          fileLink: {
+            isVisible: { list: true, filter: true, show: true, edit: true },
+          },
+        },
+      },
+    },
       
   ],
   rootPath: "/admin",

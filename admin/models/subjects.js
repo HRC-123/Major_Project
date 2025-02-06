@@ -1,13 +1,40 @@
 import mongoose from "mongoose";
 import { departments } from './departments.js'; // Adjust the path as needed
+import { connectDB } from "../config/database.js";
 
-// Fetch the available branches from the 'departments' collection
+
+export var branchCache = null; // Cached branch data
+
 export async function getBranches() {
-  const branches = await departments.find().select('branch').lean(); // Fetch the branch names
-  return branches.map(dept => dept.branch); // Extract the branch names into an array
+  if (branchCache) return branchCache; // Return if already fetched
+
+  try {
+    // Ensure DB is connected before fetching branches
+    await connectDB();
+
+    branchCache = await departments.distinct("branch"); // Fetch distinct branches
+    console.log("Branches fetched:", branchCache);
+    return branchCache;
+  } catch (error) {
+    console.error("Error fetching branches:", error);
+    branchCache = ["NULL"]; // Fallback value
+    return branchCache;
+  }
 }
 
-export const branchList = await getBranches(); // Get the branches from the database
+// Lazy initialization of branchList
+export var branchList = branchCache || [];
+
+// (async () => {
+//   branchList = await getBranches();
+// })();
+// console.log(branchList)
+
+// (async () => {
+//   branchList = 
+
+//   console.log("branchlist " ,branchList)
+// })();
 
 // Use async to create the schema once the branches are fetched
 const createSubSchema = async () => {
@@ -23,7 +50,7 @@ const createSubSchema = async () => {
     branch: {
       type: String,
       required: true,
-      enum: branchList, // Set enum dynamically
+      enum:branchCache// Set enum dynamically
     },
     sem: {
       type: String,
@@ -51,7 +78,7 @@ const createSubSchema = async () => {
 export default createSubSchema;
 
 
-// Function to fetch subjects from the 'subjects' collection
+//Function to fetch subjects from the 'subjects' collection
 // export async function getSubjects({ year, branch, sem } = {}) {
 //   const SubModel = await createSubSchema(); // Get the 'subjects' model
 
