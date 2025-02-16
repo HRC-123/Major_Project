@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { getBranches, branchCache } from "./subjects.js"; // Adjusted import from subjects.js
+import { getBranches, branchCache } from "../models/subjects.js"; // Adjusted import from subjects.js
 import { connectDB } from "../config/database.js";
 
 // Function to fetch dynamic subjects based on year, branch, and sem

@@ -1,9 +1,9 @@
 // config/database.js
 import mongoose from "mongoose";
-
+import dotenv from "dotenv";
 // MongoDB connection string
-const dbURI =
-  "mongodb+srv://ramcharan2k4:pIYWLAcyUxgOGuD0@majorproject.zo9wo.mongodb.net/nitj?retryWrites=true&w=majority&appName=MajorProject";
+dotenv.config();
+const dbURI = process.env.DATABASE_CONNECTION;
 
 export const connectDB = async () => {
     try {
