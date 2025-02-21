@@ -1,7 +1,7 @@
 import express from "express";
 import AdminJS from "adminjs";
 import AdminJSExpress from "@adminjs/express";
-import mongoose from "mongoose";
+import mongoose, { isValidObjectId } from "mongoose";
 import * as AdminJSMongoose from "@adminjs/mongoose";
 
 // import path from "path";
@@ -24,9 +24,10 @@ import { connectDB } from "./config/database.js";
 // import { Year } from "./models/academics.js";
 
 import { departments } from "./models/departments.js";
+import { files } from "./models/file.js";
 import createSubSchema from "./models/subjects.js";
-import { getBranches } from "./models/subjects.js";
-import { createFileModel } from "./models/files.js";
+import { branchCache,branchList,getBranches } from "./models/subjects.js";
+// import { createFileModel } from "./models/file.js";
 
 // Initialize Express
 const app = express();
@@ -39,8 +40,10 @@ AdminJS.registerAdapter({
 // Use JSON middleware
 app.use(express.json());
 
-// Connect to MongoDB
 await connectDB();
+await getBranches();
+console.log("index.js -> branchList", branchList,branchCache);
+// Connect to MongoDB
 
 // Custom action to download file
 // const downloadFileAction = {
@@ -314,6 +317,7 @@ const adminJs = new AdminJS({
       resource: departments,
       options: {
         properties: {
+          _id: { isVisible: false },
           branch: { isVisible: true }, // Display the branch field
         },
       },
@@ -324,14 +328,12 @@ const adminJs = new AdminJS({
       resource: await createSubSchema(), // Your subjects model
       options: {
         properties: {
+          _id: { isVisible: false },
           year: {
             isVisible: { list: true, filter: true, show: true, edit: true },
           },
           branch: {
             isVisible: { list: true, filter: true, show: true, edit: true },
-            availableValues: await getBranches().then((branches) =>
-              branches.map((branch) => ({ value: branch, label: branch }))
-            ),
           },
           sem: {
             isVisible: { list: true, filter: true, show: true, edit: true },
@@ -344,9 +346,10 @@ const adminJs = new AdminJS({
     },
 
     {
-      resource: await createFileModel(), // Dynamically create the file model
+      resource: files, // Dynamically create the file model
       options: {
         properties: {
+          _id: { isVisible: false },
           year: {
             isVisible: { list: true, filter: true, show: true, edit: true },
           },
@@ -359,19 +362,18 @@ const adminJs = new AdminJS({
           subject: {
             isVisible: { list: true, filter: true, show: true, edit: true },
           },
-          fileTitle: {
+          title: {
             isVisible: { list: true, filter: true, show: true, edit: true },
           },
-          fileDescription: {
+          description: {
             isVisible: { list: true, filter: true, show: true, edit: true },
           },
-          fileLink: {
+          link: {
             isVisible: { list: true, filter: true, show: true, edit: true },
           },
         },
       },
     },
-      
   ],
   rootPath: "/admin",
 });

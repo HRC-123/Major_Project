@@ -13,6 +13,7 @@
     "@adminjs/express": "^6.1.0",
     "@adminjs/mongoose": "^4.1.0",
     "adminjs": "^7.8.13",
+    "dotenv": "^16.4.7",
     "express": "^4.21.1",
     "express-formidable": "^1.2.0",
     "express-session": "^1.18.1",

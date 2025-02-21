@@ -3,8 +3,21 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import data from "../data.json";
 import FileUpload from "./FileUpload";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
+import { useGlobalContext } from "../context/GlobalContext";
+
+import {
+
+  LogOut,
+ 
+} from "lucide-react";
+
 
 const Year = () => {
+
+  const { googleLoginDetails, setGoogleLoginDetails } = useGlobalContext();
+
   const year = data.year;
   const departments = data.departments;
   const navigate = useNavigate();
@@ -13,15 +26,77 @@ const Year = () => {
 
   const toggleUploadPopup = () => setShowUpload((prev) => !prev);
 
+  const onLoginSuccess = (res) => {
+    const decoded = jwtDecode(res.credential);
+    // console.log("Login Success! Current user: ", decoded);
+
+    // console.log("Login Success! Current user: ", decoded);
+
+    localStorage.setItem("email", decoded?.email);
+    localStorage.setItem("name", decoded?.name);
+    localStorage.setItem("profilePicture", decoded?.picture);
+
+    setGoogleLoginDetails({
+      email: decoded?.email,
+      name: decoded?.name,
+      profilePicture: decoded?.profilePicture,
+    });
+
+    // toast.success(`Successfully LoggedIn : ${decoded?.name}`);
+
+    navigate("/");
+  };
+
+  const onLoginFailure = (res) => {
+    console.error("Login Failed: ", res);
+    // toast.error("Login failed. Please try again.");
+  };
+
+    const handleLogout = () => {
+      localStorage.clear();
+      setGoogleLoginDetails({
+        email: "",
+        name: "",
+        profilePicture: "",
+      });
+      // toast.success("You have successfully logged out.");
+      navigate("/");
+    };
+
   return (
     <div className="h-screen w-full flex justify-center items-center bg-gray-100 relative">
-      <div className="absolute top-4 right-4">
-        <button
-          onClick={()=> navigate('/upload')}
-          className="px-5 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition"
-        >
-          Upload File
-        </button>
+      <div className="absolute top-4 right-4 ">
+        <div className="flex items-center space-x-4 justify-center">
+          {!googleLoginDetails?.email ? (
+            <GoogleLogin
+              onSuccess={onLoginSuccess}
+              onFailure={onLoginFailure}
+              size="large"
+            />
+          ) : (
+            <div className="flex items-center space-x-4">
+              <div className="text-sm text-gray-700">
+                <p className="font-bold">{googleLoginDetails.name}</p>
+                <p className="text-xs">{googleLoginDetails.email}</p>
+              </div>
+              <div className="flex space-x-2">
+                <button
+                  className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition flex items-center"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="mr-2 w-4 h-4" /> Logout
+                </button>
+              </div>
+            </div>
+          )}
+
+          <button
+            onClick={() => navigate("/upload")}
+            className="px-5 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition"
+          >
+            Upload File
+          </button>
+        </div>
       </div>
 
       <div className="w-full max-w-4xl flex-col items-center justify-center">

@@ -3,9 +3,25 @@ import "react-toastify/dist/ReactToastify.css";
 import { useState,useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
+import { useGlobalContext } from "../context/GlobalContext";
 
 const FileUpload = ({ onClose }) => {
+
+    const { googleLoginDetails, setGoogleLoginDetails } = useGlobalContext();
+  const { email, name, profilePicture } = googleLoginDetails;
+
+  const navigate = useNavigate();
+  
+  const isNitjEmail = (email) => {
+     return email.endsWith("@nitj.ac.in");
+  }
+  
+  useEffect(() => {
+    if (!email || !isNitjEmail(email)) {
+      navigate('/');
+      console.log("The email is not from nitj.ac.in")
+    }
+  }, []);
   
   const [file, setFile] = useState(null);
   const [fileUrl, setFileUrl] = useState("");
@@ -19,6 +35,7 @@ const FileUpload = ({ onClose }) => {
   const [authorName, setAuthorName] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+
   const navigate = useNavigate();
 
 
@@ -74,7 +91,6 @@ const FileUpload = ({ onClose }) => {
     setFileUrl(event.target.value);
     setFile(null);
   };
-
 
   const uploadFile = async () => {
     if (!file && !fileUrl) {
