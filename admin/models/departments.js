@@ -1,10 +1,12 @@
-import mongoose from "mongoose";
+import { DataTypes } from "sequelize";
 
-const deptSchema = new mongoose.Schema({
-    branch:{
-        type: String,
-        required:true
-    }
-})
+import sequelize from "../config/sequelize.js";
 
-export const departments = mongoose.model("departments", deptSchema);
+const Department = sequelize.define("Department", {
+  branch: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+});
+
+export default Department;
