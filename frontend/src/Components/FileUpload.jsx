@@ -24,6 +24,7 @@ const FileUpload = ({ onClose }) => {
   }, []);
   
   const [file, setFile] = useState(null);
+  const [fileUrl, setFileUrl] = useState("");
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [selectedYear, setSelectedYear] = useState("");
@@ -34,9 +35,67 @@ const FileUpload = ({ onClose }) => {
   const [authorName, setAuthorName] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
- 
+
+  const navigate = useNavigate();
+
+
+  const [departmentsData, setDepartmentsData] = useState([]);
+  const [subjectsData, setSubjectsData]= useState([]);
+
+    useEffect(() => {
+        async function fetchDepartments() {
+            try {
+                const response = await fetch("http://localhost:5000/branches"); // Fix typo in endpoint
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                setDepartmentsData(data); // Update state with fetched data
+            } catch (err) {
+                console.error("Error fetching departments:", err);
+            }
+        }
+
+        fetchDepartments();
+    }, []);
+  
+    useEffect(() => {
+      async function getSubjects() {
+        if (!selectedYear || !selectedBranch || !selectedSemester) return;
+    
+        try {
+          const response = await fetch(
+            `http://localhost:5000/subjects?year=${selectedYear}&branch=${selectedBranch}&sem=${selectedSemester}`
+          );
+    
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+    
+          const data = await response.json();
+          setSubjectsData(data); // Update state with fetched subjects
+        } catch (err) {
+          console.error("Error fetching subjects:", err);
+        }
+      }
+    
+      getSubjects();
+    }, [selectedYear, selectedBranch, selectedSemester]); // Runs when these values change
+    
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+    setFileUrl("");
+  };
+  
+  const handleUrlChange = (event) => {
+    setFileUrl(event.target.value);
+    setFile(null);
+  };
+
   const uploadFile = async () => {
-    if (!file) return alert("Please select a file to upload.");
+    if (!file && !fileUrl) {
+      return alert("Please select a file or enter a URL to upload.");
+    }
     if (!selectedYear || !selectedBranch || !selectedSubject || !selectedType || !authorName || !title || !description) {
       return alert("Please fill in all the fields.");
     }
@@ -44,11 +103,21 @@ const FileUpload = ({ onClose }) => {
     setUploading(true);
   
     const formData = new FormData();
-    formData.append("file", file);
+    if (file) {
+      formData.append("file", file);
+    } else {
+      formData.append("fileUrl", fileUrl);
+    }
     formData.append("year", selectedYear);
     formData.append("branch", selectedBranch);
     formData.append("semester", selectedSemester);
+  
+    // Find the subjectcode based on selectedSubject
+    const subjectObj = subjectsData.find((sub) => sub.subject === selectedSubject);
+    const subjectcode = subjectObj ? subjectObj.subjectcode : "";
+  
     formData.append("subject", selectedSubject);
+    formData.append("subjectcode", subjectcode); // Include subjectcode
     formData.append("type", selectedType);
     formData.append("author", authorName);
     formData.append("title", title);
@@ -66,30 +135,22 @@ const FileUpload = ({ onClose }) => {
         throw new Error(result.error || "File upload failed");
       }
   
-      toast.success(`File uploaded successfully: ${file.name}`);
+      if (file) {
+        toast.success(`File uploaded successfully: ${file.name}`);
+      } else {
+        toast.success("File imported successfully from URL");
+      }
     } catch (error) {
       console.error(error);
       toast.error("Upload failed!");
     } finally {
       setUploading(false);
       setFile(null);
-      navigate('/')
+      navigate("/");
     }
   };
   
   
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
-  };
-  
-  const getSubjects = () => {
-    const yearData = data.years.find((y) => y.year === parseInt(selectedYear));
-    const branchData = yearData?.branches.find(
-      (b) => b.branch === selectedBranch
-    );
-    return branchData?.semesters[`Semester_${selectedSemester}`] || [];
-  };
-
   return (
     <div className="flex flex-col px-36 py-16 gap-4">
 
@@ -158,9 +219,9 @@ const FileUpload = ({ onClose }) => {
             onChange={(e) => setSelectedBranch(e.target.value)}
           >
             <option value="">Select Branch</option>
-            {data.departments.map((d, index) => (
-              <option key={index} value={d.abbreviation}>
-                {d.fullForm}
+            {departmentsData.map((d, index) => (
+              <option key={index} value={d.branch}>
+                {d.abbreviation}
               </option>
             ))}
           </select>
@@ -194,12 +255,13 @@ const FileUpload = ({ onClose }) => {
             disabled={!selectedSemester}
           >
             <option value="">Select Subject</option>
-            {getSubjects().map((sub, index) => (
-              <option key={index} value={sub}>
-                {sub}
+            {subjectsData.map((sub, index) => (
+              <option key={index} value={sub.subject}>
+                {sub.subject} ({sub.subjectcode})
               </option>
             ))}
           </select>
+
         </div>
 
         {/* Type Selection */}
@@ -224,20 +286,27 @@ const FileUpload = ({ onClose }) => {
 
         {/* File Upload Section */}
         <div>
-          <h1 className="text-2xl font-semibold text-gray-700 text-center mb-4">
-            Upload a PDF
-          </h1>
+          <h1 className="text-2xl font-semibold text-gray-700 text-center mb-4">Upload a PDF</h1>
 
           <div className="border-2 border-dashed border-gray-300 p-6 rounded-lg mb-4">
+          <input
+            type="file"
+            accept=".pdf"
+            onChange={handleFileChange}
+            className="w-full text-gray-500 text-sm cursor-pointer focus:outline-none"
+          />
+          <p className="text-gray-400 text-center mt-2">Drag and drop a PDF file, or click to select</p>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="font-semibold">Or Import via URL</label>
             <input
-              type="file"
-              accept=".pdf"
-              onChange={handleFileChange}
-              className="w-full text-gray-500 text-sm cursor-pointer focus:outline-none"
+              type="text"
+              value={fileUrl}
+              onChange={handleUrlChange}
+              className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
+              placeholder="Enter URL of the document"
             />
-            <p className="text-gray-400 text-center mt-2">
-              Drag and drop a PDF file, or click to select
-            </p>
           </div>
 
           {uploading && (
@@ -250,12 +319,12 @@ const FileUpload = ({ onClose }) => {
           )}
 
           <button
-            onClick={uploadFile}
-            disabled={!file || uploading}
-            className={`w-full py-2 px-4 mt-4 rounded-lg text-white font-semibold 
-              ${!file || uploading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
+          onClick={uploadFile}
+          disabled={(!file && !fileUrl) || uploading}
+          className={`w-full py-2 px-4 mt-4 rounded-lg text-white font-semibold 
+          ${(!file && !fileUrl) || uploading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
           >
-            {uploading ? `Uploading... ${uploadProgress}%` : "Upload File"}
+            {uploading ? `Uploading... ${uploadProgress}%` : "Upload File or URL"}
           </button>
       </div>
     </div>
