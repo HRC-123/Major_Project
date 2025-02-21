@@ -42,7 +42,7 @@ const FileCard = ({ file }) => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105 cursor-pointer">
-      <div onClick={() => window.open(file.url, "_blank")}>
+      <div onClick={() => window.open(file.url.startsWith("http") ? file.url : `https://${file.url}`, "_blank")}>
         <h2 className="text-xl font-semibold text-gray-800">{file.title}</h2>
         <h3 className="text-md font-medium text-gray-600 mb-2">{file.description}</h3>
         <p className="text-sm text-gray-500">By {file.author}</p>
