@@ -18,42 +18,76 @@ const supabase = createClient(process.env.REACT_APP_SUPABASE_URL, process.env.RE
 const storage = multer.memoryStorage(); // Store file in memory before upload
 const upload = multer({ storage: storage });
 
+
+//Get Branch Data
+app.get("/branches", async( req, res)=>{
+  const { data, error } = await supabase.from('departments').select('*');
+  if (error) {
+    res.status(500).json({ error: error.message });
+  } else {
+  res.json(data);
+  }
+
+})
+
+// Get Subjects Data
+app.get("/subjects", async (req, res) => {
+  const { year, branch, sem } = req.query; // Get query parameters
+
+  let query = supabase.from("subjects").select("*");
+
+  if (year) query = query.eq("year", year);
+  if (branch) query = query.eq("branch", branch);
+  if (sem) query = query.eq("sem", sem);
+
+  const { data, error } = await query;
+  
+  if (error) return res.status(500).json({ error: error.message });
+  res.json(data);
+});
+
+
 // Upload File Endpoint
 app.post("/upload", upload.single("file"), async (req, res) => {
   try {
-    const { year, branch, semester, subject, type, author, title, description } = req.body;
+    const { year, branch, semester, subject, subjectcode, type, author, title, description, fileUrl } = req.body;
     const file = req.file;
 
-    if (!file || !year || !branch || !subject || !type || !author || !title || !description) {
+    if ((!file && !fileUrl) || !year || !branch || !semester || !subject || !subjectcode || !type || !author || !title || !description) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    // Construct File Path
-    const filePath = `${year}/${branch}/${subject}/${type}/${file.originalname}`;
+    let publicURL = fileUrl;
 
-    // Upload File to Supabase Storage
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from(process.env.REACT_APP_SUPABASE_BUCKET)
-      .upload(filePath, file.buffer, {
-        contentType: file.mimetype,
-      });
+    if (file) {
+      // Create unique file path
+      const filePath = `${year}/${branch}/${subject}/${type}/${Date.now()}_${file.originalname}`;
 
-    if (uploadError) {
-      console.error(uploadError);
-      return res.status(500).json({ error: "File upload failed" });
+      // Upload File to Supabase Storage
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from(process.env.REACT_APP_SUPABASE_BUCKET)
+        .upload(filePath, file.buffer, {
+          contentType: file.mimetype,
+        });
+
+      if (uploadError) {
+        console.error(uploadError);
+        return res.status(500).json({ error: "File upload failed" });
+      }
+
+      // Generate Public URL
+      publicURL = `${process.env.REACT_APP_SUPABASE_URL}/storage/v1/object/public/${uploadData.fullPath}`;
     }
 
-    // Generate Public URL
-    const publicURL = `${process.env.REACT_APP_SUPABASE_URL}/storage/v1/object/public/${uploadData.fullPath}`;
-
-    // Insert Metadata into Database
-    const { error: insertError } = await supabase.from("documents").insert([
+    // Insert metadata into Supabase Database
+    const { data, error: insertError } = await supabase.from("documents").insert([
       {
         url: publicURL,
         year,
         branch,
         semester,
         subject,
+        subjectcode,
         type,
         author,
         title,
@@ -61,7 +95,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
         upvote: 0,
         downvote: 0,
       },
-    ]);
+    ]); // Selecting ID to confirm insertion
 
     if (insertError) {
       console.error(insertError);
@@ -74,6 +108,8 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     res.status(500).json({ error: "Server Error" });
   }
 });
+
+
 
 // API to fetch files
 app.get("/api/files", async (req, res) => {
