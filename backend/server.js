@@ -109,7 +109,29 @@ app.post("/upload", upload.single("file"), async (req, res) => {
   }
 });
 
+// searching files
+app.get("/search", async (req, res) => {
+  try {
+    const { query } = req.query; // Get search query from frontend
 
+    if (!query) { return res.status(400).json({ error: "Search query is required" });}
+    // Search in title, subject, or subjectcode
+    const { data, error } = await supabase
+      .from("documents")
+      .select("*")
+      .or(
+        `title.ilike.%${query}%,subject.ilike.%${query}%,subjectcode.ilike.%${query}%`
+      );
+    if (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Failed to fetch search results" });
+    }
+    res.status(200).json(data); // Send results to frontend
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
 
 // API to fetch files
 app.get("/api/files", async (req, res) => {
