@@ -5,7 +5,6 @@ import AdminJSSequelize from "@adminjs/sequelize";
 import { Sequelize, DataTypes } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
-
 // Register the adapter
 // import { supabase } from "./config/database.js"; // Import Supabase client
 
@@ -81,7 +80,7 @@ const fetchSupabaseData = async (table) => {
 };
 
 //Fetch initial data for AdminJS
-const departments = (await fetchSupabaseData("departments"));
+const departments = await fetchSupabaseData("departments");
 console.log(departments.map((dept) => dept.branch));
 
 const subjects = await fetchSupabaseData("subjects");
@@ -147,14 +146,13 @@ const Subject = sequelize.define(
     subjectcode: {
       type: DataTypes.TEXT,
       allowNull: false,
-      unique:true
+      unique: true,
     },
   },
   {
     timestamps: false,
   }
 );
-
 
 const Document = sequelize.define(
   "documents",
@@ -223,8 +221,6 @@ const app = express();
 // Use JSON middleware
 app.use(express.json());
 
-
-
 // Configure AdminJS with manually fetched data
 // const adminJs = new AdminJS({
 //   resources: [
@@ -264,6 +260,14 @@ app.use(express.json());
 //   ],
 //   rootPath: "/admin",
 // });
+
+const getDepartmentOptions = () => {
+  return departments.map((dept) => ({
+    value: dept.branch,
+    label: dept.branch,
+  }));
+};
+
 const adminJs = new AdminJS({
   resources: [
     {
@@ -273,7 +277,56 @@ const adminJs = new AdminJS({
           id: { isVisible: false },
           branch: { isVisible: true },
           abbreviation: { isVisible: true },
-        }, 
+        },
+        parent: {
+          name: "NITJ", // label for the group
+          // icon: "SomeIconName", // optional icon in the sidebar
+        },
+
+        actions: {
+          new: {
+            after: async (response, request, context) => {
+              if (response.record && response.record.params) {
+                console.log("New Department Added:", response.record.params);
+
+                // Re-fetch departments from Supabase after adding a new one
+                const newDept = response.record.params;
+                // Push new department data into the departments array
+                departments.push(newDept);
+                // console.log("Updated departments array:", departments);
+                // departments.push(newDept);
+                // console.log("Updated departments array:", departments);
+
+                // Update availableValues for Subject and Document resources
+                const newOptions = getDepartmentOptions();
+                // Assuming adminJs.resources[1] is Subject and [2] is Document,
+                // update their options (this might need a more robust approach if order changes)
+                const subjectResource = adminJs.findResource("subjects");
+                // console.log(subjectResource);
+                if (
+                  subjectResource &&
+                  subjectResource._decorated &&
+                  subjectResource._decorated.options &&
+                  subjectResource._decorated.options.properties &&
+                  subjectResource._decorated.options.properties.branch
+                ) {
+                  subjectResource._decorated.options.properties.branch.availableValues =
+                    newOptions;
+                } else {
+                  console.warn(
+                    "Subject resource not found or branch property is undefined"
+                  );
+                }
+                // const documentResource = adminJs.findResource("documents");
+                // if (documentResource) {
+                //   documentResource.options.properties.branch.availableValues =
+                //     newOptions;
+                // }
+              }
+              return response;
+            },
+          },
+        },
       },
     },
     {
@@ -305,14 +358,15 @@ const adminJs = new AdminJS({
           },
           branch: {
             isVisible: true,
-            availableValues: departments.map((dept) => ({
-              value: dept.branch, // the value stored in the database
-              label: dept.branch, // the label to display in the dropdown
-            })),
+            availableValues: getDepartmentOptions(),
           },
 
           subject: { isVisible: true },
           subjectcode: { isVisible: true },
+        },
+        parent: {
+          name: "NITJ", // label for the group
+          // icon: "SomeIconName", // optional icon in the sidebar
         },
       },
     },
@@ -321,7 +375,15 @@ const adminJs = new AdminJS({
       options: {
         properties: {
           id: { isVisible: false },
-          year: { isVisible: true, availableValues: [1, 2, 3, 4] },
+          year: {
+            isVisible: true,
+            availableValues: [
+              { value: 1, label: "1" },
+              { value: 2, label: "2" },
+              { value: 3, label: "3" },
+              { value: 4, label: "4" },
+            ],
+          },
           branch: {
             isVisible: true,
             availableValues: departments.map((dept) => ({
@@ -331,7 +393,16 @@ const adminJs = new AdminJS({
           },
           semester: {
             isVisible: true,
-            availableValues: [1, 2, 3, 4, 5, 6, 7, 8],
+            availableValues: [
+              { value: 1, label: "1" },
+              { value: 2, label: "2" },
+              { value: 3, label: "3" },
+              { value: 4, label: "4" },
+              { value: 5, label: "5" },
+              { value: 6, label: "6" },
+              { value: 7, label: "7" },
+              { value: 8, label: "8" },
+            ],
           },
           subject: { isVisible: true },
           subjectcode: { isVisible: true },
@@ -341,16 +412,27 @@ const adminJs = new AdminJS({
           title: { isVisible: true },
           description: { isVisible: true },
 
-          link: { isVisible: true },
+          url: { isVisible: true },
           upvote: { isVisible: true },
           downvote: { isVisible: true },
+        },
+        parent: {
+          name: "NITJ", // label for the group
+          // icon: "SomeIconName", // optional icon in the sidebar
+        },
+        actions: {
+          new: { isVisible: false, isAccessible: false },
         },
       },
     },
   ],
   rootPath: "/admin",
+  branding: {
+    companyName: "NITJ Admin",
+    logo: false, // or provide a URL to a custom logo
+    softwareBrothers: false, // remove the "Software Brothers" link
+  },
 });
-
 
 // Build AdminJS Router
 const router = AdminJSExpress.buildRouter(adminJs);
