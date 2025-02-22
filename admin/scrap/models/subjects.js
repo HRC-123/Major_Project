@@ -1,4 +1,4 @@
-import { supabase } from "../../config/database.js";
+import { supabase } from "../config/database.js";
 
 export async function getSubjects({ year, branch, sem } = {}) {
   let query = supabase.from("subjects").select("*");
