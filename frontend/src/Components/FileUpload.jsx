@@ -36,8 +36,6 @@ const FileUpload = ({ onClose }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  const navigate = useNavigate();
-
 
   const [departmentsData, setDepartmentsData] = useState([]);
   const [subjectsData, setSubjectsData]= useState([]);
