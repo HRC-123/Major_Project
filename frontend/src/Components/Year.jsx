@@ -104,10 +104,10 @@ const Year = () => {
           {!googleLoginDetails?.email ? (
             <GoogleLogin onSuccess={onLoginSuccess} onFailure={onLoginFailure} size="large" />
           ) : (
-            <div className="flex items-center space-x-4 bg-white p-2 rounded-lg shadow-md">
-              <div className="text-sm text-gray-700">
+            <div className="flex items-center space-x-2 bg-white p-2 rounded-lg shadow-md max-w-96">
+              <div className="text-xs text-gray-700 w-40 overflow-hidden whitespace-nowrap text-ellipsis">
                 <p className="font-bold">{googleLoginDetails.name}</p>
-                <p className="text-xs">{googleLoginDetails.email}</p>
+                <p className="text-xs text-gray-500">{googleLoginDetails.email}</p>
               </div>
               <button
                 className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition flex items-center"
@@ -116,18 +116,19 @@ const Year = () => {
                 <LogOut className="mr-2 w-4 h-4" /> Logout
               </button>
             </div>
+
           )}
   
           <button
             onClick={() => navigate("/upload")}
-            className="px-5 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition shadow-md"
+            className="px-5 py-4 w-32 bg-green-500 text-white font-semibold text-sm rounded-lg hover:bg-green-600 transition shadow-md"
           >
             Upload File
           </button>
         </div>
   
         {/* Search Bar */}
-        <div className="absolute top-4 w-full max-w-lg mx-auto z-10">
+        <div className="absolute top-4 w-full max-w-lg mx-auto z-20">
           <div className="flex space-x-2 mb-4">
             <input
               type="text"
