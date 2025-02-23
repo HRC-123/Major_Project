@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useGlobalContext } from "../context/GlobalContext";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { ThumbsUp, ThumbsDown } from "lucide-react";
 
 const FileCard = ({ file }) => {

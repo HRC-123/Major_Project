@@ -136,7 +136,7 @@ const Subject = sequelize.define(
       // onDelete: "CASCADE",
     },
     sem: {
-      type: DataTypes.TEXT,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     subject: {

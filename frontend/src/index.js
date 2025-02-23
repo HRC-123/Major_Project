@@ -9,7 +9,8 @@ import FileUpload from "./Components/FileUpload.jsx";
 import ViewFiles from "./Components/ViewFiles.jsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { GlobalProvider, useGlobalContext } from "./context/GlobalContext";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const AppRoutes = () => {
@@ -31,7 +32,8 @@ const AppRoutes = () => {
   return (
     <BrowserRouter>
       {/* ToastContainer added here to be globally accessible */}
-      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
+      {/* <ToastContainer position="top-right" autoClose={3000} hideProgressBar /> */}
+      <Toaster position="top-center" reverseOrder={false} />
 
       <Routes>
         <Route path="/" element={<Year />} />

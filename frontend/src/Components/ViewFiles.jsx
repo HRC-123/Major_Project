@@ -84,7 +84,7 @@ import { useEffect, useReducer, useState } from "react";
 import { useParams } from "react-router-dom";
 import FileCard from "./FileCard";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 
 const options = ["Notes(or)PPT", "Books", "Assignments", "PreviousYearPapers"];
 const filters = ["More Upvotes", "Less Downvotes", "Alphabetical Title"];

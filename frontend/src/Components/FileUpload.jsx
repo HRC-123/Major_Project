@@ -1,12 +1,14 @@
 import "react-toastify/dist/ReactToastify.css";
 import { useState, useEffect } from "react";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context/GlobalContext";
+import { Home } from "lucide-react";
+
 
 const FileUpload = ({ onClose }) => {
   const { googleLoginDetails } = useGlobalContext();
-  const { email } = googleLoginDetails;
+  const { email,name } = googleLoginDetails;
   const navigate = useNavigate();
   
   const isNitjEmail = (email) => {
@@ -31,7 +33,7 @@ const FileUpload = ({ onClose }) => {
   const [selectedSemester, setSelectedSemester] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedType, setSelectedType] = useState("");
-  const [authorName, setAuthorName] = useState("");
+  const [authorName, setAuthorName] = useState(name);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [uploadMethod, setUploadMethod] = useState("file"); // New state for tracking upload method
@@ -151,136 +153,143 @@ const FileUpload = ({ onClose }) => {
   
   return (
     <div className="flex flex-col px-36 py-16 gap-4">
-      
+      <button
+        onClick={() => navigate("/")}
+        className="fixed top-4 left-4 flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+      >
+        <Home size={20} />
+        Home
+      </button>
+
       <div className="font-bold p-4 pl-0 text-xl">
-          Enter the details of the Document:
-        </div>
+        Enter the details of the Document:
+      </div>
 
-        {/* Title Input */}
-        <div className="flex flex-col gap-1">
-          <label className="font-semibold">Title</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
-            placeholder="Enter document title"
-          />
-        </div>
+      {/* Title Input */}
+      <div className="flex flex-col gap-1">
+        <label className="font-semibold">Title</label>
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
+          placeholder="Enter document title"
+        />
+      </div>
 
-        {/* Author Name Input */}
-        <div className="flex flex-col gap-1">
-          <label className="font-semibold">Author Name</label>
-          <input
-            type="text"
-            value={authorName}
-            onChange={(e) => setAuthorName(e.target.value)}
-            className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
-            placeholder="Enter author name"
-          />
-        </div>
+      {/* Author Name Input */}
+      <div className="flex flex-col gap-1">
+        <label className="font-semibold">Author Name</label>
+        <input
+          type="text"
+          value={authorName}
+          // onChange={(e) => setAuthorName(e.target.value)}
+          className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
+          placeholder="Enter author name"
+          contentEditable="false"
+        />
+      </div>
 
-        {/* Description Input */}
-        <div className="flex flex-col gap-1">
-          <label className="font-semibold">Description</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
-            placeholder="Enter a brief description of the document"
-          />
-        </div>
+      {/* Description Input */}
+      <div className="flex flex-col gap-1">
+        <label className="font-semibold">Description</label>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
+          placeholder="Enter a brief description of the document"
+        />
+      </div>
 
-        {/* Year Selection */}
-        <div className="flex flex-col gap-1">
-          <label className="font-semibold">Year</label>
-          <select
-            className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
-            value={selectedYear}
-            onChange={(e) => setSelectedYear(e.target.value)}
-          >
-            <option value="">Select Year</option>
-             {yearData.map((y, index) => (
-               <option key={index} value={index + 1}>
-                 {y}
-               </option>
-            ))}
-          </select>
-        </div>
+      {/* Year Selection */}
+      <div className="flex flex-col gap-1">
+        <label className="font-semibold">Year</label>
+        <select
+          className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
+          value={selectedYear}
+          onChange={(e) => setSelectedYear(e.target.value)}
+        >
+          <option value="">Select Year</option>
+          {yearData.map((y, index) => (
+            <option key={index} value={index + 1}>
+              {y}
+            </option>
+          ))}
+        </select>
+      </div>
 
-        {/* Branch Selection */}
-        <div className="flex flex-col gap-1">
-          <label className="font-semibold">Branch</label>
-          <select
-            className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
-            value={selectedBranch}
-            onChange={(e) => setSelectedBranch(e.target.value)}
-          >
-            <option value="">Select Branch</option>
-            {departmentsData.map((d, index) => (
-              <option key={index} value={d.branch}>
-                {d.abbreviation}
+      {/* Branch Selection */}
+      <div className="flex flex-col gap-1">
+        <label className="font-semibold">Branch</label>
+        <select
+          className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
+          value={selectedBranch}
+          onChange={(e) => setSelectedBranch(e.target.value)}
+        >
+          <option value="">Select Branch</option>
+          {departmentsData.map((d, index) => (
+            <option key={index} value={d.branch}>
+              {d.abbreviation}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Semester Selection */}
+      <div className="flex flex-col gap-1">
+        <label className="font-semibold">Semester</label>
+        <select
+          className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
+          value={selectedSemester}
+          onChange={(e) => setSelectedSemester(e.target.value)}
+          disabled={!selectedYear || !selectedBranch}
+        >
+          <option value="">Select Semester</option>
+          {[2 * selectedYear - 1, 2 * selectedYear].map((sem, index) => (
+            <option key={index} value={sem}>
+              {sem}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Subject Selection */}
+      <div className="flex flex-col gap-1">
+        <label className="font-semibold">Subject</label>
+        <select
+          className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
+          value={selectedSubject}
+          onChange={(e) => setSelectedSubject(e.target.value)}
+          disabled={!selectedSemester}
+        >
+          <option value="">Select Subject</option>
+          {subjectsData.map((sub, index) => (
+            <option key={index} value={sub.subject}>
+              {sub.subject} ({sub.subjectcode})
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Type Selection */}
+      <div className="flex flex-col gap-1">
+        <label className="font-semibold">Type</label>
+        <select
+          className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
+          value={selectedType}
+          onChange={(e) => setSelectedType(e.target.value)}
+        >
+          <option value="">Select Type</option>
+          {["Notes(or)PPT", "Books", "Assignments", "PreviousYearPapers"].map(
+            (type, index) => (
+              <option key={index} value={type}>
+                {type}
               </option>
-            ))}
-          </select>
-        </div>
+            )
+          )}
+        </select>
+      </div>
 
-        {/* Semester Selection */}
-        <div className="flex flex-col gap-1">
-          <label className="font-semibold">Semester</label>
-          <select
-            className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
-            value={selectedSemester}
-            onChange={(e) => setSelectedSemester(e.target.value)}
-            disabled={!selectedYear || !selectedBranch}
-          >
-            <option value="">Select Semester</option>
-            {[2 * selectedYear - 1, 2 * selectedYear].map((sem, index) => (
-              <option key={index} value={sem}>
-                {sem}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Subject Selection */}
-        <div className="flex flex-col gap-1">
-          <label className="font-semibold">Subject</label>
-          <select
-            className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
-            value={selectedSubject}
-            onChange={(e) => setSelectedSubject(e.target.value)}
-            disabled={!selectedSemester}
-          >
-            <option value="">Select Subject</option>
-            {subjectsData.map((sub, index) => (
-              <option key={index} value={sub.subject}>
-                {sub.subject} ({sub.subjectcode})
-              </option>
-            ))}
-          </select>
-
-        </div>
-
-        {/* Type Selection */}
-        <div className="flex flex-col gap-1">
-          <label className="font-semibold">Type</label>
-          <select
-            className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
-            value={selectedType}
-            onChange={(e) => setSelectedType(e.target.value)}
-          >
-            <option value="">Select Type</option>
-            {["Notes(or)PPT", "Books", "Assignments", "PreviousYearPapers"].map(
-              (type, index) => (
-                <option key={index} value={type}>
-                  {type}
-                </option>
-              )
-            )}
-          </select>
-        </div>
-      
       {/* File Upload Section with Toggle */}
       <div>
         <div className="flex flex-col mb-4">
@@ -332,7 +341,11 @@ const FileUpload = ({ onClose }) => {
           onClick={uploadFile}
           disabled={(!file && !fileUrl) || uploading}
           className={`w-full py-2 px-4 mt-4 rounded-lg text-white font-semibold 
-          ${(!file && !fileUrl) || uploading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
+          ${
+            (!file && !fileUrl) || uploading
+              ? "bg-blue-300 cursor-not-allowed"
+              : "bg-blue-500 hover:bg-blue-600"
+          }`}
         >
           {uploading ? `Uploading... ${uploadProgress}%` : "Upload File"}
         </button>
