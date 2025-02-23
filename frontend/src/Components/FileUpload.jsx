@@ -1,19 +1,16 @@
-import data from "../data.json";
 import "react-toastify/dist/ReactToastify.css";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context/GlobalContext";
 
 const FileUpload = ({ onClose }) => {
-
-    const { googleLoginDetails, setGoogleLoginDetails } = useGlobalContext();
-  const { email, name, profilePicture } = googleLoginDetails;
-
+  const { googleLoginDetails } = useGlobalContext();
+  const { email } = googleLoginDetails;
   const navigate = useNavigate();
   
   const isNitjEmail = (email) => {
-     return email.endsWith("@nitj.ac.in");
+    return email.endsWith("@nitj.ac.in");
   }
   
   useEffect(() => {
@@ -37,50 +34,46 @@ const FileUpload = ({ onClose }) => {
   const [authorName, setAuthorName] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-
+  const [uploadMethod, setUploadMethod] = useState("file"); // New state for tracking upload method
 
   const [departmentsData, setDepartmentsData] = useState([]);
-  const [subjectsData, setSubjectsData]= useState([]);
+  const [subjectsData, setSubjectsData] = useState([]);
 
-    useEffect(() => {
-        async function fetchDepartments() {
-            try {
-                const response = await fetch("http://localhost:5000/branches"); // Fix typo in endpoint
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const data = await response.json();
-                setDepartmentsData(data); // Update state with fetched data
-            } catch (err) {
-                console.error("Error fetching departments:", err);
-            }
+  const yearData=[1,2,3,4]
+  useEffect(() => {
+    async function fetchDepartments() {
+      try {
+        const response = await fetch("http://localhost:5000/branches");
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-
-        fetchDepartments();
-    }, []);
-  
-    useEffect(() => {
-      async function getSubjects() {
-        if (!selectedYear || !selectedBranch || !selectedSemester) return;
-    
-        try {
-          const response = await fetch(
-            `http://localhost:5000/subjects?year=${selectedYear}&branch=${selectedBranch}&sem=${selectedSemester}`
-          );
-    
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-    
-          const data = await response.json();
-          setSubjectsData(data); // Update state with fetched subjects
-        } catch (err) {
-          console.error("Error fetching subjects:", err);
-        }
+        const data = await response.json();
+        setDepartmentsData(data);
+      } catch (err) {
+        console.error("Error fetching departments:", err);
       }
-    
-      getSubjects();
-    }, [selectedYear, selectedBranch, selectedSemester]); // Runs when these values change
+    }
+    fetchDepartments();
+  }, []);
+  
+  useEffect(() => {
+    async function getSubjects() {
+      if (!selectedYear || !selectedBranch || !selectedSemester) return;
+      try {
+        const response = await fetch(
+          `http://localhost:5000/subjects?year=${selectedYear}&branch=${selectedBranch}&sem=${selectedSemester}`
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        setSubjectsData(data);
+      } catch (err) {
+        console.error("Error fetching subjects:", err);
+      }
+    }
+    getSubjects();
+  }, [selectedYear, selectedBranch, selectedSemester]);
     
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -90,6 +83,13 @@ const FileUpload = ({ onClose }) => {
   const handleUrlChange = (event) => {
     setFileUrl(event.target.value);
     setFile(null);
+  };
+
+  const toggleUploadMethod = () => {
+    setUploadMethod(uploadMethod === "file" ? "url" : "file");
+    // Clear both file and URL when switching
+    setFile(null);
+    setFileUrl("");
   };
 
   const uploadFile = async () => {
@@ -112,12 +112,11 @@ const FileUpload = ({ onClose }) => {
     formData.append("branch", selectedBranch);
     formData.append("semester", selectedSemester);
   
-    // Find the subjectcode based on selectedSubject
     const subjectObj = subjectsData.find((sub) => sub.subject === selectedSubject);
     const subjectcode = subjectObj ? subjectObj.subjectcode : "";
   
     formData.append("subject", selectedSubject);
-    formData.append("subjectcode", subjectcode); // Include subjectcode
+    formData.append("subjectcode", subjectcode);
     formData.append("type", selectedType);
     formData.append("author", authorName);
     formData.append("title", title);
@@ -150,11 +149,10 @@ const FileUpload = ({ onClose }) => {
     }
   };
   
-  
   return (
     <div className="flex flex-col px-36 py-16 gap-4">
-
-        <div className="font-bold p-4 pl-0 text-xl">
+      
+      <div className="font-bold p-4 pl-0 text-xl">
           Enter the details of the Document:
         </div>
 
@@ -202,7 +200,7 @@ const FileUpload = ({ onClose }) => {
             onChange={(e) => setSelectedYear(e.target.value)}
           >
             <option value="">Select Year</option>
-             {data.year.map((y, index) => (
+             {yearData.map((y, index) => (
                <option key={index} value={index + 1}>
                  {y}
                </option>
@@ -282,50 +280,62 @@ const FileUpload = ({ onClose }) => {
             )}
           </select>
         </div>
+      
+      {/* File Upload Section with Toggle */}
+      <div>
+        <div className="flex flex-col mb-4">
+          <button
+            onClick={toggleUploadMethod}
+            className="text-blue-500 hover:text-blue-600 font-medium max-w-40"
+          >
+            Switch to {uploadMethod === "file" ? "URL import" : "file upload"}
+          </button>
+          <h1 className="text-2xl font-semibold text-gray-700">
+            {uploadMethod === "file" ? "Upload a PDF" : "Import via URL"}
+          </h1>
+        </div>
 
-
-        {/* File Upload Section */}
-        <div>
-          <h1 className="text-2xl font-semibold text-gray-700 text-center mb-4">Upload a PDF</h1>
-
+        {uploadMethod === "file" ? (
           <div className="border-2 border-dashed border-gray-300 p-6 rounded-lg mb-4">
-          <input
-            type="file"
-            accept=".pdf"
-            onChange={handleFileChange}
-            className="w-full text-gray-500 text-sm cursor-pointer focus:outline-none"
-          />
-          <p className="text-gray-400 text-center mt-2">Drag and drop a PDF file, or click to select</p>
+            <input
+              type="file"
+              accept=".pdf"
+              onChange={handleFileChange}
+              className="w-full text-gray-500 text-sm cursor-pointer focus:outline-none"
+            />
+            <p className="text-gray-400 text-center mt-2">
+              Drag and drop a PDF file, or click to select
+            </p>
           </div>
-
+        ) : (
           <div className="flex flex-col gap-2">
-            <label className="font-semibold">Or Import via URL</label>
             <input
               type="text"
               value={fileUrl}
               onChange={handleUrlChange}
-              className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
+              className="w-full p-2 border-2 border-gray-300 rounded-lg focus:border-blue-500"
               placeholder="Enter URL of the document"
             />
           </div>
+        )}
 
-          {uploading && (
-            <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
-              <div
-                className="bg-blue-500 h-4 rounded-full"
-                style={{ width: `${uploadProgress}%` }}
-              ></div>
-            </div>
-          )}
+        {uploading && (
+          <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
+            <div
+              className="bg-blue-500 h-4 rounded-full"
+              style={{ width: `${uploadProgress}%` }}
+            ></div>
+          </div>
+        )}
 
-          <button
+        <button
           onClick={uploadFile}
           disabled={(!file && !fileUrl) || uploading}
           className={`w-full py-2 px-4 mt-4 rounded-lg text-white font-semibold 
           ${(!file && !fileUrl) || uploading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
-          >
-            {uploading ? `Uploading... ${uploadProgress}%` : "Upload File or URL"}
-          </button>
+        >
+          {uploading ? `Uploading... ${uploadProgress}%` : "Upload File"}
+        </button>
       </div>
     </div>
   );

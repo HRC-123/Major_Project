@@ -92,8 +92,8 @@ app.post("/upload", upload.single("file"), async (req, res) => {
         author,
         title,
         description,
-        upvote: 0,
-        downvote: 0,
+        upvote: [],
+        downvote: [],
       },
     ]); // Selecting ID to confirm insertion
 
