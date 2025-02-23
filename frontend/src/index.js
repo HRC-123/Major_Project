@@ -11,6 +11,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { GlobalProvider, useGlobalContext } from "./context/GlobalContext";
 import { ToastContainer } from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
+import LandingPage from "./context/landingpage.jsx";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const AppRoutes = () => {
@@ -36,7 +37,7 @@ const AppRoutes = () => {
       <Toaster position="top-center" reverseOrder={false} />
 
       <Routes>
-        <Route path="/" element={<Year />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/upload" element={<FileUpload />} />
         <Route path="/sem/:year/:branch" element={<Sem />} />
         <Route path="/sem/:year/:branch/:subject" element={<ViewFiles />} />
