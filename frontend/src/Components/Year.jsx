@@ -101,125 +101,130 @@ const Year = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 relative flex flex-col">
-      {/* Header */}
-      <header className="flex items-center justify-between p-4 shadow-md bg-white z-30">
-        {/* Left: Search Bar */}
-        <div ref={searchContainerRef} className="w-full max-w-md relative">
-          <div className="flex items-center space-x-2">
-            <input
-              type="text"
-              placeholder="Search documents..."
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
+    <div className="min-h-screen w-full flex flex-col justify-center items-center bg-gray-50 relative px-6">
+      {/* Overlay for search results */}
+      {showResults && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-10 animate-fadeIn" />
+      )}
+
+      {/* Top Right: User Info and Upload Button */}
+      <div className="absolute top-4 right-4 flex items-center space-x-4">
+        {!googleLoginDetails?.email ? (
+          <GoogleLogin
+            onSuccess={onLoginSuccess}
+            onFailure={onLoginFailure}
+            size="large"
+          />
+        ) : (
+          <div className="flex items-center space-x-2 bg-white p-2 rounded-lg shadow-md">
+            <div className="text-xs text-gray-700 whitespace-nowrap overflow-hidden text-ellipsis pr-6">
+              <p className="font-bold">{googleLoginDetails.name}</p>
+              <p className="text-gray-500">{googleLoginDetails.email}</p>
+            </div>
             <button
-              onClick={handleSearch}
-              className="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700 transition shadow-md"
+              onClick={handleLogout}
+              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition flex items-center"
             >
-              Search
+              <LogOut className="mr-2 w-4 h-4" /> Logout
             </button>
           </div>
-          {showResults && results.length > 0 && (
-            <div className="absolute left-0 mt-2 w-full bg-white rounded-lg shadow-lg max-h-60 overflow-y-auto animate-slideDown">
-              <ul className="divide-y divide-gray-200">
-                {results.map((doc) => (
-                  <li
-                    key={doc.id}
-                    className="p-3 hover:bg-blue-50 cursor-pointer transition-colors"
-                    onClick={() =>
-                      window.open(
-                        doc.url.startsWith("http")
-                          ? doc.url
-                          : `https://${doc.url}`,
-                        "_blank"
-                      )
-                    }
-                  >
-                    <div className="font-semibold text-blue-600">
-                      {doc.title}
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      {doc.subject} ({doc.subjectcode})
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
+        )}
+        <button
+          onClick={() => navigate("/upload")}
+          className="px-5 py-4 w-32 bg-green-500 text-white font-semibold text-sm rounded-lg hover:bg-green-600 transition shadow-md"
+        >
+          Upload File
+        </button>
+      </div>
 
-        {/* Right: User Actions */}
-        <div className="flex items-center space-x-4">
-          {!googleLoginDetails?.email ? (
-            <GoogleLogin
-              onSuccess={onLoginSuccess}
-              onFailure={onLoginFailure}
-              size="medium"
-            />
-          ) : (
-            <div className="flex items-center space-x-2 bg-gray-100 p-2 rounded-lg shadow">
-              <div className="text-xs text-gray-700 whitespace-nowrap overflow-hidden text-ellipsis pr-4">
-                <p className="font-bold">{googleLoginDetails.name}</p>
-                <p className="text-gray-500">{googleLoginDetails.email}</p>
-              </div>
-              <button
-                onClick={handleLogout}
-                className="bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition flex items-center"
-              >
-                <LogOut className="mr-1 w-4 h-4" /> Logout
-              </button>
-            </div>
-          )}
+      {/* Top Left: Search Bar and Results */}
+      <div
+        ref={searchContainerRef}
+        className="absolute top-4 left-4 w-full max-w-lg z-20"
+      >
+        <div className="flex space-x-2 mb-4">
+          <input
+            type="text"
+            placeholder="Search documents..."
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
           <button
-            onClick={() => navigate("/upload")}
-            className="bg-green-500 text-white px-5 py-3 rounded-lg shadow hover:bg-green-600 transition"
+            onClick={handleSearch}
+            className="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700 transition shadow-md"
           >
-            Upload File
+            Search
           </button>
         </div>
-      </header>
+        {showResults && results.length > 0 && (
+          <div className="bg-white p-4 rounded-lg shadow-lg max-h-[50vh] overflow-y-auto animate-slideDown">
+            <ul className="space-y-3">
+              {results.map((doc) => (
+                <li
+                  key={doc.id}
+                  className="cursor-pointer group transition-colors duration-200"
+                  onClick={() =>
+                    window.open(
+                      doc.url.startsWith("http")
+                        ? doc.url
+                        : `https://${doc.url}`,
+                      "_blank"
+                    )
+                  }
+                >
+                  <div className="font-semibold text-blue-600 group-hover:text-blue-800 transition">
+                    {doc.title}
+                  </div>
+                  <div className="text-sm text-gray-600 group-hover:text-gray-800 transition">
+                    {doc.subject} ({doc.subjectcode})
+                  </div>
+                  <hr className="border-t-2 my-2" />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
 
-      {/* Main Content */}
-      <main className="flex-grow flex flex-col items-center pt-16 pb-8 px-4">
-        {/* Year Selection */}
-        <div className="flex flex-wrap justify-center gap-4 mb-10">
+      {/* Main Content: Year Selection and Department Grid */}
+      <div className="w-full max-w-4xl flex flex-col items-center mt-32 z-0">
+        {/* Year Buttons */}
+        <div className="flex justify-center items-center gap-4 mb-6">
           {year.map((yr, index) => (
             <button
               key={index}
               onClick={() => setYearIndex(index)}
-              className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+              className={`px-5 py-3 text-sm font-semibold rounded-lg shadow-md transition duration-300 ${
                 index === yearIndex
-                  ? "bg-blue-600 text-white shadow-lg hover:bg-blue-700"
-                  : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
+                  ? "bg-blue-600 text-white hover:bg-blue-700"
+                  : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-100"
               }`}
             >
               {yr}
             </button>
           ))}
         </div>
-
         {/* Department Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-6xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-4">
           {departmentsData.map((dept, index) => (
             <button
               key={index}
               onClick={() => navigate(`/sem/${yearIndex + 1}/${dept.branch}`)}
-              className="relative p-6 bg-white border border-gray-300 rounded-lg shadow hover:shadow-xl transition-transform transform hover:scale-105 group overflow-hidden"
+              className="relative p-4 border border-gray-300 bg-white text-gray-700 text-center rounded-lg shadow-lg transition-transform duration-150 hover:scale-105 hover:shadow-xl group overflow-hidden"
             >
               <span className="absolute inset-0 bg-blue-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out" />
-              <span className="relative z-10 font-medium text-xl text-gray-800 group-hover:text-white transition-colors duration-500">
+              <span className="relative z-10 font-medium text-lg group-hover:text-white transition-colors duration-500">
                 {dept.abbreviation}
               </span>
             </button>
           ))}
         </div>
-      </main>
+      </div>
 
-      {/* Optional Upload File Popup */}
+      {/* Upload File Popup */}
       {showUpload && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20">
           <FileUpload onClose={() => setShowUpload(false)} />
         </div>
       )}
