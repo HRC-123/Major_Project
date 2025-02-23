@@ -6,6 +6,7 @@ import FileUpload from "./FileUpload";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { useGlobalContext } from "../context/GlobalContext";
+import { toast } from "react-toastify";
 
 import {
 
@@ -36,14 +37,20 @@ const Year = () => {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const data = await response.json();
-            setDepartmentsData(data); // Update state with fetched data
-        } catch (err) {
-            console.error("Error fetching departments:", err);
+          setDepartmentsData(data); // Update state with fetched data
+        
+              } catch (err) {
+          console.error("Error fetching departments:", err);
+          toast.error("Error fetching documents");
         }
     }
 
     fetchDepartments();
   }, []);
+
+  useEffect(() => {
+      toast.success("Departments fetched successfully");
+  },[departments])
   
   const handleSearch = async () => {
     if (!query.trim()) return; // Prevent empty searches
@@ -54,10 +61,12 @@ const Year = () => {
 
       const data = await response.json();
       setResults(data); // Store search results
+      toast.success("Search results fetched");
     } catch (error) {
       console.error("Search error:", error);
+      toast.error("Search error");
     }
-  };
+};
 
   const onLoginSuccess = (res) => {
     const decoded = jwtDecode(res.credential);
@@ -75,14 +84,14 @@ const Year = () => {
       profilePicture: decoded?.profilePicture,
     });
 
-    // toast.success(`Successfully LoggedIn : ${decoded?.name}`);
+    toast.success(`Login Successful : ${decoded?.name}`);
 
     navigate("/");
   };
 
   const onLoginFailure = (res) => {
     console.error("Login Failed: ", res);
-    // toast.error("Login failed. Please try again.");
+    toast.error("Login failed. Please try again.");
   };
 
     const handleLogout = () => {
@@ -92,7 +101,7 @@ const Year = () => {
         name: "",
         profilePicture: "",
       });
-      // toast.success("You have successfully logged out.");
+      toast.success("You have successfully logged out.");
       navigate("/");
     };
 

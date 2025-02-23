@@ -18,8 +18,10 @@ const FileUpload = ({ onClose }) => {
   
   useEffect(() => {
     if (!email || !isNitjEmail(email)) {
+      toast.error("Please login with nitj email to upload");
       navigate('/');
       console.log("The email is not from nitj.ac.in")
+      
     }
   }, []);
   
