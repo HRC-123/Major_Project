@@ -40,16 +40,10 @@ const Year = () => {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const data = await response.json();
-          setDepartmentsData(data); // Update state with fetched data
-        
+            setDepartmentsData(data); // Update state with fetched data
               } catch (err) {
           console.error("Error fetching departments:", err);
           toast.error("Error fetching documents");
-        }
-        const data = await response.json();
-        setDepartmentsData(data);
-      } catch (err) {
-        console.error("Error fetching departments:", err);
       }
     }
     fetchDepartments();

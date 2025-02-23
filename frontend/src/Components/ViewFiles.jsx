@@ -140,8 +140,8 @@ function ViewFiles() {
     
     return [...files].sort((a, b) => {
       
-      if (selectedFilter === "More Upvotes") return b.upvote - a.upvote;
-      if (selectedFilter === "Less Downvotes") return a.downvote - b.downvote;
+      if (selectedFilter === "More Upvotes") return b.upvote.length - a.upvote.length;
+      if (selectedFilter === "Less Downvotes") return a.downvote.length - b.downvote.length;
       if (selectedFilter === "Alphabetical Title") return a.title.localeCompare(b.title);
       
       return 0;

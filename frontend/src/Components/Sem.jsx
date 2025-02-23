@@ -16,17 +16,14 @@ function SemesterPage() {
 
       try {
         // Fetch subjects for both semesters
-        const [response1, response2] = await Promise.all([
-          fetch(`http://localhost:5000/subjects?&year=${year}&branch=${branch}&sem=${sem}`),
-          fetch(`http://localhost:5000/subjects?&year=${year}&branch=${branch}&sem${prevSem}`)
-        ]);
+        const response = await fetch(`http://localhost:5000/subjects?&year=${year}&branch=${branch}`);
       
-        if (!response1.ok || !response2.ok) throw new Error("Failed to fetch subjects");
+        if (!response.ok) throw new Error("Failed to fetch subjects");
       
-        const [data1, data2] = await Promise.all([response1.json(), response2.json()]);
+        const data = await response.json();
       
         // Combine both semester subjects
-        setSubjectsData([...data1, ...data2]);
+        setSubjectsData(data);
         toast.success("Subjects fetched successfully");
       } catch (error) {
         console.error("Error fetching subjects:", error);
