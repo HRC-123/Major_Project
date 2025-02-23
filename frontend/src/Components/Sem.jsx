@@ -1,6 +1,6 @@
 import React, { useEffect, useState,useRef } from "react";
 import { useParams,useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
 
 function SemesterPage() {
   
@@ -27,8 +27,10 @@ function SemesterPage() {
       
         // Combine both semester subjects
         setSubjectsData([...data1, ...data2]);
+        toast.success("Subjects fetched successfully");
       } catch (error) {
         console.error("Error fetching subjects:", error);
+        toast.error("Error fetching subjects:");
       }
     };
 

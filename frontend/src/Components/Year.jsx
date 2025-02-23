@@ -5,7 +5,9 @@ import FileUpload from "./FileUpload";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { useGlobalContext } from "../context/GlobalContext";
-import { LogOut } from "lucide-react";
+import { toast } from "react-toastify";
+import {LogOut } from "lucide-react";
+
 
 const Year = () => {
   const { googleLoginDetails, setGoogleLoginDetails } = useGlobalContext();
@@ -32,10 +34,17 @@ const Year = () => {
 
   useEffect(() => {
     async function fetchDepartments() {
-      try {
-        const response = await fetch("http://localhost:5000/branches");
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+        try {
+            const response = await fetch("http://localhost:5000/branches"); // Fix typo in endpoint
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+          setDepartmentsData(data); // Update state with fetched data
+        
+              } catch (err) {
+          console.error("Error fetching departments:", err);
+          toast.error("Error fetching documents");
         }
         const data = await response.json();
         setDepartmentsData(data);
@@ -54,12 +63,14 @@ const Year = () => {
       if (!response.ok) throw new Error("Failed to fetch search results");
 
       const data = await response.json();
+
       setResults(data);
       setShowResults(true);
     } catch (error) {
       console.error("Search error:", error);
+      toast.error("Search error");
     }
-  };
+};
 
   const onLoginSuccess = (res) => {
     const decoded = jwtDecode(res.credential);
@@ -73,22 +84,28 @@ const Year = () => {
       profilePicture: decoded?.profilePicture,
     });
 
+
+    toast.success(`Login Successful : ${decoded?.name}`);
+
     navigate("/");
   };
 
   const onLoginFailure = (res) => {
     console.error("Login Failed: ", res);
+
+    toast.error("Login failed. Please try again.");
   };
 
-  const handleLogout = () => {
-    localStorage.clear();
-    setGoogleLoginDetails({
-      email: "",
-      name: "",
-      profilePicture: "",
-    });
-    navigate("/");
-  };
+    const handleLogout = () => {
+      localStorage.clear();
+      setGoogleLoginDetails({
+        email: "",
+        name: "",
+        profilePicture: "",
+      });
+      toast.success("You have successfully logged out.");
+      navigate("/");
+    };
 
   return (
     <div className="h-screen w-full flex flex-col justify-center items-center bg-gray-50 relative px-6">

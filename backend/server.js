@@ -157,41 +157,87 @@ app.get("/api/files", async (req, res) => {
     }
   });
 
-  // API to increment upvote count
+// API to handle upvotes
 app.post("/api/upvote", async (req, res) => {
-    const { title,count } = req.body;
-    console.log(title)
-    try {
-      const { data, error } = await supabase
-        .from("documents")
-        .update({ upvote: count }) // Direct increment
-        .eq("title", title)
-        .select();
-        console.log(data)
-      if (error) throw error;
-      res.json({ success: true, data });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  });
-  
-  // API to increment downvote count
-  app.post("/api/downvote", async (req, res) => {
-    const { url,count } = req.body;
-  
-    try {
-      const { data, error } = await supabase
-        .from("documents")
-        .update({ downvote: count }) // Direct increment
-        .eq("url", url);
-  
-      if (error) throw error;
-      res.json({ success: true, data });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  });
+  const { title, email } = req.body;
+  try {
+    const { data, error } = await supabase
+      .from("documents")
+      .select("upvote, downvote")
+      .eq("title", title)
+      .maybeSingle(); // Use maybeSingle() to avoid the error
 
+    if (error) throw error;
+    if (!data) return res.status(404).json({ error: "Document not found" });
+
+    let upvotes = data.upvote || [];
+    let downvotes = data.downvote || [];
+
+    if (downvotes.includes(email)) {
+      downvotes = downvotes.filter((e) => e !== email);
+    }
+    if (!upvotes.includes(email)) {
+      upvotes.push(email);
+    }
+
+    const { error: updateError } = await supabase
+      .from("documents")
+      .update({ upvote: upvotes, downvote: downvotes })
+      .eq("title", title)
+      .select(); // Ensure we return updated values
+
+    if (updateError) throw updateError;
+
+    res.json({
+      success: true,
+      upvoteCount: upvotes.length,
+      downvoteCount: downvotes.length,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+app.post("/api/downvote", async (req, res) => {
+  const { title, email } = req.body;
+  try {
+    const { data, error } = await supabase
+      .from("documents")
+      .select("upvote, downvote")
+      .eq("title", title)
+      .maybeSingle();
+
+    if (error) throw error;
+    if (!data) return res.status(404).json({ error: "Document not found" });
+
+    let upvotes = data.upvote || [];
+    let downvotes = data.downvote || [];
+
+    if (upvotes.includes(email)) {
+      upvotes = upvotes.filter((e) => e !== email);
+    }
+    if (!downvotes.includes(email)) {
+      downvotes.push(email);
+    }
+
+    const { error: updateError } = await supabase
+      .from("documents")
+      .update({ upvote: upvotes, downvote: downvotes })
+      .eq("title", title)
+      .select();
+
+    if (updateError) throw updateError;
+
+    res.json({
+      success: true,
+      upvoteCount: upvotes.length,
+      downvoteCount: downvotes.length,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // Start Server
 app.listen(port, () => {
