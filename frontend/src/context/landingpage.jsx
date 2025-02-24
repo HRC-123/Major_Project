@@ -58,75 +58,77 @@ export default function LandingPage() {
       {/* 
         2) ADDITIONAL COMPONENTS (PLAIN BACKGROUND)
       */}
-      <div className="bg-white px-4 py-16">
+      {/* <div className="bg-white px-4 py-16"> */}
         {/* Heading & Subheading */}
-        <h2 className="text-4xl font-bold text-black mb-2">More Stuff</h2>
+        {/* <h2 className="text-4xl font-bold text-black mb-2">More Stuff</h2>
         <p className="text-lg text-gray-700 mb-8">
           Additional stuff that we really could not put anywhere else.
-        </p>
+        </p> */}
 
         {/* GPA Calculator */}
-        <div className="bg-gray-100 p-4 mb-4 flex flex-col md:flex-row items-start md:items-center justify-between">
+        {/* <div className="bg-gray-100 p-4 mb-4 flex flex-col md:flex-row items-start md:items-center justify-between">
           <h3 className="text-2xl font-semibold mb-2 md:mb-0">GPA Calculator</h3>
           <p className="text-gray-600">
             Just enter your grades, we give you your GPA. Simple.
           </p>
-        </div>
+        </div> */}
 
         {/* myTimeTable */}
-        <div className="bg-gray-100 p-4 mb-4 flex flex-col md:flex-row items-start md:items-center justify-between">
+        {/* <div className="bg-gray-100 p-4 mb-4 flex flex-col md:flex-row items-start md:items-center justify-between">
           <h3 className="text-2xl font-semibold mb-2 md:mb-0">myTimeTable</h3>
           <p className="text-gray-600">
             The most intuitive and amazing time-table for you.
           </p>
-        </div>
+        </div> */}
 
         {/* Academic Calendar */}
-        <div className="bg-gray-100 p-4 mb-4 flex flex-col md:flex-row items-start md:items-center justify-between">
+        {/* <div className="bg-gray-100 p-4 mb-4 flex flex-col md:flex-row items-start md:items-center justify-between">
           <h3 className="text-2xl font-semibold mb-2 md:mb-0">Academic Calendar</h3>
           <p className="text-gray-600">
             Plan your semester with all important dates in one place.
           </p>
-        </div>
+        </div> */}
 
         {/* WiFi & passwords */}
-        <div className="bg-gray-100 p-4 mb-4 flex flex-col md:flex-row items-start md:items-center justify-between">
+        {/* <div className="bg-gray-100 p-4 mb-4 flex flex-col md:flex-row items-start md:items-center justify-between">
           <h3 className="text-2xl font-semibold mb-2 md:mb-0">WiFi &amp; passwords</h3>
           <p className="text-gray-600">
             All network credentials easily accessible here.
           </p>
-        </div>
+        </div> */}
 
         {/* Holiday Calendar */}
-        <div className="bg-gray-100 p-4 mb-4 flex flex-col md:flex-row items-start md:items-center justify-between">
+        {/* <div className="bg-gray-100 p-4 mb-4 flex flex-col md:flex-row items-start md:items-center justify-between">
           <h3 className="text-2xl font-semibold mb-2 md:mb-0">Holiday Calendar</h3>
           <p className="text-gray-600">
             Never miss a holiday or long weekend again.
           </p>
-        </div>
+        </div> */}
 
         {/* Societies & Fests */}
-        <div className="bg-gray-100 p-4 mb-4 flex flex-col md:flex-row items-start md:items-center justify-between">
+        {/* <div className="bg-gray-100 p-4 mb-4 flex flex-col md:flex-row items-start md:items-center justify-between">
           <h3 className="text-2xl font-semibold mb-2 md:mb-0">Societies &amp; Fests</h3>
           <p className="text-gray-600">
             All societies from Thapar Institute of Engineering &amp; Technology in one place.
           </p>
-        </div>
+        </div> */}
 
         {/* Food & Restros */}
-        <div className="bg-gray-100 p-4 flex flex-col md:flex-row items-start md:items-center justify-between">
+        {/* <div className="bg-gray-100 p-4 flex flex-col md:flex-row items-start md:items-center justify-between">
           <h3 className="text-2xl font-semibold mb-2 md:mb-0">Food &amp; Restros</h3>
           <p className="text-gray-600">
             From getting tipsy to getting sober, discover the best places to eat.
           </p>
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
 
       <Year/>
       {/* 
         3) FINAL FOOTER AT THE BOTTOM 
       */}
-      <footer className="w-full bg-gray-900 text-white py-10 flex items-center justify-center text-lg font-semibold flex-col">
+
+
+      <footer className="w-full bg-gray-900 text-white py-10 flex items-center mt-24 justify-center text-lg font-semibold flex-col">
         <div className="text-2xl"   >
         Made by
         </div>
