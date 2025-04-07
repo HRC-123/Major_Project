@@ -109,6 +109,80 @@ app.post("/upload", upload.single("file"), async (req, res) => {
   }
 });
 
+app.post("/report", async (req, res) => {
+  try {
+    const {
+      title,
+      author,
+      type,
+      year,
+      semester,
+      branch,
+      subject,
+      subjectcode,
+      description,
+      url, // even if it's hidden, it'll be submitted
+      reporterEmail,
+      reporterName,
+      reportReason,
+    } = req.body;
+
+    console.log(req.body)
+
+    // Check for required fields
+    if (
+      !title ||
+      !author ||
+      !type ||
+      !year ||
+      !semester ||
+      !branch ||
+      !subject ||
+      !subjectcode ||
+      !description ||
+      !url ||
+      !reporterEmail ||
+      !reporterName ||
+      !reportReason
+    ) {
+      return res
+        .status(400)
+        .json({ error: "Missing required fields in report" });
+    }
+
+    // Insert into Supabase reports table
+    const { data, error } = await supabase.from("reports").insert([
+      {
+        title,
+        author,
+        type,
+        year,
+        semester,
+        branch,
+        subject,
+        subjectcode,
+        description,
+        url,
+        reporter_email: reporterEmail,
+        reporter_name: reporterName,
+        reason: reportReason,
+        timestamp: new Date().toISOString(),
+      },
+    ]);
+
+    if (error) {
+      console.error("Insert report error:", error);
+      return res.status(500).json({ error: "Failed to submit report" });
+    }
+
+    res.status(200).json({ message: "Report submitted successfully" });
+  } catch (err) {
+    console.error("Server error:", err);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+
 // searching files
 app.get("/search", async (req, res) => {
   try {
