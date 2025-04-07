@@ -10,7 +10,7 @@ export default function LandingPage() {
       {/* 
         1) TOP SECTION with background image.
       */}
-      <div
+      {/* <div
         className="min-h-screen flex flex-col"
         style={{
           backgroundImage: "url('/backgroundImage.jpeg')",
@@ -18,23 +18,23 @@ export default function LandingPage() {
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
         }}
-      >
-        <header className="flex-grow flex flex-col items-center justify-center bg-transparent px-4 py-8">
+      > */}
+        {/* <header className="flex-grow flex flex-col items-center justify-center bg-transparent px-4 py-8"> */}
           {/* Place any top content here (logo, text, etc.) */}
-        </header>
+        {/* </header> */}
 
         {/* Triangular Footer Section */}
-        <footer className="w-full">
-          <div className="flex w-full" style={{ height: "10rem" }}>
+        {/* <footer className="w-full">
+          <div className="flex w-full" style={{ height: "10rem" }}> */}
             {/* First Column */}
-            <div className="relative w-1/3 bg-green-400 clip-polygon-left flex items-center justify-center px-4">
+            {/* <div className="relative w-1/3 bg-green-400 clip-polygon-left flex items-center justify-center px-4">
               <span className="text-white font-semibold text-lg">
                 Upload &amp; Share: <br></br>Users can upload PDFs, DOCs, PPTs, or handwritten scanned notes.
               </span>
-            </div>
+            </div> */}
 
             {/* Second Column */}
-            <div className="relative w-1/3 bg-purple-400 clip-polygon-mid flex items-center justify-center px-4">
+            {/* <div className="relative w-1/3 bg-purple-400 clip-polygon-mid flex items-center justify-center px-4">
               <a 
                 onClick={() => navigate("/year")}
                 className="cursor-pointer hover:text-red-600"
@@ -42,18 +42,18 @@ export default function LandingPage() {
                 <span className="text-white font-semibold text-lg">
                   Search &amp; Filter: <br></br> Find relevant study materials by subject, topic, semester, or popularity.
                 </span>
-              </a>
-            </div>
+              </a> */}
+            {/* </div> */}
 
             {/* Third Column */}
-            <div className="relative w-1/3 bg-yellow-400 clip-polygon-right flex items-center justify-center px-4">
+            {/* <div className="relative w-1/3 bg-yellow-400 clip-polygon-right flex items-center justify-center px-4">
               <span className="text-white font-semibold text-lg">
                 Like &amp; Dislike System:<br></br> Rate notes to help others find high-quality content.
               </span>
             </div>
           </div>
         </footer>
-      </div>
+      </div> */}
 
       {/* 
         2) ADDITIONAL COMPONENTS (PLAIN BACKGROUND)
@@ -127,7 +127,7 @@ export default function LandingPage() {
         3) FINAL FOOTER AT THE BOTTOM 
       */}
 
-
+{/* 
       <footer className="w-full bg-gray-900 text-white py-10 flex items-center mt-24 justify-center text-lg font-semibold flex-col">
         <div className="text-2xl"   >
         Made by
@@ -138,7 +138,7 @@ export default function LandingPage() {
         <div>Ramcharan Hanumanthu (21103123)</div>
         </div>
         
-    </footer>
+    </footer> */}
 
     </div>
   );

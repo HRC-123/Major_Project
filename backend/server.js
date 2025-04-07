@@ -215,21 +215,32 @@ app.get("/search", async (req, res) => {
 app.get("/api/files", async (req, res) => {
     try {
       const { year, branch, subject, type } = req.query;
-  
-      if (!year || !branch || !subject || !type) {
-        return res.status(400).json({ error: "Missing query parameters" });
+
+      if (year == 'all') {
+         const { data, error } = await supabase
+           .from("documents")
+           .select("*")
+         if (error) throw error;
+
+         res.json(data);
       }
-      const { data, error } = await supabase
-      .from("documents")
-      .select("*")
-      .eq("year", year)
-      .eq("branch", branch)
-      .eq("subject", subject)
-      .eq("type", type);
+      else {
+  
+        if (!year || !branch || !subject || !type) {
+          return res.status(400).json({ error: "Missing query parameters" });
+        }
+        const { data, error } = await supabase
+          .from("documents")
+          .select("*")
+          .eq("year", year)
+          .eq("branch", branch)
+          .eq("subject", subject)
+          .eq("type", type);
       
-      if (error) throw error;
+        if (error) throw error;
     
-      res.json(data);
+        res.json(data);
+      }
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
