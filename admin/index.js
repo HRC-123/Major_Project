@@ -213,6 +213,10 @@ const Document = sequelize.define(
       type: DataTypes.TEXT,
       allowNull: false,
     },
+    authorEmail: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
     title: {
       type: DataTypes.TEXT,
       allowNull: false,
@@ -248,6 +252,10 @@ const Report = sequelize.define(
       allowNull: false,
     },
     author: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    authorEmail: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
@@ -497,6 +505,7 @@ const adminJs = new AdminJS({
           subjectcode: { isVisible: true },
           type: { isVisible: true },
           author: { isVisible: true },
+          authorEmail: { isVisible: true },
 
           title: { isVisible: true },
           description: { isVisible: true },
@@ -553,6 +562,7 @@ const adminJs = new AdminJS({
           subjectcode: { isVisible: true },
           type: { isVisible: true },
           author: { isVisible: true },
+          authorEmail: { isVisible: true },
           title: { isVisible: true },
           description: { isVisible: true },
           url: { isVisible: true },

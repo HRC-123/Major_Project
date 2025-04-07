@@ -34,6 +34,7 @@ const FileUpload = ({ onClose }) => {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [authorName, setAuthorName] = useState(name);
+  const [authorEmail, setAuthorEmail] = useState(email);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [uploadMethod, setUploadMethod] = useState("file"); // New state for tracking upload method
@@ -121,6 +122,7 @@ const FileUpload = ({ onClose }) => {
     formData.append("subjectcode", subjectcode);
     formData.append("type", selectedType);
     formData.append("author", authorName);
+    formData.append("authorEmail", authorEmail);
     formData.append("title", title);
     formData.append("description", description);
   
@@ -186,6 +188,16 @@ const FileUpload = ({ onClose }) => {
           // onChange={(e) => setAuthorName(e.target.value)}
           className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
           placeholder="Enter author name"
+          contentEditable="false"
+        />
+
+        <label className="font-semibold">Author Email</label>
+        <input
+          type="email"
+          value={authorEmail}
+          // onChange={(e) => setAuthorName(e.target.value)}
+          className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
+          placeholder="Enter author email"
           contentEditable="false"
         />
       </div>

@@ -50,10 +50,10 @@ app.get("/subjects", async (req, res) => {
 // Upload File Endpoint
 app.post("/upload", upload.single("file"), async (req, res) => {
   try {
-    const { year, branch, semester, subject, subjectcode, type, author, title, description, fileUrl } = req.body;
+    const { year, branch, semester, subject, subjectcode, type, author,authorEmail, title, description, fileUrl } = req.body;
     const file = req.file;
 
-    if ((!file && !fileUrl) || !year || !branch || !semester || !subject || !subjectcode || !type || !author || !title || !description) {
+    if ((!file && !fileUrl) || !year || !branch || !semester || !subject || !subjectcode || !type || !author || !authorEmail || !title || !description) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
@@ -90,6 +90,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
         subjectcode,
         type,
         author,
+        authorEmail,
         title,
         description,
         upvote: [],
@@ -114,6 +115,7 @@ app.post("/report", async (req, res) => {
     const {
       title,
       author,
+      authorEmail,
       type,
       year,
       semester,
@@ -133,6 +135,7 @@ app.post("/report", async (req, res) => {
     if (
       !title ||
       !author ||
+      !authorEmail ||
       !type ||
       !year ||
       !semester ||
@@ -155,6 +158,7 @@ app.post("/report", async (req, res) => {
       {
         title,
         author,
+        authorEmail,
         type,
         year,
         semester,

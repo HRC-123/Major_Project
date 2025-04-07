@@ -136,7 +136,10 @@ const FileCard = ({ file }) => {
           <div
             className="text-sm text-red-500 font-semibold cursor-pointer hover:underline"
             onClick={() =>
-            (!email || !name) ?  toast.error("Please login to report."):setReportActive(true)}
+              !email || !name
+                ? toast.error("Please login to report.")
+                : setReportActive(true)
+            }
           >
             Report
           </div>
@@ -173,7 +176,7 @@ const FileCard = ({ file }) => {
           ></div>
 
           {/* Sidebar */}
-          <div className="w-[26rem] h-screen bg-white shadow-2xl p-6 overflow-y-auto transform transition-transform duration-300 ease-in-out translate-x-0">
+          <div className="w-[34rem] h-screen bg-white shadow-2xl p-6 overflow-y-auto transform transition-transform duration-300 ease-in-out translate-x-0">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold text-gray-800">
                 Report Document
@@ -201,11 +204,23 @@ const FileCard = ({ file }) => {
 
                 <div>
                   <label className="text-sm font-medium text-gray-700">
-                    Author Email
+                    Author
                   </label>
                   <input
                     type="email"
                     value={file.author}
+                    readOnly
+                    className="mt-1 w-full p-2 border rounded bg-gray-100 text-gray-600"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-gray-700">
+                    Author Email
+                  </label>
+                  <input
+                    type="email"
+                    value={file.authorEmail}
                     readOnly
                     className="mt-1 w-full p-2 border rounded bg-gray-100 text-gray-600"
                   />
@@ -223,40 +238,42 @@ const FileCard = ({ file }) => {
                   />
                 </div>
 
-                <div>
-                  <label className="text-sm font-medium text-gray-700">
-                    Year
-                  </label>
-                  <input
-                    type="text"
-                    value={file.year}
-                    readOnly
-                    className="mt-1 w-full p-2 border rounded bg-gray-100 text-gray-600"
-                  />
-                </div>
+                <div className="col-span-2 grid grid-cols-3 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-gray-700">
+                      Year
+                    </label>
+                    <input
+                      type="text"
+                      value={file.year}
+                      readOnly
+                      className="mt-1 w-full p-2 border rounded bg-gray-100 text-gray-600"
+                    />
+                  </div>
 
-                <div>
-                  <label className="text-sm font-medium text-gray-700">
-                    Semester
-                  </label>
-                  <input
-                    type="text"
-                    value={file.semester}
-                    readOnly
-                    className="mt-1 w-full p-2 border rounded bg-gray-100 text-gray-600"
-                  />
-                </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-700">
+                      Semester
+                    </label>
+                    <input
+                      type="text"
+                      value={file.semester}
+                      readOnly
+                      className="mt-1 w-full p-2 border rounded bg-gray-100 text-gray-600"
+                    />
+                  </div>
 
-                <div>
-                  <label className="text-sm font-medium text-gray-700">
-                    Branch
-                  </label>
-                  <input
-                    type="text"
-                    value={file.branch}
-                    readOnly
-                    className="mt-1 w-full p-2 border rounded bg-gray-100 text-gray-600"
-                  />
+                  <div>
+                    <label className="text-sm font-medium text-gray-700">
+                      Branch
+                    </label>
+                    <input
+                      type="text"
+                      value={file.branch}
+                      readOnly
+                      className="mt-1 w-full p-2 border rounded bg-gray-100 text-gray-600"
+                    />
+                  </div>
                 </div>
 
                 <div>
