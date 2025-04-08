@@ -6,6 +6,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { useGlobalContext } from "../context/GlobalContext";
 import { toast } from "react-hot-toast";
+import CountUp from "react-countup";
 import {
   LogOut,
   Search,
@@ -14,6 +15,10 @@ import {
   ExternalLink,
   Download,
 } from "lucide-react";
+
+import { useInView } from 'react-intersection-observer';
+
+
 
 const Year = () => {
   const { googleLoginDetails, setGoogleLoginDetails } = useGlobalContext();
@@ -29,6 +34,11 @@ const Year = () => {
   const [showResults, setShowResults] = useState(false);
 
   const searchContainerRef = useRef(null);
+
+ const { ref, inView } = useInView({
+   triggerOnce: true,
+   threshold: 0.3,
+ });
 
   // Hide search results when clicking outside the search container
   useEffect(() => {
@@ -261,7 +271,7 @@ const Year = () => {
         <div
           className="relative h-48 bg-cover bg-center z-0"
           style={{
-            backgroundImage: `url('/api/placeholder/1920/500')`,
+            backgroundImage: `url(/nitj3.jpg)`,
             backgroundPosition: "center 30%",
           }}
         >
@@ -391,38 +401,91 @@ const Year = () => {
         </div>
 
         {/* Statistics Section */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <h3 className="text-xl font-bold text-[#800000] mb-4">
-            Resource Statistics
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 text-center">
-              <div className="text-4xl font-bold text-[#800000] mb-2">
-                {documentsLength}+
+        <div
+          ref={ref}
+          className="relative bg-cover bg-center bg-fixed w-full py-16"
+          style={{ backgroundImage: "url('/placementStats.jpg')" }}
+        >
+          {/* Dark overlay */}
+          <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+
+          {/* Content */}
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+              {/* Left Stats Block */}
+              <div className="md:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-6 text-white text-center">
+                {/* Study Materials */}
+                <div>
+                  <div className="text-4xl sm:text-5xl font-bold">
+                    {inView && <CountUp end={documentsLength} duration={2} />}+
+                  </div>
+                  <div className="text-sm sm:text-base mt-1 font-medium tracking-wider uppercase">
+                    Study Materials
+                  </div>
+                </div>
+
+                {/* Departments */}
+                <div>
+                  <div className="text-4xl sm:text-5xl font-bold">
+                    {inView && (
+                      <CountUp end={departmentsData.length} duration={2} />
+                    )}
+                    +
+                  </div>
+                  <div className="text-sm sm:text-base mt-1 font-medium tracking-wider uppercase">
+                    Departments
+                  </div>
+                </div>
+
+                {/* Past Papers */}
+                <div>
+                  <div className="text-4xl sm:text-5xl font-bold">
+                    {inView && <CountUp end={5} duration={2} />}+
+                  </div>
+                  <div className="text-sm sm:text-base mt-1 font-medium tracking-wider uppercase">
+                    Past Papers
+                  </div>
+                </div>
+
+                {/* Users */}
+                <div>
+                  <div className="text-4xl sm:text-5xl font-bold">
+                    {inView && <CountUp end={30} duration={2} />}+
+                  </div>
+                  <div className="text-sm sm:text-base mt-1 font-medium tracking-wider uppercase">
+                    Active Users
+                  </div>
+                </div>
               </div>
-              <div className="text-gray-600 text-sm">Study Materials</div>
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 text-center">
-              <div className="text-4xl font-bold text-[#800000] mb-2">
-                {departmentsData.length}
+
+              {/* Right Title Block */}
+              <div className="text-white text-right">
+                <div className="text-3xl sm:text-4xl font-bold">#STATS</div>
+                <div className="text-xl sm:text-2xl font-medium">
+                  THAT POWER US
+                </div>
               </div>
-              <div className="text-gray-600 text-sm">Departments</div>
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 text-center">
-              <div className="text-4xl font-bold text-[#800000] mb-2">5+</div>
-              <div className="text-gray-600 text-sm">Past Papers</div>
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 text-center">
-              <div className="text-4xl font-bold text-[#800000] mb-2">30+</div>
-              <div className="text-gray-600 text-sm">Active Users</div>
             </div>
           </div>
         </div>
       </main>
 
       {/* Footer - NITJ inspired with more details */}
-      <footer className="bg-[#800000] text-white py-8">
-        <div className="container mx-auto px-4">
+      <footer className="relative text-white py-8">
+        {/* Background image with overlay - increasing visibility */}
+        <div className="absolute inset-0 z-0">
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-100"
+            style={{
+              backgroundImage: `url("/about_top.jpg")`,
+              backgroundPosition: "center 40%",
+            }}
+          ></div>
+          <div className="absolute inset-0 bg-[#800000] opacity-60"></div>
+        </div>
+
+        {/* Footer content with higher z-index */}
+        <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col md:flex-row justify-between mb-8">
             <div className="mb-6 md:mb-0">
               <h4 className="font-bold text-lg mb-3">NITJ Study Resources</h4>
@@ -484,7 +547,7 @@ const Year = () => {
               </div>
             </div>
           </div>
-          <div className="pt-4 border-t border-gray-700 text-center text-sm">
+          <div className="pt-4  text-center text-sm">
             <p>
               © {new Date().getFullYear()} NITJ Study Resources | National
               Institute of Technology, Jalandhar
