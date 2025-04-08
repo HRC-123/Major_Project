@@ -131,7 +131,7 @@ const Year = () => {
           <div className="flex items-center">
             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mr-3">
               <img
-                src="nitjlogo.png"
+                src="/nitjlogo.png"
                 alt="NITJ Logo"
                 className="w-10 h-10 object-contain"
               />
