@@ -130,13 +130,13 @@ const FileCard = ({ file }) => {
 
   return (
     <>
-      <div className="p-6 bg-white rounded-lg shadow-lg hover:shadow-2xl transition duration-300 border-l-4 border-[#800000]">
+      <div className="p-6 bg-white rounded-lg shadow-lg hover:shadow-2xl transition duration-300 border-l-4 border-[#2C3E50]">
         <div className="flex flex-col md:flex-row justify-between">
           <div className="flex-grow">
             <div className="flex items-start mb-1">
-              <FileText className="w-5 h-5 text-[#800000] mr-2 mt-1 flex-shrink-0" />
+              <FileText className="w-5 h-5 text-[#2C3E50] mr-2 mt-1 flex-shrink-0" />
               <h2
-                className="text-xl font-semibold text-gray-800 hover:text-[#800000] cursor-pointer transition"
+                className="text-xl font-semibold text-gray-800 hover:text-[#2C3E50] cursor-pointer transition"
                 onClick={openFile}
               >
                 {file.title}
@@ -182,7 +182,7 @@ const FileCard = ({ file }) => {
 
             <button
               onClick={openFile}
-              className="mt-4 px-4 py-2 bg-[#800000] text-white rounded-md hover:bg-[#600000] transition flex items-center text-sm"
+              className="mt-4 px-4 py-2 bg-[#2C3E50] text-white rounded-md hover:bg-[#36597A] transition flex items-center text-sm"
             >
               <ExternalLink className="w-4 h-4 mr-2" />
               Open Resource
@@ -243,7 +243,7 @@ const FileCard = ({ file }) => {
           {/* Sidebar */}
           <div className="w-full max-w-2xl h-screen bg-white shadow-2xl p-6 overflow-y-auto transform transition-transform duration-300 ease-in-out translate-x-0">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold text-[#800000] flex items-center">
+              <h2 className="text-xl font-bold text-[#2C3E50] flex items-center">
                 <Flag className="w-5 h-5 mr-2" />
                 Report Document
               </h2>
@@ -358,7 +358,7 @@ const FileCard = ({ file }) => {
                   placeholder="Please explain why you are reporting this document..."
                   value={reportReason}
                   onChange={(e) => setReportReason(e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800000] transition h-32 resize-none"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition h-32 resize-none"
                   required
                 />
                 <p className="text-xs text-gray-500 mt-1">
@@ -377,7 +377,7 @@ const FileCard = ({ file }) => {
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 bg-[#800000] text-white rounded-md hover:bg-[#600000] transition font-medium"
+                  className="px-6 py-2 bg-[#2C3E50] text-white rounded-md hover:bg-[#36597A] transition font-medium"
                 >
                   Submit Report
                 </button>

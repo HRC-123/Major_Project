@@ -16,9 +16,7 @@ import {
   Download,
 } from "lucide-react";
 
-import { useInView } from 'react-intersection-observer';
-
-
+import { useInView } from "react-intersection-observer";
 
 const Year = () => {
   const { googleLoginDetails, setGoogleLoginDetails } = useGlobalContext();
@@ -35,10 +33,10 @@ const Year = () => {
 
   const searchContainerRef = useRef(null);
 
- const { ref, inView } = useInView({
-   triggerOnce: true,
-   threshold: 0.3,
- });
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.3,
+  });
 
   // Hide search results when clicking outside the search container
   useEffect(() => {
@@ -68,7 +66,6 @@ const Year = () => {
         console.error("Error fetching departments:", error);
         toast.error("Error fetching documents");
       }
-
 
       try {
         const response = await fetch(
@@ -136,7 +133,7 @@ const Year = () => {
   return (
     <div className="min-h-screen w-full flex flex-col bg-gray-100 relative">
       {/* NITJ-inspired Header */}
-      <header className="w-full bg-[#800000] text-white shadow-md">
+      <header className="w-full bg-[#2C3E50] text-white shadow-md">
         <div className="container mx-auto py-3 px-4 flex justify-between items-center">
           <div className="flex items-center">
             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mr-3">
@@ -199,7 +196,7 @@ const Year = () => {
               <input
                 type="text"
                 placeholder="Search for notes, papers, documents..."
-                className="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800000] transition"
+                className="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
@@ -211,7 +208,7 @@ const Year = () => {
             </div>
             <button
               onClick={handleSearch}
-              className="bg-[#800000] text-white px-5 py-3 rounded-lg hover:bg-[#600000] transition shadow-md flex items-center"
+              className="bg-[#2C3E50] text-white px-5 py-3 rounded-lg hover:bg-[#36597A] transition shadow-md flex items-center"
             >
               Search
             </button>
@@ -225,7 +222,7 @@ const Year = () => {
 
               <div className="absolute left-0 right-0 mx-auto max-w-2xl bg-white p-4 rounded-lg shadow-lg max-h-[50vh] overflow-y-auto animate-slideDown mt-1 border border-gray-200 z-20">
                 <div className="flex justify-between items-center mb-3">
-                  <h3 className="text-[#800000] font-semibold text-lg">
+                  <h3 className="text-[#2C3E50] font-semibold text-lg">
                     Search Results
                   </h3>
                   <button
@@ -249,7 +246,7 @@ const Year = () => {
                         )
                       }
                     >
-                      <div className="font-semibold text-[#800000] group-hover:text-[#600000] transition flex items-center">
+                      <div className="font-semibold text-[#2C3E50] group-hover:text-[#36597A] transition flex items-center">
                         <Book className="w-4 h-4 mr-2" />
                         {doc.title}
                       </div>
@@ -275,7 +272,7 @@ const Year = () => {
             backgroundPosition: "center 30%",
           }}
         >
-          <div className="absolute inset-0 bg-[#800000] opacity-50"></div>
+          <div className="absolute inset-0 bg-[#2C3E50] opacity-50"></div>
           <div className="container mx-auto px-4 py-12 relative z-10 h-full flex flex-col justify-center">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
               <div>
@@ -290,7 +287,7 @@ const Year = () => {
               <div className="mt-4 md:mt-0">
                 <button
                   onClick={() => navigate("/upload")}
-                  className="px-6 py-3 bg-yellow-500 text-[#800000] rounded-md hover:bg-yellow-400 transition font-bold shadow-lg flex items-center"
+                  className="px-6 py-3 bg-yellow-500 text-[#2C3E50] rounded-md hover:bg-yellow-400 transition font-bold shadow-lg flex items-center"
                 >
                   <Upload className="w-5 h-5 mr-2" /> Upload Resources
                 </button>
@@ -303,8 +300,8 @@ const Year = () => {
       {/* Main Content Area */}
       <main className="flex-grow container mx-auto py-8 px-4">
         {/* Quick Links Section */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8 border-l-4 border-[#800000]">
-          <h2 className="text-2xl font-bold text-[#800000] mb-4">
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8 border-l-4 border-[#2C3E50]">
+          <h2 className="text-2xl font-bold text-[#2C3E50] mb-4">
             Quick Links
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -314,28 +311,28 @@ const Year = () => {
               rel="noopener noreferrer"
               className="flex items-center p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
             >
-              <ExternalLink className="w-5 h-5 mr-2 text-[#800000]" />
+              <ExternalLink className="w-5 h-5 mr-2 text-[#2C3E50]" />
               <span>NITJ Website</span>
             </a>
             {/* <a
               href="#"
               className="flex items-center p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
             >
-              <Book className="w-5 h-5 mr-2 text-[#800000]" />
+              <Book className="w-5 h-5 mr-2 text-[#2C3E50]" />
               <span>Syllabus</span>
             </a>
             <a
               href="#"
               className="flex items-center p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
             >
-              <Download className="w-5 h-5 mr-2 text-[#800000]" />
+              <Download className="w-5 h-5 mr-2 text-[#2C3E50]" />
               <span>Past Papers</span>
             </a>
             <a
               href="#"
               className="flex items-center p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
             >
-              <Upload className="w-5 h-5 mr-2 text-[#800000]" />
+              <Upload className="w-5 h-5 mr-2 text-[#2C3E50]" />
               <span>Contribute</span>
             </a> */}
           </div>
@@ -344,7 +341,7 @@ const Year = () => {
         {/* Year Selection */}
         <div className="mb-8">
           <h3 className="text-xl font-bold text-gray-700 mb-4 flex items-center">
-            <div className="w-6 h-6 bg-[#800000] rounded-full mr-2"></div>
+            <div className="w-6 h-6 bg-[#2C3E50] rounded-full mr-2"></div>
             Select Your Year
           </h3>
           <div className="flex flex-wrap gap-3">
@@ -354,7 +351,7 @@ const Year = () => {
                 onClick={() => setYearIndex(index)}
                 className={`px-8 py-4 text-sm font-semibold rounded-lg shadow-md transition duration-300 ${
                   index === yearIndex
-                    ? "bg-[#800000] text-white"
+                    ? "bg-[#2C3E50] text-white"
                     : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
                 }`}
               >
@@ -367,7 +364,7 @@ const Year = () => {
         {/* Departments - MyHerupa card style with improved design */}
         <div className="mb-8">
           <h3 className="text-xl font-bold text-gray-700 mb-4 flex items-center">
-            <div className="w-6 h-6 bg-[#800000] rounded-full mr-2"></div>
+            <div className="w-6 h-6 bg-[#2C3E50] rounded-full mr-2"></div>
             Select Your Department
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -375,12 +372,12 @@ const Year = () => {
               <div
                 key={index}
                 onClick={() => navigate(`/sem/${yearIndex + 1}/${dept.branch}`)}
-                className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-[#800000] group"
+                className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-[#2C3E50] group"
               >
-                <div className="h-3 bg-[#800000] group-hover:h-5 transition-all duration-300"></div>
+                <div className="h-3 bg-[#2C3E50] group-hover:h-5 transition-all duration-300"></div>
                 <div className="p-6">
-                  <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-[#800000] transition-all duration-300">
-                    <span className="font-bold text-[#800000] group-hover:text-white transition-all duration-300">
+                  <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-[#2C3E50] transition-all duration-300">
+                    <span className="font-bold text-[#2C3E50] group-hover:text-white transition-all duration-300">
                       {dept.branch}
                     </span>
                   </div>
@@ -388,7 +385,7 @@ const Year = () => {
                     {dept.abbreviation}
                   </h4>
                   {/* <p className="text-sm text-gray-500">{dept.branch}</p> */}
-                  <div className="mt-4 text-[#800000] text-sm font-medium flex items-center">
+                  <div className="mt-4 text-[#2C3E50] text-sm font-medium flex items-center">
                     Explore{" "}
                     <span className="ml-1 group-hover:ml-2 transition-all duration-300">
                       →
@@ -401,9 +398,10 @@ const Year = () => {
         </div>
 
         {/* Statistics Section */}
+      </main>
         <div
           ref={ref}
-          className="relative bg-cover bg-center bg-fixed w-full py-16"
+          className="relative bg-cover bg-center bg-fixed w-full py-16 mb-1"
           style={{ backgroundImage: "url('/placementStats.jpg')" }}
         >
           {/* Dark overlay */}
@@ -468,7 +466,6 @@ const Year = () => {
             </div>
           </div>
         </div>
-      </main>
 
       {/* Footer - NITJ inspired with more details */}
       <footer className="relative text-white py-8">
@@ -481,7 +478,7 @@ const Year = () => {
               backgroundPosition: "center 40%",
             }}
           ></div>
-          <div className="absolute inset-0 bg-[#800000] opacity-60"></div>
+          <div className="absolute inset-0 bg-[#2C3E50] opacity-60"></div>
         </div>
 
         {/* Footer content with higher z-index */}

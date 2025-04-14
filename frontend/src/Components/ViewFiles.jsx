@@ -86,7 +86,7 @@ function ViewFiles() {
   return (
     <div className="min-h-screen w-full flex flex-col bg-gray-100 relative">
       {/* Header */}
-      <header className="w-full bg-[#800000] text-white shadow-md">
+      <header className="w-full bg-[#2C3E50] text-white shadow-md">
         <div className="container mx-auto py-3 px-4 flex justify-between items-center">
           <div className="flex items-center">
             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mr-3">
@@ -116,7 +116,7 @@ function ViewFiles() {
             backgroundPosition: "center 30%",
           }}
         >
-          <div className="absolute inset-0 bg-[#800000] opacity-50"></div>
+          <div className="absolute inset-0 bg-[#2C3E50] opacity-50"></div>
           <div className="container mx-auto px-4 py-12 relative z-10 h-full flex flex-col justify-center">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
               <div>
@@ -127,10 +127,10 @@ function ViewFiles() {
                   </h2>
                 </div>
                 <p className="text-lg text-yellow-200 flex items-center">
-                  <span className="bg-white text-[#800000] px-2 py-1 rounded-lg text-sm font-bold mr-2">
+                  <span className="bg-white text-[#2C3E50] px-2 py-1 rounded-lg text-sm font-bold mr-2">
                     {branch}
                   </span>
-                  <span className="bg-white text-[#800000] px-2 py-1 rounded-lg text-sm font-bold">
+                  <span className="bg-white text-[#2C3E50] px-2 py-1 rounded-lg text-sm font-bold">
                     Year {year}
                   </span>
                 </p>
@@ -146,7 +146,7 @@ function ViewFiles() {
         <div className="w-full max-w-5xl mx-auto flex items-center mb-6">
           <button
             onClick={() => navigate(-1)}
-            className="px-4 py-2 bg-[#800000] text-white rounded-lg shadow-lg hover:bg-[#600000] transition duration-300 flex items-center gap-2"
+            className="px-4 py-2 bg-[#2C3E50] text-white rounded-lg shadow-lg hover:bg-[#36597A] transition duration-300 flex items-center gap-2"
           >
             <ChevronLeft className="w-5 h-5" />
             Back to Subjects
@@ -155,26 +155,26 @@ function ViewFiles() {
           <div className="ml-4 text-gray-600 text-sm flex items-center">
             <span
               onClick={() => navigate("/")}
-              className="hover:text-[#800000] cursor-pointer"
+              className="hover:text-[#2C3E50] cursor-pointer"
             >
               Home
             </span>
             <span className="mx-2">›</span>
             <span
               onClick={() => navigate(-2)}
-              className="hover:text-[#800000] cursor-pointer"
+              className="hover:text-[#2C3E50] cursor-pointer"
             >
               Year {year}
             </span>
             <span className="mx-2">›</span>
             <span
               onClick={() => navigate(-1)}
-              className="hover:text-[#800000] cursor-pointer"
+              className="hover:text-[#2C3E50] cursor-pointer"
             >
               {branch}
             </span>
             <span className="mx-2">›</span>
-            <span className="font-medium text-[#800000]">{subject}</span>
+            <span className="font-medium text-[#2C3E50]">{subject}</span>
           </div>
         </div>
 
@@ -184,7 +184,7 @@ function ViewFiles() {
             <input
               type="text"
               placeholder="Search in files..."
-              className="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800000] transition"
+              className="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -193,9 +193,9 @@ function ViewFiles() {
         </div>
 
         {/* Option Selector */}
-        <div className="w-full max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-lg border-l-4 border-[#800000] mb-6">
+        <div className="w-full max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-lg border-l-4 border-[#2C3E50] mb-6">
           <h3 className="text-xl font-semibold text-gray-700 mb-4 flex items-center">
-            <div className="w-6 h-6 bg-[#800000] rounded-full mr-2"></div>
+            <div className="w-6 h-6 bg-[#2C3E50] rounded-full mr-2"></div>
             Select Resource Type
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
@@ -205,7 +205,7 @@ function ViewFiles() {
                 className={`py-3 rounded-lg shadow-md font-medium transition duration-300 flex items-center justify-center
                   ${
                     option === opt
-                      ? "bg-[#800000] text-white"
+                      ? "bg-[#2C3E50] text-white"
                       : "bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 border border-gray-300 hover:from-gray-200 hover:to-gray-300"
                   }
                 `}
@@ -225,7 +225,7 @@ function ViewFiles() {
         {filteredFiles.length > 0 && (
           <div className="w-full max-w-5xl mx-auto mb-6 flex justify-between items-center">
             <div className="text-gray-700 bg-white px-4 py-2 rounded-lg shadow-sm">
-              <span className="font-semibold text-[#800000]">
+              <span className="font-semibold text-[#2C3E50]">
                 {filteredFiles.length}
               </span>{" "}
               {filteredFiles.length === 1 ? "resource" : "resources"} available
@@ -248,7 +248,7 @@ function ViewFiles() {
                       key={index}
                       className={`block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 ${
                         selectedFilter === filter
-                          ? "font-bold text-[#800000]"
+                          ? "font-bold text-[#2C3E50]"
                           : ""
                       }`}
                       onClick={() => {
@@ -268,7 +268,7 @@ function ViewFiles() {
         {/* Loading State */}
         {loading && (
           <div className="flex flex-col items-center justify-center bg-white rounded-lg shadow-md p-10 max-w-lg mx-auto mt-8">
-            <div className="w-16 h-16 border-4 border-[#800000] border-t-transparent rounded-full animate-spin mb-4"></div>
+            <div className="w-16 h-16 border-4 border-[#2C3E50] border-t-transparent rounded-full animate-spin mb-4"></div>
             <p className="text-xl font-semibold text-gray-700">
               Fetching resources...
             </p>
@@ -294,7 +294,7 @@ function ViewFiles() {
             </p>
             {/* <button
               onClick={() => navigate("/upload")}
-              className="mt-6 px-6 py-2 bg-[#800000] text-white rounded-md hover:bg-[#600000] transition flex items-center gap-2"
+              className="mt-6 px-6 py-2 bg-[#2C3E50] text-white rounded-md hover:bg-[#36597A] transition flex items-center gap-2"
             >
               <Upload className="w-5 h-5" />
               Contribute Resources
@@ -331,7 +331,7 @@ function ViewFiles() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-[#800000] text-white py-8 mt-8">
+      <footer className="bg-[#2C3E50] text-white py-8 mt-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between mb-8">
             <div className="mb-6 md:mb-0">

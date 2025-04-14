@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { Book, ChevronLeft, Search,ArrowRight,LogOut,Upload } from "lucide-react";
+import {
+  Book,
+  ChevronLeft,
+  Search,
+  ArrowRight,
+  LogOut,
+  Upload,
+} from "lucide-react";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { useGlobalContext } from "../context/GlobalContext";
-
 
 function SemesterPage() {
   const [subjectsData, setSubjectsData] = useState([]);
@@ -16,7 +22,7 @@ function SemesterPage() {
   const prevSem = sem - 1; // Previous semester
   const navigate = useNavigate();
 
-    const { googleLoginDetails, setGoogleLoginDetails } = useGlobalContext();
+  const { googleLoginDetails, setGoogleLoginDetails } = useGlobalContext();
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -45,34 +51,34 @@ function SemesterPage() {
     fetchSubjects();
   }, [year, branch]);
 
-   // Google login success/failure handlers
-    const onLoginSuccess = (res) => {
-      const decoded = jwtDecode(res.credential);
-      localStorage.setItem("email", decoded?.email);
-      localStorage.setItem("name", decoded?.name);
-      localStorage.setItem("profilePicture", decoded?.picture);
-  
-      setGoogleLoginDetails({
-        email: decoded?.email,
-        name: decoded?.name,
-        profilePicture: decoded?.picture,
-      });
-      toast.success(`Login Successful: ${decoded?.name}`);
-      // navigate("/");
-    };
-  
-    const onLoginFailure = (res) => {
-      console.error("Login Failed:", res);
-      toast.error("Login failed. Please try again.");
-    };
-  
-    // Logout handler
-    const handleLogout = () => {
-      localStorage.clear();
-      setGoogleLoginDetails({ email: "", name: "", profilePicture: "" });
-      toast.success("You have successfully logged out.");
-      // navigate("/");
-    };
+  // Google login success/failure handlers
+  const onLoginSuccess = (res) => {
+    const decoded = jwtDecode(res.credential);
+    localStorage.setItem("email", decoded?.email);
+    localStorage.setItem("name", decoded?.name);
+    localStorage.setItem("profilePicture", decoded?.picture);
+
+    setGoogleLoginDetails({
+      email: decoded?.email,
+      name: decoded?.name,
+      profilePicture: decoded?.picture,
+    });
+    toast.success(`Login Successful: ${decoded?.name}`);
+    // navigate("/");
+  };
+
+  const onLoginFailure = (res) => {
+    console.error("Login Failed:", res);
+    toast.error("Login failed. Please try again.");
+  };
+
+  // Logout handler
+  const handleLogout = () => {
+    localStorage.clear();
+    setGoogleLoginDetails({ email: "", name: "", profilePicture: "" });
+    toast.success("You have successfully logged out.");
+    // navigate("/");
+  };
 
   // Apply search filter
   useEffect(() => {
@@ -97,7 +103,7 @@ function SemesterPage() {
   return (
     <div className="min-h-screen w-full flex flex-col bg-gray-100 relative">
       {/* Header */}
-      <header className="w-full bg-[#800000] text-white shadow-md">
+      <header className="w-full bg-[#2C3E50] text-white shadow-md">
         <div className="container mx-auto py-3 px-4 flex justify-between items-center">
           <div className="flex items-center">
             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mr-3">
@@ -149,7 +155,7 @@ function SemesterPage() {
             <div className="mt-4 md:mt-0">
               <button
                 onClick={() => navigate("/upload")}
-                className="px-6 py-3 bg-yellow-500 text-[#800000] rounded-md hover:bg-yellow-400 transition font-bold shadow-lg flex items-center"
+                className="px-6 py-3 bg-yellow-500 text-[#2C3E50] rounded-md hover:bg-yellow-400 transition font-bold shadow-lg flex items-center"
               >
                 <Upload className="w-5 h-5 mr-2" /> Contribute
               </button>
@@ -168,7 +174,7 @@ function SemesterPage() {
             backgroundPosition: "center 30%",
           }}
         >
-          <div className="absolute inset-0 bg-[#800000] opacity-50"></div>
+          <div className="absolute inset-0 bg-[#2C3E50] opacity-50"></div>
           <div className="container mx-auto px-4 py-12 relative z-10 h-full flex flex-col justify-center">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
               <div>
@@ -179,10 +185,10 @@ function SemesterPage() {
                   </h2>
                 </div>
                 <p className="text-lg text-yellow-200 flex items-center">
-                  <span className="bg-white text-[#800000] px-2 py-1 rounded-lg text-sm font-bold mr-2">
+                  <span className="bg-white text-[#2C3E50] px-2 py-1 rounded-lg text-sm font-bold mr-2">
                     Year {year}
                   </span>
-                  <span className="bg-white text-[#800000] px-2 py-1 rounded-lg text-sm font-bold">
+                  <span className="bg-white text-[#2C3E50] px-2 py-1 rounded-lg text-sm font-bold">
                     Semester {prevSem} & {sem}
                   </span>
                 </p>
@@ -198,7 +204,7 @@ function SemesterPage() {
         <div className="w-full max-w-5xl mx-auto flex items-center mb-6">
           <button
             onClick={() => navigate(-1)}
-            className="px-4 py-2 bg-[#800000] text-white rounded-lg shadow-lg hover:bg-[#600000] transition duration-300 flex items-center gap-2"
+            className="px-4 py-2 bg-[#2C3E50] text-white rounded-lg shadow-lg hover:bg-[#36597A] transition duration-300 flex items-center gap-2"
           >
             <ChevronLeft className="w-5 h-5" />
             Back to Departments
@@ -207,19 +213,19 @@ function SemesterPage() {
           <div className="ml-4 text-gray-600 text-sm flex items-center">
             <span
               onClick={() => navigate("/")}
-              className="hover:text-[#800000] cursor-pointer"
+              className="hover:text-[#2C3E50] cursor-pointer"
             >
               Home
             </span>
             <span className="mx-2">›</span>
             <span
               onClick={() => navigate(-1)}
-              className="hover:text-[#800000] cursor-pointer"
+              className="hover:text-[#2C3E50] cursor-pointer"
             >
               Year {year}
             </span>
             <span className="mx-2">›</span>
-            <span className="font-medium text-[#800000]">{branch}</span>
+            <span className="font-medium text-[#2C3E50]">{branch}</span>
           </div>
         </div>
 
@@ -229,7 +235,7 @@ function SemesterPage() {
             <input
               type="text"
               placeholder="Search subjects..."
-              className="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800000] transition"
+              className="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -241,7 +247,7 @@ function SemesterPage() {
         {filteredSubjects.length > 0 && (
           <div className="w-full max-w-5xl mx-auto mb-6">
             <div className="text-gray-700 bg-white px-4 py-2 rounded-lg shadow-sm">
-              <span className="font-semibold text-[#800000]">
+              <span className="font-semibold text-[#2C3E50]">
                 {filteredSubjects.length}
               </span>{" "}
               {filteredSubjects.length === 1 ? "subject" : "subjects"} available
@@ -272,9 +278,9 @@ function SemesterPage() {
           {/* Previous Semester Subjects */}
           {filteredSubjects.filter((subject) => subject.sem === prevSem)
             .length > 0 && (
-            <div className="p-6 bg-white rounded-lg shadow-lg border-l-4 border-[#800000] transition-all hover:shadow-xl">
+            <div className="p-6 bg-white rounded-lg shadow-lg border-l-4 border-[#2C3E50] transition-all hover:shadow-xl">
               <h2 className="text-xl font-semibold text-gray-700 mb-4 flex items-center">
-                <div className="w-6 h-6 bg-[#800000] rounded-full flex items-center justify-center text-white text-xs mr-2">
+                <div className="w-6 h-6 bg-[#2C3E50] rounded-full flex items-center justify-center text-white text-xs mr-2">
                   {prevSem}
                 </div>
                 Semester {prevSem} Subjects
@@ -287,10 +293,10 @@ function SemesterPage() {
                     <button
                       key={index}
                       onClick={() => handleSubjectClick(subject.subject)}
-                      className="flex flex-col bg-white border border-[#800000] text-gray-800 py-4 px-4 rounded-lg shadow hover:bg-[#800000] hover:text-white transition-all duration-300 transform hover:-translate-y-1 h-full group relative"
+                      className="flex flex-col bg-white border border-[#2C3E50] text-gray-800 py-4 px-4 rounded-lg shadow hover:bg-[#2C3E50] hover:text-white transition-all duration-300 transform hover:-translate-y-1 h-full group relative"
                     >
                       <div className="flex items-center mb-2">
-                        <Book className="w-5 h-5 mr-2 text-[#800000] group-hover:text-white transition-colors flex-shrink-0" />
+                        <Book className="w-5 h-5 mr-2 text-[#2C3E50] group-hover:text-white transition-colors flex-shrink-0" />
                         <div className="relative w-full max-w-[240px] overflow-visible group">
                           <p className="font-bold text-lg overflow-hidden text-ellipsis whitespace-nowrap">
                             {subject.subject}
@@ -315,9 +321,9 @@ function SemesterPage() {
           {/* Current Semester Subjects */}
           {filteredSubjects.filter((subject) => subject.sem === sem).length >
             0 && (
-            <div className="p-6 bg-white rounded-lg shadow-lg border-l-4 border-[#800000] transition-all hover:shadow-xl">
+            <div className="p-6 bg-white rounded-lg shadow-lg border-l-4 border-[#2C3E50] transition-all hover:shadow-xl">
               <h2 className="text-xl font-semibold text-gray-700 mb-4 flex items-center">
-                <div className="w-6 h-6 bg-[#800000] rounded-full flex items-center justify-center text-white text-xs mr-2">
+                <div className="w-6 h-6 bg-[#2C3E50] rounded-full flex items-center justify-center text-white text-xs mr-2">
                   {sem}
                 </div>
                 Semester {sem} Subjects
@@ -330,10 +336,10 @@ function SemesterPage() {
                     <button
                       key={index}
                       onClick={() => handleSubjectClick(subject.subject)}
-                      className="flex flex-col bg-white border border-[#800000] text-gray-800 py-4 px-4 rounded-lg shadow hover:bg-[#800000] hover:text-white transition-all duration-300 transform hover:-translate-y-1 h-full group relative"
+                      className="flex flex-col bg-white border border-[#2C3E50] text-gray-800 py-4 px-4 rounded-lg shadow hover:bg-[#2C3E50] hover:text-white transition-all duration-300 transform hover:-translate-y-1 h-full group relative"
                     >
                       <div className="flex items-center mb-2">
-                        <Book className="w-5 h-5 mr-2 text-[#800000] group-hover:text-white transition-colors flex-shrink-0" />
+                        <Book className="w-5 h-5 mr-2 text-[#2C3E50] group-hover:text-white transition-colors flex-shrink-0" />
                         <div className="relative w-full max-w-[240px] overflow-visible group">
                           <p className="font-bold text-lg overflow-hidden text-ellipsis whitespace-nowrap">
                             {subject.subject}
@@ -357,7 +363,7 @@ function SemesterPage() {
 
           {/* Additional Information */}
           <div className="p-6 bg-white rounded-lg shadow-md mt-8">
-            <h3 className="text-xl font-bold text-[#800000] mb-4">
+            <h3 className="text-xl font-bold text-[#2C3E50] mb-4">
               Department Information
             </h3>
             <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
@@ -373,7 +379,7 @@ function SemesterPage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-[#800000] text-white py-8 mt-8">
+      <footer className="bg-[#2C3E50] text-white py-8 mt-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between mb-8">
             <div className="mb-6 md:mb-0">
