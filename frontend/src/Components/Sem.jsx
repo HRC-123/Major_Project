@@ -41,10 +41,10 @@ function SemesterPage() {
         // Combine both semester subjects
         setSubjectsData(data);
         setFilteredSubjects(data);
-        toast.success("Subjects fetched successfully");
+        toast.success("Subjects fetched successfully",{id:"subjects-fetched"});
       } catch (error) {
         console.error("Error fetching subjects:", error);
-        toast.error("Error fetching subjects");
+        toast.error("Error fetching subjects",{id:"fetching-error"});
       }
     };
 
@@ -63,20 +63,20 @@ function SemesterPage() {
       name: decoded?.name,
       profilePicture: decoded?.picture,
     });
-    toast.success(`Login Successful: ${decoded?.name}`);
+    toast.success(`Login Successful: ${decoded?.name}`,{id:"login-successful"});
     // navigate("/");
   };
 
   const onLoginFailure = (res) => {
     console.error("Login Failed:", res);
-    toast.error("Login failed. Please try again.");
+    toast.error("Login failed. Please try again.",{id:"login-failed"});
   };
 
   // Logout handler
   const handleLogout = () => {
     localStorage.clear();
     setGoogleLoginDetails({ email: "", name: "", profilePicture: "" });
-    toast.success("You have successfully logged out.");
+    toast.success("You have successfully logged out.",{id:"logged-out"});
     // navigate("/");
   };
 
@@ -105,7 +105,7 @@ function SemesterPage() {
       {/* Header */}
       <header className="w-full bg-[#2C3E50] text-white shadow-md">
         <div className="container mx-auto py-3 px-4 flex justify-between items-center">
-          <div className="flex items-center">
+          <div className="flex items-center cursor-pointer"  onClick={()=>{navigate("/")}}>
             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mr-3">
               <img
                 src="/nitjlogo.png"
@@ -157,7 +157,7 @@ function SemesterPage() {
                 onClick={() => navigate("/upload")}
                 className="px-6 py-3 bg-yellow-500 text-[#2C3E50] rounded-md hover:bg-yellow-400 transition font-bold shadow-lg flex items-center"
               >
-                <Upload className="w-5 h-5 mr-2" /> Contribute
+                <Upload className="w-5 h-4 mr-2" /> Contribute
               </button>
             </div>
           </div>

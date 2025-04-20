@@ -24,9 +24,9 @@ const FileUpload = ({ onClose }) => {
 
   useEffect(() => {
     if (!email || !isNitjEmail(email)) {
-      toast.error("Please login with nitj email to upload");
+      toast.error("Please login with nitj email to upload",{id:"nitj-email-error"});
       navigate("/");
-      console.log("The email is not from nitj.ac.in");
+      console.log("The email is not from nitj.ac.in",{id:"nitj-email-error"});
     }
   }, []);
 
@@ -211,14 +211,14 @@ const FileUpload = ({ onClose }) => {
       }
 
       if (file) {
-        toast.success(`File uploaded successfully: ${file.name}`);
+        toast.success(`File uploaded successfully: ${file.name}`,{id:"file-upload-success"});
       } else {
-        toast.success("File imported successfully from URL");
+        toast.success("File imported successfully from URL",{id:"url-import-success"});
       }
       navigate("/");
     } catch (error) {
       console.error(error);
-      toast.error("Upload failed!");
+      toast.error("Upload failed!",{id:"upload-error"});
     } finally {
       setUploading(false);
       setFile(null);
