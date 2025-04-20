@@ -44,6 +44,10 @@ const FileUpload = ({ onClose }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [uploadMethod, setUploadMethod] = useState("file");
+  
+  // New states for exam year and exam type
+  const [selectedExamYear, setSelectedExamYear] = useState("");
+  const [selectedExamType, setSelectedExamType] = useState("");
 
   // New state for step navigation
   const [currentStep, setCurrentStep] = useState(1);
@@ -52,6 +56,13 @@ const FileUpload = ({ onClose }) => {
   const [subjectsData, setSubjectsData] = useState([]);
 
   const yearData = [1, 2, 3, 4];
+  
+  // Generate exam years (current year - 10 to current year)
+  const currentYear = new Date().getFullYear();
+  const examYears = Array.from({ length: 11 }, (_, i) => currentYear - 10 + i);
+  
+  // Exam types
+  const examTypes = ["Mid Term", "End Term"];
 
   useEffect(() => {
     async function fetchDepartments() {
@@ -121,6 +132,12 @@ const FileUpload = ({ onClose }) => {
         toast.error("Please complete all selections.");
         return;
       }
+      
+      // Additional validation for PreviousYearPapers
+      if (selectedType === "PreviousYearPapers" && (!selectedExamYear || !selectedExamType)) {
+        toast.error("Please select exam year and exam type.");
+        return;
+      }
     }
     setCurrentStep(currentStep + 1);
   };
@@ -143,6 +160,11 @@ const FileUpload = ({ onClose }) => {
       !description
     ) {
       return toast.error("Please fill in all the fields.");
+    }
+    
+    // Validate exam year and type for PreviousYearPapers
+    if (selectedType === "PreviousYearPapers" && (!selectedExamYear || !selectedExamType)) {
+      return toast.error("Please select exam year and exam type.");
     }
 
     setUploading(true);
@@ -169,6 +191,12 @@ const FileUpload = ({ onClose }) => {
     formData.append("authorEmail", authorEmail);
     formData.append("title", title);
     formData.append("description", description);
+    
+    // Add exam year and type for PreviousYearPapers
+    if (selectedType === "PreviousYearPapers") {
+      formData.append("examYear", selectedExamYear);
+      formData.append("examType", selectedExamType);
+    }
 
     try {
       const response = await fetch("http://localhost:5000/upload", {
@@ -459,6 +487,51 @@ const FileUpload = ({ onClose }) => {
                     ))}
                   </div>
                 </div>
+                
+                {/* Additional fields for PreviousYearPapers */}
+                {selectedType === "PreviousYearPapers" && (
+                  <div className="col-span-2 mt-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {/* Exam Year Selection */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Exam Year*
+                        </label>
+                        <select
+                          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#2C3E50] focus:border-[#2C3E50]"
+                          value={selectedExamYear}
+                          onChange={(e) => setSelectedExamYear(e.target.value)}
+                        >
+                          <option value="">Select Exam Year</option>
+                          {examYears.map((year) => (
+                            <option key={year} value={year}>
+                              {year}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      
+                      {/* Exam Type Selection */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Exam Type*
+                        </label>
+                        <select
+                          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#2C3E50] focus:border-[#2C3E50]"
+                          value={selectedExamType}
+                          onChange={(e) => setSelectedExamType(e.target.value)}
+                        >
+                          <option value="">Select Exam Type</option>
+                          {examTypes.map((type) => (
+                            <option key={type} value={type}>
+                              {type}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="mt-8 flex justify-between">
