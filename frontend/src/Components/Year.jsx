@@ -5,73 +5,103 @@ import FileUpload from "./FileUpload";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { useGlobalContext } from "../context/GlobalContext";
-import { toast } from "react-toastify";
-import {LogOut } from "lucide-react";
+import { toast } from "react-hot-toast";
+import CountUp from "react-countup";
+import {
+  LogOut,
+  Search,
+  Upload,
+  Book,
+  ExternalLink,
+  Download,
+} from "lucide-react";
 
+import { useInView } from "react-intersection-observer";
 
 const Year = () => {
   const { googleLoginDetails, setGoogleLoginDetails } = useGlobalContext();
-  const year = data.year;
+  const { year } = data;
   const navigate = useNavigate();
+
   const [yearIndex, setYearIndex] = useState(0);
   const [showUpload, setShowUpload] = useState(false);
   const [departmentsData, setDepartmentsData] = useState([]);
+  const [documentsLength, setDocumentsLength] = useState(0);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
+
   const searchContainerRef = useRef(null);
 
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.3,
+  });
+
+  // Hide search results when clicking outside the search container
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target)
+      ) {
         setShowResults(false);
       }
     };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Fetch department data on component mount
   useEffect(() => {
-    async function fetchDepartments() {
-        try {
-            const response = await fetch("http://localhost:5000/branches"); // Fix typo in endpoint
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            const data = await response.json();
-          setDepartmentsData(data); // Update state with fetched data
-        
-              } catch (err) {
-          console.error("Error fetching departments:", err);
-          toast.error("Error fetching documents");
+    const fetchDepartments = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/branches");
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        const data = await response.json();
-        setDepartmentsData(data);
-      } catch (err) {
-        console.error("Error fetching departments:", err);
+        const fetchedData = await response.json();
+        setDepartmentsData(fetchedData);
+      } catch (error) {
+        console.error("Error fetching departments:", error);
+        toast.error("Error fetching documents");
       }
-    }
+
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/files?year=all`
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const fetchedData = await response.json();
+        setDocumentsLength(fetchedData.length);
+      } catch (error) {
+        console.error("Error fetching departments:", error);
+        toast.error("Error fetching documents");
+      }
+    };
     fetchDepartments();
   }, []);
 
+  // Search functionality
   const handleSearch = async () => {
     if (!query.trim()) return;
-
     try {
-      const response = await fetch(`http://localhost:5000/search?query=${query}`);
+      const response = await fetch(
+        `http://localhost:5000/search?query=${encodeURIComponent(query)}`
+      );
       if (!response.ok) throw new Error("Failed to fetch search results");
-
-      const data = await response.json();
-
-      setResults(data);
+      const searchData = await response.json();
+      setResults(searchData);
       setShowResults(true);
     } catch (error) {
       console.error("Search error:", error);
       toast.error("Search error");
     }
-};
+  };
 
+  // Google login success/failure handlers
   const onLoginSuccess = (res) => {
     const decoded = jwtDecode(res.credential);
     localStorage.setItem("email", decoded?.email);
@@ -81,146 +111,454 @@ const Year = () => {
     setGoogleLoginDetails({
       email: decoded?.email,
       name: decoded?.name,
-      profilePicture: decoded?.profilePicture,
+      profilePicture: decoded?.picture,
     });
-
-
-    toast.success(`Login Successful : ${decoded?.name}`);
-
+    toast.success(`Login Successful: ${decoded?.name}`);
     navigate("/");
   };
 
   const onLoginFailure = (res) => {
-    console.error("Login Failed: ", res);
-
+    console.error("Login Failed:", res);
     toast.error("Login failed. Please try again.");
   };
 
-    const handleLogout = () => {
-      localStorage.clear();
-      setGoogleLoginDetails({
-        email: "",
-        name: "",
-        profilePicture: "",
-      });
-      toast.success("You have successfully logged out.");
-      navigate("/");
-    };
+  // Logout handler
+  const handleLogout = () => {
+    localStorage.clear();
+    setGoogleLoginDetails({ email: "", name: "", profilePicture: "" });
+    toast.success("You have successfully logged out.");
+    navigate("/");
+  };
 
   return (
-    <div className="h-screen w-full flex flex-col justify-center items-center bg-gray-50 relative px-6">
-      {/* Overlay with fade animation */}
-      {showResults && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-10 animate-fadeIn" />
-      )}
+    <div className="min-h-screen w-full flex flex-col bg-gray-100 relative">
+      {/* NITJ-inspired Header */}
+      <header className="w-full bg-[#2C3E50] text-white shadow-md">
+        <div className="container mx-auto py-3 px-4 flex justify-between items-center">
+          <div className="flex items-center">
+            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mr-3">
+              <img
+                src="/nitjlogo.png"
+                alt="NITJ Logo"
+                className="w-10 h-10 object-contain"
+              />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold">NITJ Study Resources</h1>
+              <p className="text-xs text-yellow-200">
+                National Institute of Technology, Jalandhar
+              </p>
+            </div>
+          </div>
 
-      {/* Top Right: User & Upload Buttons */}
-      <div className="absolute top-4 right-4 flex items-center space-x-4">
-        {!googleLoginDetails?.email ? (
-          <GoogleLogin onSuccess={onLoginSuccess} onFailure={onLoginFailure} size="large" />
-        ) : (
-          <div className="flex items-center space-x-2 bg-white p-2 rounded-lg shadow-md max-w-96">
-            <div className="text-xs text-gray-700 w-40 overflow-hidden whitespace-nowrap text-ellipsis">
-              <p className="font-bold">{googleLoginDetails.name}</p>
-              <p className="text-xs text-gray-500">{googleLoginDetails.email}</p>
+          {/* User Authentication Area */}
+          <div className="flex items-center space-x-4">
+            {!googleLoginDetails?.email ? (
+              <GoogleLogin
+                onSuccess={onLoginSuccess}
+                onFailure={onLoginFailure}
+                size="large"
+              />
+            ) : (
+              <div className="flex items-center space-x-2 bg-white p-2 rounded-lg shadow-md">
+                {googleLoginDetails.profilePicture && (
+                  <img
+                    src={googleLoginDetails.profilePicture}
+                    alt="Profile"
+                    className="w-8 h-8 rounded-full"
+                  />
+                )}
+                <div className="text-xs text-gray-700">
+                  <p className="font-bold">{googleLoginDetails.name}</p>
+                  <p className="text-gray-500">{googleLoginDetails.email}</p>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-600 text-white px-2 py-1 rounded-lg hover:bg-red-700 transition flex items-center gap-2"
+                >
+                  Logout
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </header>
+
+      {/* Search Bar (MyHerupa-inspired) */}
+      <div
+        ref={searchContainerRef}
+        className="w-full bg-[#f3f3f3] border-b border-gray-300 sticky top-0 z-20 shadow-sm"
+      >
+        <div className="container mx-auto py-3 px-4">
+          <div className="flex space-x-2 max-w-2xl mx-auto">
+            <div className="relative flex-grow">
+              <input
+                type="text"
+                placeholder="Search for notes, papers, documents..."
+                className="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+              />
+              <Search
+                className="absolute left-3 top-3 text-gray-400"
+                size={20}
+              />
             </div>
             <button
-              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition flex items-center"
-              onClick={handleLogout}
+              onClick={handleSearch}
+              className="bg-[#2C3E50] text-white px-5 py-3 rounded-lg hover:bg-[#36597A] transition shadow-md flex items-center"
             >
-              <LogOut className="mr-2 w-4 h-4" /> Logout
+              Search
             </button>
           </div>
-        )}
 
-        <button
-          onClick={() => navigate("/upload")}
-          className="px-5 py-4 w-32 bg-green-500 text-white font-semibold text-sm rounded-lg hover:bg-green-600 transition shadow-md"
+          {/* Search Results */}
+          {showResults && results.length > 0 && (
+            <>
+              {/* Blur overlay for the background */}
+              <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm z-10"></div>
+
+              <div className="absolute left-0 right-0 mx-auto max-w-2xl bg-white p-4 rounded-lg shadow-lg max-h-[50vh] overflow-y-auto animate-slideDown mt-1 border border-gray-200 z-20">
+                <div className="flex justify-between items-center mb-3">
+                  <h3 className="text-[#2C3E50] font-semibold text-lg">
+                    Search Results
+                  </h3>
+                  <button
+                    onClick={() => setShowResults(false)}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    ✕
+                  </button>
+                </div>
+                <ul className="space-y-3">
+                  {results.map((doc) => (
+                    <li
+                      key={doc.id}
+                      className="cursor-pointer group transition-colors duration-200 p-3 hover:bg-gray-50 rounded-md"
+                      onClick={() =>
+                        window.open(
+                          doc.url.startsWith("http")
+                            ? doc.url
+                            : `https://${doc.url}`,
+                          "_blank"
+                        )
+                      }
+                    >
+                      <div className="font-semibold text-[#2C3E50] group-hover:text-[#36597A] transition flex items-center">
+                        <Book className="w-4 h-4 mr-2" />
+                        {doc.title}
+                      </div>
+                      <div className="text-sm text-gray-600 group-hover:text-gray-800 transition ml-6">
+                        {doc.subject} ({doc.subjectcode})
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Hero Section with NITJ Background */}
+      <div className="relative">
+        <div className="absolute inset-0 bg-black opacity-60 z-0"></div>
+        <div
+          className="relative h-48 bg-cover bg-center z-0"
+          style={{
+            backgroundImage: `url(/nitj3.jpg)`,
+            backgroundPosition: "center 30%",
+          }}
         >
-          Upload File
-        </button>
-      </div>
-
-      {/* Search Bar and Results */}
-      <div ref={searchContainerRef} className="absolute top-4 w-full max-w-lg mx-auto z-20">
-        <div className="flex space-x-2 mb-4">
-          <input
-            type="text"
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200"
-            placeholder="Search documents..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <button
-            onClick={handleSearch}
-            className="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-md hover:shadow-lg"
-          >
-            Search
-          </button>
-        </div>
-
-        {/* Search Results with slide and fade animation */}
-        {showResults && results.length > 0 && (
-          <div className="bg-white p-4 rounded-lg shadow-lg max-h-[50vh] overflow-y-auto animate-slideDown">
-            <ul className="space-y-3">
-              {results.map((doc) => (
-                <li
-                  key={doc.id}
-                  className="cursor-pointer group transition-all duration-200"
-                  onClick={() => window.open(doc.url.startsWith("http") ? doc.url : `https://${doc.url}`, "_blank")}
+          <div className="absolute inset-0 bg-[#2C3E50] opacity-50"></div>
+          <div className="container mx-auto px-4 py-12 relative z-10 h-full flex flex-col justify-center">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+                  NITJ Study Resources Hub
+                </h2>
+                <p className="text-lg text-yellow-200 max-w-xl">
+                  Access course materials, previous year papers, and study
+                  resources for all NIT Jalandhar departments
+                </p>
+              </div>
+              <div className="mt-4 md:mt-0">
+                <button
+                  onClick={() => navigate("/upload")}
+                  className="px-6 py-3 bg-yellow-500 text-[#2C3E50] rounded-md hover:bg-yellow-400 transition font-bold shadow-lg flex items-center"
                 >
-                  <div className="font-semibold text-blue-600 group-hover:text-blue-800 transition-colors duration-200">
-                    {doc.title}
-                  </div>
-                  <div className="text-sm text-gray-600 group-hover:text-gray-800 transition-colors duration-200">
-                    {doc.subject} ({doc.subjectcode})
-                  </div>
-                  <hr class="border-t-2 my-2"/>
-                </li>
-              ))}
-            </ul>
+                  <Upload className="w-5 h-5 mr-2" /> Upload Resources
+                </button>
+              </div>
+            </div>
           </div>
-        )}
+        </div>
       </div>
 
-      {/* Year Selection */}
-      <div className="w-full max-w-4xl flex flex-col items-center mt-12 z-0">
-        <div className="flex justify-center items-center gap-4 mb-6">
-          {year.map((year, index) => (
-            <button
-              key={index}
-              className={`px-5 py-3 text-sm font-semibold rounded-lg shadow-md transition-all duration-300 
-                ${index === yearIndex
-                  ? "bg-blue-600 text-white hover:bg-blue-700"
-                  : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-100"
+      {/* Main Content Area */}
+      <main className="flex-grow container mx-auto py-8 px-4">
+        {/* Quick Links Section */}
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8 border-l-4 border-[#2C3E50]">
+          <h2 className="text-2xl font-bold text-[#2C3E50] mb-4">
+            Quick Links
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <a
+              href="https://www.nitj.ac.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
+            >
+              <ExternalLink className="w-5 h-5 mr-2 text-[#2C3E50]" />
+              <span>NITJ Website</span>
+            </a>
+            {/* <a
+              href="#"
+              className="flex items-center p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
+            >
+              <Book className="w-5 h-5 mr-2 text-[#2C3E50]" />
+              <span>Syllabus</span>
+            </a>
+            <a
+              href="#"
+              className="flex items-center p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
+            >
+              <Download className="w-5 h-5 mr-2 text-[#2C3E50]" />
+              <span>Past Papers</span>
+            </a>
+            <a
+              href="#"
+              className="flex items-center p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
+            >
+              <Upload className="w-5 h-5 mr-2 text-[#2C3E50]" />
+              <span>Contribute</span>
+            </a> */}
+          </div>
+        </div>
+
+        {/* Year Selection */}
+        <div className="mb-8">
+          <h3 className="text-xl font-bold text-gray-700 mb-4 flex items-center">
+            <div className="w-6 h-6 bg-[#2C3E50] rounded-full mr-2"></div>
+            Select Your Year
+          </h3>
+          <div className="flex flex-wrap gap-3">
+            {year.map((yr, index) => (
+              <button
+                key={index}
+                onClick={() => setYearIndex(index)}
+                className={`px-8 py-4 text-sm font-semibold rounded-lg shadow-md transition duration-300 ${
+                  index === yearIndex
+                    ? "bg-[#2C3E50] text-white"
+                    : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
                 }`}
-              onClick={() => setYearIndex(index)}
-            >
-              {year}
-            </button>
-          ))}
+              >
+                {yr}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Department Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-4">
-          {departmentsData.map((dept, index) => (
-            <button
-              key={index}
-              className="relative p-4 border border-gray-300 bg-white text-gray-700 text-center rounded-lg shadow-lg transition-transform duration-150 hover:scale-105 hover:shadow-xl group overflow-hidden"
-              onClick={() => navigate(`/sem/${yearIndex + 1}/${dept.branch}`)}
-            >
-              <span className="absolute inset-0 bg-blue-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out" />
-              <span className="relative z-10 font-medium text-lg group-hover:text-white transition-colors duration-500">
-                {dept.abbreviation}
-              </span>
-            </button>
-          ))}
+        {/* Departments - MyHerupa card style with improved design */}
+        <div className="mb-8">
+          <h3 className="text-xl font-bold text-gray-700 mb-4 flex items-center">
+            <div className="w-6 h-6 bg-[#2C3E50] rounded-full mr-2"></div>
+            Select Your Department
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {departmentsData.map((dept, index) => (
+              <div
+                key={index}
+                onClick={() => navigate(`/sem/${yearIndex + 1}/${dept.branch}`)}
+                className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-[#2C3E50] group"
+              >
+                <div className="h-3 bg-[#2C3E50] group-hover:h-5 transition-all duration-300"></div>
+                <div className="p-6">
+                  <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-[#2C3E50] transition-all duration-300">
+                    <span className="font-bold text-[#2C3E50] group-hover:text-white transition-all duration-300">
+                      {dept.branch}
+                    </span>
+                  </div>
+                  <h4 className="font-bold text-lg text-gray-800 mb-2">
+                    {dept.abbreviation}
+                  </h4>
+                  {/* <p className="text-sm text-gray-500">{dept.branch}</p> */}
+                  <div className="mt-4 text-[#2C3E50] text-sm font-medium flex items-center">
+                    Explore{" "}
+                    <span className="ml-1 group-hover:ml-2 transition-all duration-300">
+                      →
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+
+        {/* Statistics Section */}
+      </main>
+        <div
+          ref={ref}
+          className="relative bg-cover bg-center bg-fixed w-full py-16 mb-1"
+          style={{ backgroundImage: "url('/placementStats.jpg')" }}
+        >
+          {/* Dark overlay */}
+          <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+
+          {/* Content */}
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+              {/* Left Stats Block */}
+              <div className="md:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-6 text-white text-center">
+                {/* Study Materials */}
+                <div>
+                  <div className="text-4xl sm:text-5xl font-bold">
+                    {inView && <CountUp end={documentsLength} duration={2} />}+
+                  </div>
+                  <div className="text-sm sm:text-base mt-1 font-medium tracking-wider uppercase">
+                    Study Materials
+                  </div>
+                </div>
+
+                {/* Departments */}
+                <div>
+                  <div className="text-4xl sm:text-5xl font-bold">
+                    {inView && (
+                      <CountUp end={departmentsData.length} duration={2} />
+                    )}
+                    +
+                  </div>
+                  <div className="text-sm sm:text-base mt-1 font-medium tracking-wider uppercase">
+                    Departments
+                  </div>
+                </div>
+
+                {/* Past Papers */}
+                <div>
+                  <div className="text-4xl sm:text-5xl font-bold">
+                    {inView && <CountUp end={5} duration={2} />}+
+                  </div>
+                  <div className="text-sm sm:text-base mt-1 font-medium tracking-wider uppercase">
+                    Past Papers
+                  </div>
+                </div>
+
+                {/* Users */}
+                <div>
+                  <div className="text-4xl sm:text-5xl font-bold">
+                    {inView && <CountUp end={30} duration={2} />}+
+                  </div>
+                  <div className="text-sm sm:text-base mt-1 font-medium tracking-wider uppercase">
+                    Active Users
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Title Block */}
+              <div className="text-white text-right">
+                <div className="text-3xl sm:text-4xl font-bold">#STATS</div>
+                <div className="text-xl sm:text-2xl font-medium">
+                  THAT POWER US
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      {/* Footer - NITJ inspired with more details */}
+      <footer className="relative text-white py-8">
+        {/* Background image with overlay - increasing visibility */}
+        <div className="absolute inset-0 z-0">
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-100"
+            style={{
+              backgroundImage: `url("/about_top.jpg")`,
+              backgroundPosition: "center 40%",
+            }}
+          ></div>
+          <div className="absolute inset-0 bg-[#2C3E50] opacity-60"></div>
+        </div>
+
+        {/* Footer content with higher z-index */}
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="flex flex-col md:flex-row justify-between mb-8">
+            <div className="mb-6 md:mb-0">
+              <h4 className="font-bold text-lg mb-3">NITJ Study Resources</h4>
+              <p className="text-sm text-gray-300 max-w-md">
+                A platform dedicated to students of NIT Jalandhar to access and
+                share study materials, past papers, and resources.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-8">
+              <div>
+                <h5 className="font-bold mb-3 text-yellow-200">Quick Links</h5>
+                <ul className="space-y-2 text-sm">
+                  <li>
+                    <a href="#" className="hover:text-yellow-200 transition">
+                      Home
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-yellow-200 transition">
+                      Upload
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-yellow-200 transition">
+                      About
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-yellow-200 transition">
+                      Contact
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h5 className="font-bold mb-3 text-yellow-200">Resources</h5>
+                <ul className="space-y-2 text-sm">
+                  <li>
+                    <a href="#" className="hover:text-yellow-200 transition">
+                      Notes
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-yellow-200 transition">
+                      Past Papers
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-yellow-200 transition">
+                      Syllabus
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-yellow-200 transition">
+                      References
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className="pt-4  text-center text-sm">
+            <p>
+              © {new Date().getFullYear()} NITJ Study Resources | National
+              Institute of Technology, Jalandhar
+            </p>
+            <p className="text-xs text-yellow-200 mt-1">
+              Developed by Students for Students
+            </p>
+          </div>
+        </div>
+      </footer>
 
       {/* Upload File Popup */}
       {showUpload && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-30">
           <FileUpload onClose={() => setShowUpload(false)} />
         </div>
       )}

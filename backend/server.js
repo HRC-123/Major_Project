@@ -50,10 +50,10 @@ app.get("/subjects", async (req, res) => {
 // Upload File Endpoint
 app.post("/upload", upload.single("file"), async (req, res) => {
   try {
-    const { year, branch, semester, subject, subjectcode, type, author, title, description, fileUrl } = req.body;
+    const { year, branch, semester, subject, subjectcode, type, author,authorEmail, title, description, fileUrl } = req.body;
     const file = req.file;
 
-    if ((!file && !fileUrl) || !year || !branch || !semester || !subject || !subjectcode || !type || !author || !title || !description) {
+    if ((!file && !fileUrl) || !year || !branch || !semester || !subject || !subjectcode || !type || !author || !authorEmail || !title || !description) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
@@ -90,6 +90,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
         subjectcode,
         type,
         author,
+        authorEmail,
         title,
         description,
         upvote: [],
@@ -108,6 +109,83 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     res.status(500).json({ error: "Server Error" });
   }
 });
+
+app.post("/report", async (req, res) => {
+  try {
+    const {
+      title,
+      author,
+      authorEmail,
+      type,
+      year,
+      semester,
+      branch,
+      subject,
+      subjectcode,
+      description,
+      url, // even if it's hidden, it'll be submitted
+      reporterEmail,
+      reporterName,
+      reportReason,
+    } = req.body;
+
+    console.log(req.body)
+
+    // Check for required fields
+    if (
+      !title ||
+      !author ||
+      !authorEmail ||
+      !type ||
+      !year ||
+      !semester ||
+      !branch ||
+      !subject ||
+      !subjectcode ||
+      !description ||
+      !url ||
+      !reporterEmail ||
+      !reporterName ||
+      !reportReason
+    ) {
+      return res
+        .status(400)
+        .json({ error: "Missing required fields in report" });
+    }
+
+    // Insert into Supabase reports table
+    const { data, error } = await supabase.from("reports").insert([
+      {
+        title,
+        author,
+        authorEmail,
+        type,
+        year,
+        semester,
+        branch,
+        subject,
+        subjectcode,
+        description,
+        url,
+        reporter_email: reporterEmail,
+        reporter_name: reporterName,
+        reason: reportReason,
+        timestamp: new Date().toISOString(),
+      },
+    ]);
+
+    if (error) {
+      console.error("Insert report error:", error);
+      return res.status(500).json({ error: "Failed to submit report" });
+    }
+
+    res.status(200).json({ message: "Report submitted successfully" });
+  } catch (err) {
+    console.error("Server error:", err);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
 
 // searching files
 app.get("/search", async (req, res) => {
@@ -137,21 +215,32 @@ app.get("/search", async (req, res) => {
 app.get("/api/files", async (req, res) => {
     try {
       const { year, branch, subject, type } = req.query;
-  
-      if (!year || !branch || !subject || !type) {
-        return res.status(400).json({ error: "Missing query parameters" });
+
+      if (year == 'all') {
+         const { data, error } = await supabase
+           .from("documents")
+           .select("*")
+         if (error) throw error;
+
+         res.json(data);
       }
-      const { data, error } = await supabase
-      .from("documents")
-      .select("*")
-      .eq("year", year)
-      .eq("branch", branch)
-      .eq("subject", subject)
-      .eq("type", type);
+      else {
+  
+        if (!year || !branch || !subject || !type) {
+          return res.status(400).json({ error: "Missing query parameters" });
+        }
+        const { data, error } = await supabase
+          .from("documents")
+          .select("*")
+          .eq("year", year)
+          .eq("branch", branch)
+          .eq("subject", subject)
+          .eq("type", type);
       
-      if (error) throw error;
+        if (error) throw error;
     
-      res.json(data);
+        res.json(data);
+      }
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

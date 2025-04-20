@@ -1,27 +1,35 @@
 import "react-toastify/dist/ReactToastify.css";
 import { useState, useEffect } from "react";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context/GlobalContext";
+import {
+  Home,
+  Upload,
+  Link,
+  Book,
+  File,
+  ChevronRight,
+  ChevronLeft,
+} from "lucide-react";
 
 const FileUpload = ({ onClose }) => {
   const { googleLoginDetails } = useGlobalContext();
-  const { email } = googleLoginDetails;
+  const { email, name } = googleLoginDetails;
   const navigate = useNavigate();
-  
+
   const isNitjEmail = (email) => {
     return email.endsWith("@nitj.ac.in");
-  }
-  
+  };
+
   useEffect(() => {
     if (!email || !isNitjEmail(email)) {
       toast.error("Please login with nitj email to upload");
-      navigate('/');
-      console.log("The email is not from nitj.ac.in")
-      
+      navigate("/");
+      console.log("The email is not from nitj.ac.in");
     }
   }, []);
-  
+
   const [file, setFile] = useState(null);
   const [fileUrl, setFileUrl] = useState("");
   const [uploading, setUploading] = useState(false);
@@ -31,15 +39,20 @@ const FileUpload = ({ onClose }) => {
   const [selectedSemester, setSelectedSemester] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedType, setSelectedType] = useState("");
-  const [authorName, setAuthorName] = useState("");
+  const [authorName, setAuthorName] = useState(name);
+  const [authorEmail, setAuthorEmail] = useState(email);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [uploadMethod, setUploadMethod] = useState("file"); // New state for tracking upload method
+  const [uploadMethod, setUploadMethod] = useState("file");
+
+  // New state for step navigation
+  const [currentStep, setCurrentStep] = useState(1);
 
   const [departmentsData, setDepartmentsData] = useState([]);
   const [subjectsData, setSubjectsData] = useState([]);
 
-  const yearData=[1,2,3,4]
+  const yearData = [1, 2, 3, 4];
+
   useEffect(() => {
     async function fetchDepartments() {
       try {
@@ -55,7 +68,7 @@ const FileUpload = ({ onClose }) => {
     }
     fetchDepartments();
   }, []);
-  
+
   useEffect(() => {
     async function getSubjects() {
       if (!selectedYear || !selectedBranch || !selectedSemester) return;
@@ -74,12 +87,12 @@ const FileUpload = ({ onClose }) => {
     }
     getSubjects();
   }, [selectedYear, selectedBranch, selectedSemester]);
-    
+
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
     setFileUrl("");
   };
-  
+
   const handleUrlChange = (event) => {
     setFileUrl(event.target.value);
     setFile(null);
@@ -87,21 +100,53 @@ const FileUpload = ({ onClose }) => {
 
   const toggleUploadMethod = () => {
     setUploadMethod(uploadMethod === "file" ? "url" : "file");
-    // Clear both file and URL when switching
     setFile(null);
     setFileUrl("");
   };
 
+  const nextStep = () => {
+    if (currentStep === 1) {
+      if (!title || !description) {
+        toast.error("Please fill in all the required fields.");
+        return;
+      }
+    } else if (currentStep === 2) {
+      if (
+        !selectedYear ||
+        !selectedBranch ||
+        !selectedSemester ||
+        !selectedSubject ||
+        !selectedType
+      ) {
+        toast.error("Please complete all selections.");
+        return;
+      }
+    }
+    setCurrentStep(currentStep + 1);
+  };
+
+  const prevStep = () => {
+    setCurrentStep(currentStep - 1);
+  };
+
   const uploadFile = async () => {
     if (!file && !fileUrl) {
-      return alert("Please select a file or enter a URL to upload.");
+      return toast.error("Please select a file or enter a URL to upload.");
     }
-    if (!selectedYear || !selectedBranch || !selectedSubject || !selectedType || !authorName || !title || !description) {
-      return alert("Please fill in all the fields.");
+    if (
+      !selectedYear ||
+      !selectedBranch ||
+      !selectedSubject ||
+      !selectedType ||
+      !authorName ||
+      !title ||
+      !description
+    ) {
+      return toast.error("Please fill in all the fields.");
     }
-  
+
     setUploading(true);
-  
+
     const formData = new FormData();
     if (file) {
       formData.append("file", file);
@@ -111,231 +156,446 @@ const FileUpload = ({ onClose }) => {
     formData.append("year", selectedYear);
     formData.append("branch", selectedBranch);
     formData.append("semester", selectedSemester);
-  
-    const subjectObj = subjectsData.find((sub) => sub.subject === selectedSubject);
+
+    const subjectObj = subjectsData.find(
+      (sub) => sub.subject === selectedSubject
+    );
     const subjectcode = subjectObj ? subjectObj.subjectcode : "";
-  
+
     formData.append("subject", selectedSubject);
     formData.append("subjectcode", subjectcode);
     formData.append("type", selectedType);
     formData.append("author", authorName);
+    formData.append("authorEmail", authorEmail);
     formData.append("title", title);
     formData.append("description", description);
-  
+
     try {
       const response = await fetch("http://localhost:5000/upload", {
         method: "POST",
         body: formData,
       });
-  
+
       const result = await response.json();
-  
+
       if (!response.ok) {
         throw new Error(result.error || "File upload failed");
       }
-  
+
       if (file) {
         toast.success(`File uploaded successfully: ${file.name}`);
       } else {
         toast.success("File imported successfully from URL");
       }
+      navigate("/");
     } catch (error) {
       console.error(error);
       toast.error("Upload failed!");
     } finally {
       setUploading(false);
       setFile(null);
-      navigate("/");
     }
   };
-  
+
+  const renderStepIndicator = () => {
+    return (
+      <div className="flex justify-center mb-6">
+        <div className="flex items-center">
+          {[1, 2, 3].map((step) => (
+            <div key={step} className="flex items-center">
+              <div
+                className={`w-8 h-8 rounded-full flex items-center justify-center
+                  ${
+                    currentStep === step
+                      ? "bg-[#2C3E50] text-white"
+                      : currentStep > step
+                      ? "bg-green-500 text-white"
+                      : "bg-gray-200 text-gray-600"
+                  }`}
+              >
+                {currentStep > step ? "✓" : step}
+              </div>
+              {step < 3 && (
+                <div
+                  className={`w-16 h-1 ${
+                    currentStep > step ? "bg-green-500" : "bg-gray-200"
+                  }`}
+                ></div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <div className="flex flex-col px-36 py-16 gap-4">
-      
-      <div className="font-bold p-4 pl-0 text-xl">
-          Enter the details of the Document:
-        </div>
-
-        {/* Title Input */}
-        <div className="flex flex-col gap-1">
-          <label className="font-semibold">Title</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
-            placeholder="Enter document title"
-          />
-        </div>
-
-        {/* Author Name Input */}
-        <div className="flex flex-col gap-1">
-          <label className="font-semibold">Author Name</label>
-          <input
-            type="text"
-            value={authorName}
-            onChange={(e) => setAuthorName(e.target.value)}
-            className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
-            placeholder="Enter author name"
-          />
-        </div>
-
-        {/* Description Input */}
-        <div className="flex flex-col gap-1">
-          <label className="font-semibold">Description</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
-            placeholder="Enter a brief description of the document"
-          />
-        </div>
-
-        {/* Year Selection */}
-        <div className="flex flex-col gap-1">
-          <label className="font-semibold">Year</label>
-          <select
-            className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
-            value={selectedYear}
-            onChange={(e) => setSelectedYear(e.target.value)}
-          >
-            <option value="">Select Year</option>
-             {yearData.map((y, index) => (
-               <option key={index} value={index + 1}>
-                 {y}
-               </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Branch Selection */}
-        <div className="flex flex-col gap-1">
-          <label className="font-semibold">Branch</label>
-          <select
-            className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
-            value={selectedBranch}
-            onChange={(e) => setSelectedBranch(e.target.value)}
-          >
-            <option value="">Select Branch</option>
-            {departmentsData.map((d, index) => (
-              <option key={index} value={d.branch}>
-                {d.abbreviation}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Semester Selection */}
-        <div className="flex flex-col gap-1">
-          <label className="font-semibold">Semester</label>
-          <select
-            className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
-            value={selectedSemester}
-            onChange={(e) => setSelectedSemester(e.target.value)}
-            disabled={!selectedYear || !selectedBranch}
-          >
-            <option value="">Select Semester</option>
-            {[2 * selectedYear - 1, 2 * selectedYear].map((sem, index) => (
-              <option key={index} value={sem}>
-                {sem}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Subject Selection */}
-        <div className="flex flex-col gap-1">
-          <label className="font-semibold">Subject</label>
-          <select
-            className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
-            value={selectedSubject}
-            onChange={(e) => setSelectedSubject(e.target.value)}
-            disabled={!selectedSemester}
-          >
-            <option value="">Select Subject</option>
-            {subjectsData.map((sub, index) => (
-              <option key={index} value={sub.subject}>
-                {sub.subject} ({sub.subjectcode})
-              </option>
-            ))}
-          </select>
-
-        </div>
-
-        {/* Type Selection */}
-        <div className="flex flex-col gap-1">
-          <label className="font-semibold">Type</label>
-          <select
-            className="w-full p-2 border-2 border-black-200 focus:border-blue-500"
-            value={selectedType}
-            onChange={(e) => setSelectedType(e.target.value)}
-          >
-            <option value="">Select Type</option>
-            {["Notes(or)PPT", "Books", "Assignments", "PreviousYearPapers"].map(
-              (type, index) => (
-                <option key={index} value={type}>
-                  {type}
-                </option>
-              )
-            )}
-          </select>
-        </div>
-      
-      {/* File Upload Section with Toggle */}
-      <div>
-        <div className="flex flex-col mb-4">
+    <div className="min-h-screen bg-gray-100">
+      {/* Header */}
+      <div className="bg-[#2C3E50] text-white shadow-md">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <button
-            onClick={toggleUploadMethod}
-            className="text-blue-500 hover:text-blue-600 font-medium max-w-40"
+            onClick={() => navigate("/")}
+            className="flex items-center gap-2 px-4 py-2 bg-white text-[#2C3E50] rounded-lg hover:bg-gray-100 transition font-medium"
           >
-            Switch to {uploadMethod === "file" ? "URL import" : "file upload"}
+            <Home size={18} />
+            Back to Home
           </button>
-          <h1 className="text-2xl font-semibold text-gray-700">
-            {uploadMethod === "file" ? "Upload a PDF" : "Import via URL"}
-          </h1>
+          <h1 className="text-2xl font-bold">Upload Resource</h1>
+          <div className="w-32"></div> {/* Empty div for spacing */}
         </div>
+      </div>
 
-        {uploadMethod === "file" ? (
-          <div className="border-2 border-dashed border-gray-300 p-6 rounded-lg mb-4">
-            <input
-              type="file"
-              accept=".pdf"
-              onChange={handleFileChange}
-              className="w-full text-gray-500 text-sm cursor-pointer focus:outline-none"
-            />
-            <p className="text-gray-400 text-center mt-2">
-              Drag and drop a PDF file, or click to select
-            </p>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-2">
-            <input
-              type="text"
-              value={fileUrl}
-              onChange={handleUrlChange}
-              className="w-full p-2 border-2 border-gray-300 rounded-lg focus:border-blue-500"
-              placeholder="Enter URL of the document"
-            />
-          </div>
-        )}
+      {/* Main Content */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6 border-l-4 border-[#2C3E50]">
+          {renderStepIndicator()}
 
-        {uploading && (
-          <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
-            <div
-              className="bg-blue-500 h-4 rounded-full"
-              style={{ width: `${uploadProgress}%` }}
-            ></div>
-          </div>
-        )}
+          {/* Step 1: Basic Information */}
+          {currentStep === 1 && (
+            <div className="animation-fade-in">
+              <h2 className="text-xl font-bold text-[#2C3E50] mb-6 flex items-center">
+                <div className="w-6 h-6 bg-[#2C3E50] rounded-full mr-2"></div>
+                Basic Information
+              </h2>
 
-        <button
-          onClick={uploadFile}
-          disabled={(!file && !fileUrl) || uploading}
-          className={`w-full py-2 px-4 mt-4 rounded-lg text-white font-semibold 
-          ${(!file && !fileUrl) || uploading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
-        >
-          {uploading ? `Uploading... ${uploadProgress}%` : "Upload File"}
-        </button>
+              <div className="grid grid-cols-1 gap-y-4">
+                {/* Title Input */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Title*
+                  </label>
+                  <input
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#2C3E50] focus:border-[#2C3E50]"
+                    placeholder="Enter document title"
+                  />
+                </div>
+
+                {/* Author Info */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Author Name
+                    </label>
+                    <input
+                      type="text"
+                      value={authorName}
+                      className="w-full p-2 border border-gray-300 rounded-md bg-gray-100"
+                      placeholder="Enter author name"
+                      readOnly
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Author Email
+                    </label>
+                    <input
+                      type="email"
+                      value={authorEmail}
+                      className="w-full p-2 border border-gray-300 rounded-md bg-gray-100"
+                      placeholder="Enter author email"
+                      readOnly
+                    />
+                  </div>
+                </div>
+
+                {/* Description Input */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Description*
+                  </label>
+                  <textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#2C3E50] focus:border-[#2C3E50]"
+                    placeholder="Enter a brief description of the document"
+                    rows="3"
+                  />
+                </div>
+              </div>
+
+              <div className="mt-8 flex justify-end">
+                <button
+                  onClick={nextStep}
+                  className="px-6 py-2 rounded-md text-white font-medium flex items-center gap-2 bg-[#2C3E50] hover:bg-[#36597A]"
+                >
+                  Next Step <ChevronRight size={18} />
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Step 2: Academic Information */}
+          {currentStep === 2 && (
+            <div className="animation-fade-in">
+              <h2 className="text-xl font-bold text-[#2C3E50] mb-6 flex items-center">
+                <div className="w-6 h-6 bg-[#2C3E50] rounded-full mr-2"></div>
+                Academic Information
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                {/* Year Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Year*
+                  </label>
+                  <select
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#2C3E50] focus:border-[#2C3E50]"
+                    value={selectedYear}
+                    onChange={(e) => setSelectedYear(e.target.value)}
+                  >
+                    <option value="">Select Year</option>
+                    {yearData.map((y, index) => (
+                      <option key={index} value={index + 1}>
+                        {y}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Branch Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Branch*
+                  </label>
+                  <select
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#2C3E50] focus:border-[#2C3E50]"
+                    value={selectedBranch}
+                    onChange={(e) => setSelectedBranch(e.target.value)}
+                  >
+                    <option value="">Select Branch</option>
+                    {departmentsData.map((d, index) => (
+                      <option key={index} value={d.branch}>
+                        {d.abbreviation}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Semester Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Semester*
+                  </label>
+                  <select
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#2C3E50] focus:border-[#2C3E50]"
+                    value={selectedSemester}
+                    onChange={(e) => setSelectedSemester(e.target.value)}
+                    disabled={!selectedYear || !selectedBranch}
+                  >
+                    <option value="">Select Semester</option>
+                    {selectedYear &&
+                      [2 * selectedYear - 1, 2 * selectedYear].map(
+                        (sem, index) => (
+                          <option key={index} value={sem}>
+                            {sem}
+                          </option>
+                        )
+                      )}
+                  </select>
+                </div>
+
+                {/* Subject Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Subject*
+                  </label>
+                  <select
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#2C3E50] focus:border-[#2C3E50]"
+                    value={selectedSubject}
+                    onChange={(e) => setSelectedSubject(e.target.value)}
+                    disabled={!selectedSemester}
+                  >
+                    <option value="">Select Subject</option>
+                    {subjectsData.map((sub, index) => (
+                      <option key={index} value={sub.subject}>
+                        {sub.subject} ({sub.subjectcode})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Type Selection */}
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Resource Type*
+                  </label>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                    {[
+                      "Notes(or)PPT",
+                      "Books",
+                      "Assignments",
+                      "PreviousYearPapers",
+                    ].map((type) => (
+                      <div
+                        key={type}
+                        onClick={() => setSelectedType(type)}
+                        className={`cursor-pointer p-3 border rounded-md flex flex-col items-center justify-center transition
+                          ${
+                            selectedType === type
+                              ? "border-[#2C3E50] bg-[#f0f5fa] text-[#2C3E50]"
+                              : "border-gray-200 hover:border-gray-300"
+                          }`}
+                      >
+                        {type === "Notes(or)PPT" && (
+                          <Book size={24} className="mb-1" />
+                        )}
+                        {type === "Books" && (
+                          <Book size={24} className="mb-1" />
+                        )}
+                        {type === "Assignments" && (
+                          <File size={24} className="mb-1" />
+                        )}
+                        {type === "PreviousYearPapers" && (
+                          <File size={24} className="mb-1" />
+                        )}
+                        <span className="text-sm font-medium">
+                          {type === "Notes(or)PPT" ? "Notes/PPT" : type}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8 flex justify-between">
+                <button
+                  onClick={prevStep}
+                  className="px-6 py-2 rounded-md text-[#2C3E50] border border-[#2C3E50] font-medium flex items-center gap-2 hover:bg-gray-50"
+                >
+                  <ChevronLeft size={18} /> Previous
+                </button>
+                <button
+                  onClick={nextStep}
+                  className="px-6 py-2 rounded-md text-white font-medium flex items-center gap-2 bg-[#2C3E50] hover:bg-[#36597A]"
+                >
+                  Next Step <ChevronRight size={18} />
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Step 3: File Upload */}
+          {currentStep === 3 && (
+            <div className="animation-fade-in">
+              <h2 className="text-xl font-bold text-[#2C3E50] mb-6 flex items-center">
+                <div className="w-6 h-6 bg-[#2C3E50] rounded-full mr-2"></div>
+                {uploadMethod === "file"
+                  ? "Upload PDF File"
+                  : "Import from URL"}
+              </h2>
+
+              <div className="flex justify-end mb-4">
+                <button
+                  onClick={toggleUploadMethod}
+                  className="flex items-center gap-1 text-[#2C3E50] hover:text-[#36597A] font-medium text-sm"
+                >
+                  {uploadMethod === "file" ? (
+                    <>
+                      <Link size={16} /> Switch to URL import
+                    </>
+                  ) : (
+                    <>
+                      <Upload size={16} /> Switch to file upload
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {uploadMethod === "file" ? (
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleFileChange}
+                    className="hidden"
+                    id="file-upload"
+                  />
+                  <label
+                    htmlFor="file-upload"
+                    className="cursor-pointer flex flex-col items-center justify-center"
+                  >
+                    <File size={36} className="text-[#2C3E50] mb-2" />
+                    <span className="text-sm font-medium text-[#2C3E50]">
+                      Choose PDF file
+                    </span>
+                    <span className="text-xs text-gray-500 mt-1">
+                      or drag and drop here
+                    </span>
+                  </label>
+                  {file && (
+                    <div className="mt-4 text-sm text-gray-700">
+                      Selected: <span className="font-medium">{file.name}</span>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  <input
+                    type="text"
+                    value={fileUrl}
+                    onChange={handleUrlChange}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2C3E50] focus:border-[#2C3E50]"
+                    placeholder="https://example.com/document.pdf"
+                  />
+                  <p className="text-xs text-gray-500">
+                    Enter the direct URL to the PDF document
+                  </p>
+                </div>
+              )}
+
+              {uploading && (
+                <div className="mt-4">
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-[#2C3E50] h-2 rounded-full"
+                      style={{ width: `${uploadProgress}%` }}
+                    ></div>
+                  </div>
+                  <p className="text-sm text-center mt-1 text-gray-600">
+                    Uploading... {uploadProgress}%
+                  </p>
+                </div>
+              )}
+
+              <div className="mt-8 flex justify-between">
+                <button
+                  onClick={prevStep}
+                  className="px-6 py-2 rounded-md text-[#2C3E50] border border-[#2C3E50] font-medium flex items-center gap-2 hover:bg-gray-50"
+                >
+                  <ChevronLeft size={18} /> Previous
+                </button>
+                <button
+                  onClick={uploadFile}
+                  disabled={(!file && !fileUrl) || uploading}
+                  className={`px-6 py-2 rounded-md text-white font-medium flex items-center gap-2
+                  ${
+                    (!file && !fileUrl) || uploading
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-[#2C3E50] hover:bg-[#36597A]"
+                  }`}
+                >
+                  <Upload size={18} />
+                  {uploading ? "Uploading..." : "Upload Resource"}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Footer Note */}
+      <div className="container mx-auto px-4 py-4 text-center text-sm text-gray-500">
+        <p>
+          Only PDF files are accepted. Resources will be reviewed before being
+          made public.
+        </p>
+        <p className="text-xs text-[#2C3E50] mt-1">
+          Developed by Students for Students | NITJ Study Resources
+        </p>
       </div>
     </div>
   );

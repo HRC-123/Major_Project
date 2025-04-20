@@ -30,6 +30,24 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // const connectionString = supabase.database.getConnectionString();
 
+// const sequelize = new Sequelize(
+//   process.env.SUPABASE_DB_NAME,
+//   process.env.SUPABASE_DB_USER,
+//   process.env.SUPABASE_DB_PASSWORD,
+//   {
+//     host: process.env.SUPABASE_HOST,
+//     dialect: "postgres",
+//     port: 5432,
+//     dialectOptions: {
+//       ssl: {
+//         require: true,
+//         rejectUnauthorized: false,
+//       },
+//     },
+//     logging: false,
+//   }
+// );
+
 const sequelize = new Sequelize(
   process.env.SUPABASE_DB_NAME,
   process.env.SUPABASE_DB_USER,
@@ -38,6 +56,7 @@ const sequelize = new Sequelize(
     host: process.env.SUPABASE_HOST,
     dialect: "postgres",
     port: 5432,
+    poolmode:"session",
     dialectOptions: {
       ssl: {
         require: true,
@@ -136,7 +155,7 @@ const Subject = sequelize.define(
       // onDelete: "CASCADE",
     },
     sem: {
-      type: DataTypes.TEXT,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     subject: {
@@ -194,6 +213,10 @@ const Document = sequelize.define(
       type: DataTypes.TEXT,
       allowNull: false,
     },
+    authorEmail: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
     title: {
       type: DataTypes.TEXT,
       allowNull: false,
@@ -213,6 +236,80 @@ const Document = sequelize.define(
   },
   {
     timestamps: false,
+  }
+);
+
+const Report = sequelize.define(
+  "reports",
+  {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: uuidv4, // Auto-generate UUID
+      primaryKey: true,
+    },
+    title: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    author: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    authorEmail: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    type: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    year: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    semester: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    branch: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    subject: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    subjectcode: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    url: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    reporter_email: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    reporter_name: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    reason: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    timestamp: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+  },
+  {
+    timestamps: false, // We are manually setting timestamp
   }
 );
 
@@ -408,17 +505,81 @@ const adminJs = new AdminJS({
           subjectcode: { isVisible: true },
           type: { isVisible: true },
           author: { isVisible: true },
+          authorEmail: { isVisible: true },
 
           title: { isVisible: true },
           description: { isVisible: true },
 
           url: { isVisible: true },
-          upvote: { isVisible: true },
-          downvote: { isVisible: true },
+          // upvote: { isVisible: true },
+          // downvote: { isVisible: true },
         },
         parent: {
           name: "NITJ", // label for the group
           // icon: "SomeIconName", // optional icon in the sidebar
+        },
+        actions: {
+          new: { isVisible: false, isAccessible: false },
+        },
+      },
+    },
+    {
+      resource: Report,
+      options: {
+        properties: {
+          id: { isVisible: false },
+
+          year: {
+            isVisible: true,
+            availableValues: [
+              { value: 1, label: "1" },
+              { value: 2, label: "2" },
+              { value: 3, label: "3" },
+              { value: 4, label: "4" },
+            ],
+          },
+          branch: {
+            isVisible: true,
+            availableValues: departments.map((dept) => ({
+              value: dept.branch,
+              label: dept.branch,
+            })),
+          },
+          semester: {
+            isVisible: true,
+            availableValues: [
+              { value: 1, label: "1" },
+              { value: 2, label: "2" },
+              { value: 3, label: "3" },
+              { value: 4, label: "4" },
+              { value: 5, label: "5" },
+              { value: 6, label: "6" },
+              { value: 7, label: "7" },
+              { value: 8, label: "8" },
+            ],
+          },
+          subject: { isVisible: true },
+          subjectcode: { isVisible: true },
+          type: { isVisible: true },
+          author: { isVisible: true },
+          authorEmail: { isVisible: true },
+          title: { isVisible: true },
+          description: { isVisible: true },
+          url: { isVisible: true },
+          reporter_email: { isVisible: true },
+          reporter_name: { isVisible: true },
+          reason: { isVisible: true },
+          timestamp: {
+            isVisible: {
+              list: true,
+              filter: true,
+              show: true,
+              edit: false, // Don't allow editing timestamp
+            },
+          },
+        },
+        parent: {
+          name: "NITJ",
         },
         actions: {
           new: { isVisible: false, isAccessible: false },
