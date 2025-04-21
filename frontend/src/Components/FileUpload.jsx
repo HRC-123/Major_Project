@@ -12,6 +12,7 @@ import {
   ChevronRight,
   ChevronLeft,
 } from "lucide-react";
+import Header from "./Header";
 
 const FileUpload = ({ onClose }) => {
   const { googleLoginDetails } = useGlobalContext();
@@ -259,6 +260,7 @@ const FileUpload = ({ onClose }) => {
 
   return (
     <div className="min-h-screen bg-gray-100">
+      <Header hideContribute={true} />
       {/* Header */}
       <div className="bg-[#2C3E50] text-white shadow-md">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -270,7 +272,14 @@ const FileUpload = ({ onClose }) => {
             Back to Home
           </button>
           <h1 className="text-2xl font-bold">Upload Resource</h1>
-          <div className="w-32"></div> {/* Empty div for spacing */}
+          <button
+            onClick={() => navigate("/uploaded")}
+            className="flex items-center gap-2 px-4 py-2 bg-white text-[#2C3E50] rounded-lg hover:bg-gray-100 transition font-medium"
+          >
+            <Upload size={18} />
+            Uploaded Resources
+          </button>
+         
         </div>
       </div>
 
@@ -487,7 +496,7 @@ const FileUpload = ({ onClose }) => {
                     ))}
                   </div>
                 </div>
-                
+
                 {/* Additional fields for PreviousYearPapers */}
                 {selectedType === "PreviousYearPapers" && (
                   <div className="col-span-2 mt-4">
@@ -510,7 +519,7 @@ const FileUpload = ({ onClose }) => {
                           ))}
                         </select>
                       </div>
-                      
+
                       {/* Exam Type Selection */}
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">

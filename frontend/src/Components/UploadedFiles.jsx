@@ -4,10 +4,11 @@ import FileCard from "./FileCard";
 import { toast } from "react-hot-toast";
 import { ChevronLeft, Filter, Search, Book, Download } from "lucide-react";
 import Header from "./Header";
+import { useGlobalContext } from "../context/GlobalContext";
 const options = ["Notes(or)PPT", "Books", "Assignments", "PreviousYearPapers"];
 const filters = ["More Upvotes", "Less Downvotes", "Alphabetical Title"];
 
-function ViewFiles() {
+const  UploadedFiles = () => {
   const { year, branch, subject } = useParams();
   const [files, setFiles] = useState([]);
   const [option, setOption] = useState(null);
@@ -16,6 +17,9 @@ function ViewFiles() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredFiles, setFilteredFiles] = useState([]);
+
+   const { googleLoginDetails, setGoogleLoginDetails } = useGlobalContext();
+      const { email, name } = googleLoginDetails;
 
   const navigate = useNavigate();
 
@@ -26,7 +30,7 @@ function ViewFiles() {
       setLoading(true);
       try {
         const response = await fetch(
-          `http://localhost:5000/api/files?year=${year}&branch=${branch}&subject=${subject}&type=${option}`
+          `http://localhost:5000/api/uploadedfiles?name=${name}&email=${email}`
         );
         const data = await response.json();
 
@@ -87,38 +91,9 @@ function ViewFiles() {
     <div className="min-h-screen w-full flex flex-col bg-gray-100 relative">
       {/* Header */}
       <Header />
-
-      {/* Hero Section with Subject Info */}
-      <div className="relative">
-        <div className="absolute inset-0 bg-black opacity-60 z-0"></div>
-        <div
-          className="relative h-48 bg-cover bg-center z-0"
-          style={{
-            backgroundImage: `url('/api/placeholder/1920/500')`,
-            backgroundPosition: "center 30%",
-          }}
-        >
-          <div className="absolute inset-0 bg-[#2C3E50] opacity-50"></div>
-          <div className="container mx-auto px-4 py-12 relative z-10 h-full flex flex-col justify-center">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
-              <div>
-                <div className="flex items-center mb-2">
-                  <Book className="w-6 h-6 mr-2 text-white" />
-                  <h2 className="text-3xl md:text-4xl font-bold text-white">
-                    {subject}
-                  </h2>
-                </div>
-                <p className="text-lg text-yellow-200 flex items-center">
-                  <span className="bg-white text-[#2C3E50] px-2 py-1 rounded-lg text-sm font-bold mr-2">
-                    {branch}
-                  </span>
-                  <span className="bg-white text-[#2C3E50] px-2 py-1 rounded-lg text-sm font-bold">
-                    Year {year}
-                  </span>
-                </p>
-              </div>
-            </div>
-          </div>
+      <div className="bg-[#2C3E50] text-white shadow-md">
+        <div className="container mx-auto px-4 py-4 flex justify-center items-center">
+          <h1 className="text-2xl font-bold text-center">Uploaded Resources</h1>
         </div>
       </div>
 
@@ -131,7 +106,7 @@ function ViewFiles() {
             className="px-4 py-2 bg-[#2C3E50] text-white rounded-lg shadow-lg hover:bg-[#36597A] transition duration-300 flex items-center gap-2"
           >
             <ChevronLeft className="w-5 h-5" />
-            Back to Subjects
+            Back to Upload
           </button>
 
           <div className="ml-4 text-gray-600 text-sm flex items-center">
@@ -142,21 +117,14 @@ function ViewFiles() {
               Home
             </span>
             <span className="mx-2">›</span>
-            <span
-              onClick={() => navigate(-2)}
-              className="hover:text-[#2C3E50] cursor-pointer"
-            >
-              Year {year}
-            </span>
-            <span className="mx-2">›</span>
+
             <span
               onClick={() => navigate(-1)}
               className="hover:text-[#2C3E50] cursor-pointer"
             >
-              {branch}
+              Upload
             </span>
             <span className="mx-2">›</span>
-            <span className="font-medium text-[#2C3E50]">{subject}</span>
           </div>
         </div>
 
@@ -391,4 +359,4 @@ function ViewFiles() {
   );
 }
 
-export default ViewFiles;
+export default UploadedFiles;

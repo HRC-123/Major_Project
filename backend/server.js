@@ -268,7 +268,39 @@ app.get("/api/files", async (req, res) => {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  });
+});
+  
+app.get("/api/uploadedfiles", async (req, res) => {
+  try {
+    const { name, email } = req.query;
+
+    // If name and email are provided, filter by those only
+    if (name && email) {
+      const { data, error } = await supabase
+        .from("documents")
+        .select("*")
+        .eq("author", name)
+        .eq("authorEmail", email);
+
+      if (error) throw error;
+      return res.json(data);
+    }
+
+   
+    // Standard filtering if specific query parameters are provided
+    if (!name || !email) {
+      return res.status(400).json({ error: "Missing query parameters" });
+    }
+
+ 
+
+    if (error) throw error;
+
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // API to fetch saved resources
 app.get("/api/savedFiles", async (req, res) => {

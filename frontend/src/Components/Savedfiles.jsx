@@ -6,7 +6,7 @@ import FileCard from "./FileCard";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { ChevronLeft, Filter, Search, Book, Download, LogOut, Upload } from "lucide-react";
-
+import Header from './Header';
 const options = ["Notes(or)PPT", "Books", "Assignments", "PreviousYearPapers"];
 const filters = ["More Upvotes", "Less Downvotes", "Alphabetical Title"];
 const Savedfiles = () => {
@@ -21,13 +21,7 @@ const Savedfiles = () => {
     const [filteredFiles, setFilteredFiles] = useState([]);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (!email) {
-          toast.error("Please login with  email to see saved Resources",{id:"login-error"});
-          navigate("/");
-          console.log("There is no login email");
-        }
-      }, []);
+    
     useEffect(() => {
         const fetchFiles = async () => {
           if (!option) return;
@@ -91,102 +85,20 @@ const Savedfiles = () => {
     toast.success(`${selectedFilter} filter applied`,{id:"filter-applied"});
     }, [selectedFilter]);
 
-    // Google login success/failure handlers
-      const onLoginSuccess = (res) => {
-        const decoded = jwtDecode(res.credential);
-        localStorage.setItem("email", decoded?.email);
-        localStorage.setItem("name", decoded?.name);
-        localStorage.setItem("profilePicture", decoded?.picture);
     
-        setGoogleLoginDetails({
-          email: decoded?.email,
-          name: decoded?.name,
-          profilePicture: decoded?.picture,
-        });
-        toast.success(`Login Successful: ${decoded?.name}`,{id:"login-successful"});
-        // navigate("/");
-      };
-    
-      const onLoginFailure = (res) => {
-        console.error("Login Failed:", res);
-        toast.error("Login failed. Please try again.",{id:"login-failed"});
-      };
-    
-      // Logout handler
-      const handleLogout = () => {
-        localStorage.clear();
-        setGoogleLoginDetails({ email: "", name: "", profilePicture: "" });
-        toast.success("You have successfully logged out.",{id:"logged-out"});
-        // navigate("/");
-      };
-
   return (
     <div className="min-h-screen w-full flex flex-col bg-gray-100 relative">
       {/* Header */}
-      <header className="w-full bg-[#2C3E50] text-white shadow-md">
-        <div className="container mx-auto py-3 px-4 flex justify-between items-center">
-          <div className="flex items-center cursor-pointer" onClick={()=>{navigate("/")}}>
-            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mr-3">
-              <img
-                src="/nitjlogo.png"
-                alt="NITJ Logo"
-                className="w-10 h-10 object-contain"
-              />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold">NITJ Study Resources</h1>
-              <p className="text-xs text-yellow-200">
-                National Institute of Technology, Jalandhar
-              </p>
-            </div>
-          </div>
+      <Header hideSaved={true} />
 
-          {/* User Authentication Area */}
-          <div className="flex items-center space-x-4">
-            {!googleLoginDetails?.email ? (
-              <GoogleLogin
-                onSuccess={onLoginSuccess}
-                onFailure={onLoginFailure}
-                size="large"
-              />
-            ) : (
-              <div className="flex items-center space-x-2 bg-white p-2 rounded-lg shadow-md">
-                {googleLoginDetails.profilePicture && (
-                  <img
-                    src={googleLoginDetails.profilePicture}
-                    alt="Profile"
-                    className="w-8 h-8 rounded-full"
-                  />
-                )}
-                <div className="text-xs text-gray-700">
-                  <p className="font-bold">{googleLoginDetails.name}</p>
-                  <p className="text-gray-500">{googleLoginDetails.email}</p>
-                </div>
-                <button
-                  onClick={handleLogout}
-                  className="bg-red-600 text-white px-2 py-1 rounded-lg hover:bg-red-700 transition flex items-center gap-2"
-                >
-                  Logout
-                  <LogOut className="w-4 h-4" />
-                </button>
-              </div>
-            )}
-
-            <div className="mt-4 md:mt-0">
-              <button
-                onClick={() => navigate("/upload")}
-                className="px-6 py-3 bg-yellow-500 text-[#2C3E50] rounded-md hover:bg-yellow-400 transition font-bold shadow-lg flex items-center"
-              >
-                <Upload className="w-5 h-4 mr-2" /> Contribute
-              </button>
-            </div>
-          </div>
+      <div className="bg-[#2C3E50] text-white shadow-md">
+        <div className="container mx-auto px-4 py-4 flex justify-center items-center">
+          <h1 className="text-2xl font-bold text-center">Saved Resources</h1>
         </div>
-      </header>
+      </div>
 
       {/* Main Content Area */}
       <main className="flex-grow container mx-auto py-8 px-4">
-
         {/* Search Bar */}
         <div className="w-full max-w-5xl mx-auto mb-6">
           <div className="relative">
@@ -415,7 +327,7 @@ const Savedfiles = () => {
         </div>
       </footer>
     </div>
-  )
+  );
 }
 
 export default Savedfiles

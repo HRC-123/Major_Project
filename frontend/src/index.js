@@ -13,6 +13,7 @@ import { ToastContainer } from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
 import LandingPage from "./context/landingpage.jsx";
 import Savedfiles from "./Components/Savedfiles.jsx";
+import UploadedFiles from "./Components/UploadedFiles.jsx";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const AppRoutes = () => {
@@ -44,6 +45,7 @@ const AppRoutes = () => {
         <Route path="/sem/:year/:branch/:subject" element={<ViewFiles />} />
         <Route path="/FileUpload" element={<FileUpload />} />
         <Route path="/saved" element={<Savedfiles />} />
+        <Route path="/uploaded" element={<UploadedFiles />} />
       </Routes>
     </BrowserRouter>
   );
