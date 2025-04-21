@@ -12,6 +12,7 @@ import { GlobalProvider, useGlobalContext } from "./context/GlobalContext";
 import { ToastContainer } from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
 import LandingPage from "./context/landingpage.jsx";
+import Savedfiles from "./Components/Savedfiles.jsx";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const AppRoutes = () => {
@@ -42,6 +43,7 @@ const AppRoutes = () => {
         <Route path="/sem/:year/:branch" element={<Sem />} />
         <Route path="/sem/:year/:branch/:subject" element={<ViewFiles />} />
         <Route path="/FileUpload" element={<FileUpload />} />
+        <Route path="/saved" element={<Savedfiles />} />
       </Routes>
     </BrowserRouter>
   );

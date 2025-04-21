@@ -14,6 +14,7 @@ import {
   Book,
   ExternalLink,
   Download,
+  Bookmark,
 } from "lucide-react";
 
 import { useInView } from "react-intersection-observer";
@@ -78,7 +79,7 @@ const Year = () => {
         setDocumentsLength(fetchedData.length);
       } catch (error) {
         console.error("Error fetching departments:", error);
-        toast.error("Error fetching documents");
+        toast.error("Error fetching documents",{id:"document-fetching-error"});
       }
     };
     fetchDepartments();
@@ -113,20 +114,20 @@ const Year = () => {
       name: decoded?.name,
       profilePicture: decoded?.picture,
     });
-    toast.success(`Login Successful: ${decoded?.name}`);
+    toast.success(`Login Successful: ${decoded?.name}`,{id:"login-successful"});
     navigate("/");
   };
 
   const onLoginFailure = (res) => {
     console.error("Login Failed:", res);
-    toast.error("Login failed. Please try again.");
+    toast.error("Login failed. Please try again.",{id:"login-failed"});
   };
 
   // Logout handler
   const handleLogout = () => {
     localStorage.clear();
     setGoogleLoginDetails({ email: "", name: "", profilePicture: "" });
-    toast.success("You have successfully logged out.");
+    toast.success("You have successfully logged out.",{id:"logged-out"});
     navigate("/");
   };
 
@@ -135,7 +136,7 @@ const Year = () => {
       {/* NITJ-inspired Header */}
       <header className="w-full bg-[#2C3E50] text-white shadow-md">
         <div className="container mx-auto py-3 px-4 flex justify-between items-center">
-          <div className="flex items-center">
+          <div className="flex items-center cursor-pointer"  onClick={()=>{navigate("/")}}>
             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mr-3">
               <img
                 src="/nitjlogo.png"
@@ -284,12 +285,18 @@ const Year = () => {
                   resources for all NIT Jalandhar departments
                 </p>
               </div>
-              <div className="mt-4 md:mt-0">
+              <div className="mt-4 md:mt-0 flex gap-4">
                 <button
                   onClick={() => navigate("/upload")}
                   className="px-6 py-3 bg-yellow-500 text-[#2C3E50] rounded-md hover:bg-yellow-400 transition font-bold shadow-lg flex items-center"
                 >
                   <Upload className="w-5 h-5 mr-2" /> Upload Resources
+                </button>
+                <button
+                  onClick={() => navigate("/saved")}
+                  className="px-6 py-3 bg-yellow-500 text-[#2C3E50] rounded-md hover:bg-yellow-400 transition font-bold shadow-lg flex items-center"
+                >
+                  <Bookmark className="w-5 h-5 mr-2" /> Saved Resources
                 </button>
               </div>
             </div>

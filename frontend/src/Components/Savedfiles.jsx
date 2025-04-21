@@ -1,94 +1,131 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
-import FileCard from "./FileCard";
+import { useGlobalContext } from "../context/GlobalContext";
 import { toast } from "react-hot-toast";
-import { ChevronLeft, Filter, Search, Book, Download } from "lucide-react";
+import FileCard from "./FileCard";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
+import { ChevronLeft, Filter, Search, Book, Download, LogOut, Upload } from "lucide-react";
 
 const options = ["Notes(or)PPT", "Books", "Assignments", "PreviousYearPapers"];
 const filters = ["More Upvotes", "Less Downvotes", "Alphabetical Title"];
+const Savedfiles = () => {
+    const { googleLoginDetails, setGoogleLoginDetails } = useGlobalContext();
+    const { email, name } = googleLoginDetails;
+    const [files, setFiles] = useState([]);
+    const [option, setOption] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [selectedFilter, setSelectedFilter] = useState(null);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [filteredFiles, setFilteredFiles] = useState([]);
+    const navigate = useNavigate();
 
-function ViewFiles() {
-  const { year, branch, subject } = useParams();
-  const [files, setFiles] = useState([]);
-  const [option, setOption] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState(null);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredFiles, setFilteredFiles] = useState([]);
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchFiles = async () => {
-      if (!option) return;
-
-      setLoading(true);
-      try {
-        const response = await fetch(
-          `http://localhost:5000/api/files?year=${year}&branch=${branch}&subject=${subject}&type=${option}`
-        );
-        const data = await response.json();
-
-        if (response.ok) {
-          setFiles(data);
-          setFilteredFiles(data);
-          toast.success(`${option} fetched successfully`);
-        } else {
-          console.error("Error fetching files:", data.error);
-          toast.error("Error fetching files");
+    useEffect(() => {
+        if (!email) {
+          toast.error("Please login with  email to see saved Resources",{id:"login-error"});
+          navigate("/");
+          console.log("There is no login email");
         }
-      } catch (error) {
-        toast.error("Error fetching files");
-        console.error("Error fetching files:", error);
-      } finally {
-        setLoading(false);
+      }, []);
+    useEffect(() => {
+        const fetchFiles = async () => {
+          if (!option) return;
+          setLoading(true);
+          try {
+            const response = await fetch(
+              `http://localhost:5000/api/savedFiles?user=${email}&type=${option}`
+            );
+            const data = await response.json();
+    
+            if (response.ok) {
+              setFiles(data);
+              setFilteredFiles(data);
+              toast.success(`${option} fetched successfully`,{id:"Files-fetching-success"});
+            } else {
+              console.error("Error fetching files:", data.error);
+              toast.error("Error fetching files",{id:"Files-fetching-error"});
+            }
+          } catch (error) {
+            toast.error("Error fetching files",{id:"Files-fetching-error"});
+            console.error("Error fetching files:", error);
+          } finally {
+            setLoading(false);
+          }
+        };
+    
+        fetchFiles();
+    }, [email,option]);
+
+      // Apply search filter
+    useEffect(() => {
+      if (searchQuery.trim() === "") {
+        setFilteredFiles(files);
+        return;
       }
-    };
+  
+      const filtered = files.filter(
+        (file) =>
+          file.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (file.description &&
+            file.description.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
+      setFilteredFiles(filtered);
+    }, [searchQuery, files]);
 
-    fetchFiles();
-  }, [option, year, branch, subject]);
-
-  // Apply search filter
-  useEffect(() => {
-    if (searchQuery.trim() === "") {
-      setFilteredFiles(files);
-      return;
-    }
-
-    const filtered = files.filter(
-      (file) =>
-        file.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (file.description &&
-          file.description.toLowerCase().includes(searchQuery.toLowerCase()))
-    );
-    setFilteredFiles(filtered);
-  }, [searchQuery, files]);
-
-  // Apply sorting based on selected filter
-  useEffect(() => {
+    // Apply sorting based on selected filter
+    useEffect(() => {
     if (!selectedFilter) return;
 
     const sorted = [...filteredFiles].sort((a, b) => {
-      if (selectedFilter === "More Upvotes")
+        if (selectedFilter === "More Upvotes")
         return b.upvote.length - a.upvote.length;
-      if (selectedFilter === "Less Downvotes")
+        if (selectedFilter === "Less Downvotes")
         return a.downvote.length - b.downvote.length;
-      if (selectedFilter === "Alphabetical Title")
+        if (selectedFilter === "Alphabetical Title")
         return a.title.localeCompare(b.title);
-      return 0;
+        return 0;
     });
 
     setFilteredFiles(sorted);
-    toast.success(`${selectedFilter} filter applied`);
-  }, [selectedFilter]);
+    toast.success(`${selectedFilter} filter applied`,{id:"filter-applied"});
+    }, [selectedFilter]);
+
+    // Google login success/failure handlers
+      const onLoginSuccess = (res) => {
+        const decoded = jwtDecode(res.credential);
+        localStorage.setItem("email", decoded?.email);
+        localStorage.setItem("name", decoded?.name);
+        localStorage.setItem("profilePicture", decoded?.picture);
+    
+        setGoogleLoginDetails({
+          email: decoded?.email,
+          name: decoded?.name,
+          profilePicture: decoded?.picture,
+        });
+        toast.success(`Login Successful: ${decoded?.name}`,{id:"login-successful"});
+        // navigate("/");
+      };
+    
+      const onLoginFailure = (res) => {
+        console.error("Login Failed:", res);
+        toast.error("Login failed. Please try again.",{id:"login-failed"});
+      };
+    
+      // Logout handler
+      const handleLogout = () => {
+        localStorage.clear();
+        setGoogleLoginDetails({ email: "", name: "", profilePicture: "" });
+        toast.success("You have successfully logged out.",{id:"logged-out"});
+        // navigate("/");
+      };
 
   return (
     <div className="min-h-screen w-full flex flex-col bg-gray-100 relative">
       {/* Header */}
       <header className="w-full bg-[#2C3E50] text-white shadow-md">
         <div className="container mx-auto py-3 px-4 flex justify-between items-center">
-          <div className="flex items-center cursor-pointer"  onClick={()=>{navigate("/")}}>
+          <div className="flex items-center cursor-pointer" onClick={()=>{navigate("/")}}>
             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mr-3">
               <img
                 src="/nitjlogo.png"
@@ -103,80 +140,52 @@ function ViewFiles() {
               </p>
             </div>
           </div>
-        </div>
-      </header>
 
-      {/* Hero Section with Subject Info */}
-      <div className="relative">
-        <div className="absolute inset-0 bg-black opacity-60 z-0"></div>
-        <div
-          className="relative h-48 bg-cover bg-center z-0"
-          style={{
-            backgroundImage: `url('/api/placeholder/1920/500')`,
-            backgroundPosition: "center 30%",
-          }}
-        >
-          <div className="absolute inset-0 bg-[#2C3E50] opacity-50"></div>
-          <div className="container mx-auto px-4 py-12 relative z-10 h-full flex flex-col justify-center">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
-              <div>
-                <div className="flex items-center mb-2">
-                  <Book className="w-6 h-6 mr-2 text-white" />
-                  <h2 className="text-3xl md:text-4xl font-bold text-white">
-                    {subject}
-                  </h2>
+          {/* User Authentication Area */}
+          <div className="flex items-center space-x-4">
+            {!googleLoginDetails?.email ? (
+              <GoogleLogin
+                onSuccess={onLoginSuccess}
+                onFailure={onLoginFailure}
+                size="large"
+              />
+            ) : (
+              <div className="flex items-center space-x-2 bg-white p-2 rounded-lg shadow-md">
+                {googleLoginDetails.profilePicture && (
+                  <img
+                    src={googleLoginDetails.profilePicture}
+                    alt="Profile"
+                    className="w-8 h-8 rounded-full"
+                  />
+                )}
+                <div className="text-xs text-gray-700">
+                  <p className="font-bold">{googleLoginDetails.name}</p>
+                  <p className="text-gray-500">{googleLoginDetails.email}</p>
                 </div>
-                <p className="text-lg text-yellow-200 flex items-center">
-                  <span className="bg-white text-[#2C3E50] px-2 py-1 rounded-lg text-sm font-bold mr-2">
-                    {branch}
-                  </span>
-                  <span className="bg-white text-[#2C3E50] px-2 py-1 rounded-lg text-sm font-bold">
-                    Year {year}
-                  </span>
-                </p>
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-600 text-white px-2 py-1 rounded-lg hover:bg-red-700 transition flex items-center gap-2"
+                >
+                  Logout
+                  <LogOut className="w-4 h-4" />
+                </button>
               </div>
+            )}
+
+            <div className="mt-4 md:mt-0">
+              <button
+                onClick={() => navigate("/upload")}
+                className="px-6 py-3 bg-yellow-500 text-[#2C3E50] rounded-md hover:bg-yellow-400 transition font-bold shadow-lg flex items-center"
+              >
+                <Upload className="w-5 h-4 mr-2" /> Contribute
+              </button>
             </div>
           </div>
         </div>
-      </div>
+      </header>
 
       {/* Main Content Area */}
       <main className="flex-grow container mx-auto py-8 px-4">
-        {/* Navigation Bar */}
-        <div className="w-full max-w-5xl mx-auto flex items-center mb-6">
-          <button
-            onClick={() => navigate(-1)}
-            className="px-4 py-2 bg-[#2C3E50] text-white rounded-lg shadow-lg hover:bg-[#36597A] transition duration-300 flex items-center gap-2"
-          >
-            <ChevronLeft className="w-5 h-5" />
-            Back to Subjects
-          </button>
-
-          <div className="ml-4 text-gray-600 text-sm flex items-center">
-            <span
-              onClick={() => navigate("/")}
-              className="hover:text-[#2C3E50] cursor-pointer"
-            >
-              Home
-            </span>
-            <span className="mx-2">›</span>
-            <span
-              onClick={() => navigate(-2)}
-              className="hover:text-[#2C3E50] cursor-pointer"
-            >
-              Year {year}
-            </span>
-            <span className="mx-2">›</span>
-            <span
-              onClick={() => navigate(-1)}
-              className="hover:text-[#2C3E50] cursor-pointer"
-            >
-              {branch}
-            </span>
-            <span className="mx-2">›</span>
-            <span className="font-medium text-[#2C3E50]">{subject}</span>
-          </div>
-        </div>
 
         {/* Search Bar */}
         <div className="w-full max-w-5xl mx-auto mb-6">
@@ -273,7 +282,7 @@ function ViewFiles() {
               Fetching resources...
             </p>
             <p className="text-gray-500 mt-2">
-              Loading {option} for {subject}
+              Loading {option} for Saved resources
             </p>
           </div>
         )}
@@ -290,7 +299,7 @@ function ViewFiles() {
               No resources available
             </p>
             <p className="text-gray-500 text-center mt-2">
-              No {option} materials found for {subject}.
+              No {option} materials found for Saved resources.
             </p>
             {/* <button
               onClick={() => navigate("/upload")}
@@ -406,7 +415,7 @@ function ViewFiles() {
         </div>
       </footer>
     </div>
-  );
+  )
 }
 
-export default ViewFiles;
+export default Savedfiles

@@ -50,18 +50,36 @@ app.get("/subjects", async (req, res) => {
 // Upload File Endpoint
 app.post("/upload", upload.single("file"), async (req, res) => {
   try {
-    const { year, branch, semester, subject, subjectcode, type, author,authorEmail, title, description, fileUrl } = req.body;
+    const { year, branch, semester, subject, subjectcode, type, author,authorEmail, title, description, fileUrl, examYear, examType } = req.body;
     const file = req.file;
 
     if ((!file && !fileUrl) || !year || !branch || !semester || !subject || !subjectcode || !type || !author || !authorEmail || !title || !description) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
+    // Check for required fields if type is PreviousYearPapers
+    if (type === "PreviousYearPapers" && (!examYear || !examType)) {
+      return res.status(400).json({ error: "Exam year and type are required for previous year papers" });
+    }
+
     let publicURL = fileUrl;
+    let formattedTitle = title;
+
+    // Format title for PreviousYearPapers
+    if (type === "PreviousYearPapers") {
+      formattedTitle = `${subjectcode}_${examYear}_${examType}_${title}`;
+    }
 
     if (file) {
       // Create unique file path
-      const filePath = `${year}/${branch}/${subject}/${type}/${Date.now()}_${file.originalname}`;
+      let filePath;
+      
+      if (type === "PreviousYearPapers") {
+        // For previous year papers, include exam year and type in the path
+        filePath = `${year}/${branch}/${subject}/${type}/${examYear}_${examType}/${Date.now()}_${file.originalname}`;
+      } else {
+        filePath = `${year}/${branch}/${subject}/${type}/${Date.now()}_${file.originalname}`;
+      }
 
       // Upload File to Supabase Storage
       const { data: uploadData, error: uploadError } = await supabase.storage
@@ -79,31 +97,37 @@ app.post("/upload", upload.single("file"), async (req, res) => {
       publicURL = `${process.env.REACT_APP_SUPABASE_URL}/storage/v1/object/public/${uploadData.fullPath}`;
     }
 
+    // Prepare document data
+    const documentData = {
+      url: publicURL,
+      year,
+      branch,
+      semester,
+      subject,
+      subjectcode,
+      type,
+      author,
+      authorEmail,
+      title: formattedTitle, // Use the formatted title
+      description,
+      upvote: [],
+      downvote: [],
+      savedUsers: [],
+    };
+    console.log(formattedTitle);
     // Insert metadata into Supabase Database
-    const { data, error: insertError } = await supabase.from("documents").insert([
-      {
-        url: publicURL,
-        year,
-        branch,
-        semester,
-        subject,
-        subjectcode,
-        type,
-        author,
-        authorEmail,
-        title,
-        description,
-        upvote: [],
-        downvote: [],
-      },
-    ]); // Selecting ID to confirm insertion
+    const { data, error: insertError } = await supabase.from("documents").insert([documentData]);
 
     if (insertError) {
       console.error(insertError);
       return res.status(500).json({ error: "Failed to save metadata" });
     }
 
-    res.status(200).json({ message: "File uploaded successfully", url: publicURL });
+    res.status(200).json({ 
+      message: "File uploaded successfully", 
+      url: publicURL,
+      title: formattedTitle // Return the formatted title to the client
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server Error" });
@@ -246,6 +270,28 @@ app.get("/api/files", async (req, res) => {
     }
   });
 
+// API to fetch saved resources
+app.get("/api/savedFiles", async (req, res) => {
+  try {
+    const { user, type } = req.query;
+
+      if (!user || !type) {
+        return res.status(400).json({ error: "Missing query parameters" });
+      }
+      const { data, error } = await supabase
+      .from("documents")
+      .select("*")
+      .contains("savedUsers", [user])  // checks if array contains the email
+      .eq("type", type);
+    
+      if (error) throw error;
+  
+      res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // API to handle upvotes
 app.post("/api/upvote", async (req, res) => {
   const { title, email } = req.body;
@@ -287,6 +333,48 @@ app.post("/api/upvote", async (req, res) => {
   }
 });
 
+app.post("/api/bookmark", async (req, res) => {
+  const { title, email } = req.body;
+  
+  try {
+    const { data, error } = await supabase
+      .from("documents")
+      .select("savedUsers")
+      .eq("title", title)
+      .maybeSingle();
+      
+    if (error) throw error;
+    if (!data) return res.status(404).json({ error: "Document not found" });
+    
+    let savedUsers = data.savedUsers || [];
+    let isBookmarked = false;
+    
+    if (savedUsers.includes(email)) {
+      // Remove bookmark if already bookmarked
+      savedUsers = savedUsers.filter((e) => e !== email);
+      isBookmarked = false;
+    } else {
+      // Add bookmark if not already bookmarked
+      savedUsers.push(email);
+      isBookmarked = true;
+    }
+    
+    const { error: updateError } = await supabase
+      .from("documents")
+      .update({ savedUsers: savedUsers })
+      .eq("title", title)
+      .select();
+      
+    if (updateError) throw updateError;
+    
+    res.json({
+      success: true,
+      isBookmarked: isBookmarked
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 app.post("/api/downvote", async (req, res) => {
   const { title, email } = req.body;

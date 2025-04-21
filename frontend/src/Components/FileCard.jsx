@@ -4,6 +4,7 @@ import { toast } from "react-hot-toast";
 import {
   ThumbsUp,
   ThumbsDown,
+  Bookmark,
   X,
   ExternalLink,
   Flag,
@@ -17,10 +18,12 @@ const FileCard = ({ file }) => {
   );
   const [reportActive, setReportActive] = useState(false);
   const [reportReason, setReportReason] = useState("");
-
+  
   const { googleLoginDetails } = useGlobalContext();
   const { email, name } = googleLoginDetails;
-
+  const [bookmarked, setBookmarked] = useState(() =>
+    email ? file.savedUsers?.includes(email): false
+  );
   const handleUpvote = async () => {
     if (!email) {
       toast.error("Please login to vote.");
@@ -46,6 +49,34 @@ const FileCard = ({ file }) => {
     } catch (error) {
       console.error("Error upvoting the document:", error);
       toast.error("Error upvoting the document.");
+    }
+  };
+
+  const handleBookmark = async () => {
+    if (!email) {
+      toast.error("Please login to bookmark.");
+      return;
+    }
+    
+    try {
+      const response = await fetch("http://localhost:5000/api/bookmark", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: file.title, email }),
+      });
+      
+      const data = await response.json();
+      if (data.success) {
+        if (data.isBookmarked) {
+          toast.success("Bookmarked Successfully");
+        } else {
+          toast.success("Bookmark Removed");
+        }
+        setBookmarked(data.isBookmarked);
+      }
+    } catch (error) {
+      console.error("Error bookmarking the document:", error);
+      toast.error("Error bookmarking the document.");
     }
   };
 
@@ -208,6 +239,17 @@ const FileCard = ({ file }) => {
             >
               <ThumbsDown className="w-4 h-4" />
               <span>{downvotes}</span>
+            </button>
+            <button
+              onClick={handleBookmark}
+              className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg font-medium 
+                transition duration-200 transform hover:scale-105 active:scale-95 text-sm
+                ${bookmarked 
+                  ? "bg-green-100 text-green-700 border border-green-300 hover:bg-green-200" 
+                  : "bg-gray-100 text-gray-600 border border-gray-300 hover:bg-gray-200"}`}
+            >
+              <Bookmark className={`w-4 h-4 ${bookmarked ? "fill-green-500" : ""}`} />
+              <span>{bookmarked ? "Saved" : "Save"}</span>
             </button>
           </div>
 
