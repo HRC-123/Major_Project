@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import FileCard from "./FileCard";
+import UploadedFileCard from "./UploadedFileCard";
 import { toast } from "react-hot-toast";
 import { ChevronLeft, Filter, Search, Book, Download } from "lucide-react";
 import Header from "./Header";
@@ -274,7 +274,7 @@ const  UploadedFiles = () => {
         {!loading && filteredFiles.length > 0 && (
           <div className="w-full max-w-5xl mx-auto space-y-4">
             {filteredFiles.map((file) => (
-              <FileCard key={file.id} file={file} />
+              <UploadedFileCard key={file.id} file={file} />
             ))}
           </div>
         )}
