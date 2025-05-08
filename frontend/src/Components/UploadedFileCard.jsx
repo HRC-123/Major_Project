@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useGlobalContext } from "../context/GlobalContext";
 import { toast } from "react-hot-toast";
 import {
@@ -29,6 +29,7 @@ const UploadedFileCard = ({ file, onFileDeleted }) => {
     branch: file.branch || "",
     subject: file.subject || "",
     subjectcode: file.subjectcode || "",
+    type: file.type || ""
   });
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -41,6 +42,44 @@ const UploadedFileCard = ({ file, onFileDeleted }) => {
   );
 
   const isAuthor = email === file.authorEmail;
+
+  const [branches, setBranches] = useState([]);
+const [subjects, setSubjects] = useState([]);
+
+useEffect(() => {
+  async function fetchDepartments() {
+    try {
+      const response = await fetch("http://localhost:5000/branches");
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      setBranches(data);
+    } catch (err) {
+      console.error("Error fetching departments:", err);
+    }
+  }
+  fetchDepartments();
+}, []);
+
+useEffect(() => {
+  async function getSubjects() {
+    if (!editForm.year || !editForm.branch || !editForm.semester) return;
+    try {
+      const response = await fetch(
+        `http://localhost:5000/subjects?year=${editForm.year}&branch=${editForm.branch}&sem=${editForm.semester}`
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      setSubjects(data);
+    } catch (err) {
+      console.error("Error fetching subjects:", err);
+    }
+  }
+  getSubjects();
+}, [editForm.year, editForm.branch, editForm.semester]);
 
   const handleUpvote = async () => {
     if (!email) {
@@ -186,7 +225,20 @@ const UploadedFileCard = ({ file, onFileDeleted }) => {
       toast.error("Title is required");
       return;
     }
+    // Compare old and new values
+  const changes = {};
+  Object.keys(editForm).forEach((key) => {
+    if (editForm[key] !== file[key]) {
+      changes[key] = { from: file[key], to: editForm[key] };
+    }
+  });
 
+  if (Object.keys(changes).length === 0) {
+    toast.info("No changes detected.");
+    return;
+  }
+
+  console.log("Changes made:", changes);
     try {
       const response = await fetch("http://localhost:5000/api/edit-resource", {
         method: "PUT",
@@ -689,72 +741,106 @@ const UploadedFileCard = ({ file, onFileDeleted }) => {
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium text-gray-700 mb-2 block">
-                      Year
-                    </label>
-                    <input
-                      type="text"
-                      name="year"
-                      value={editForm.year}
-                      onChange={handleEditFormChange}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium text-gray-700 mb-2 block">
-                      Semester
-                    </label>
-                    <input
-                      type="text"
-                      name="semester"
-                      value={editForm.semester}
-                      onChange={handleEditFormChange}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium text-gray-700 mb-2 block">
-                      Branch
-                    </label>
-                    <input
-                      type="text"
-                      name="branch"
-                      value={editForm.branch}
-                      onChange={handleEditFormChange}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium text-gray-700 mb-2 block">
-                      Subject
-                    </label>
-                    <input
-                      type="text"
-                      name="subject"
-                      value={editForm.subject}
-                      onChange={handleEditFormChange}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium text-gray-700 mb-2 block">
-                      Subject Code
-                    </label>
-                    <input
-                      type="text"
-                      name="subjectcode"
-                      value={editForm.subjectcode}
-                      onChange={handleEditFormChange}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
-                    />
-                  </div>
-                </div>
+                              <div>
+                <label className="text-sm font-medium text-gray-700 mb-2 block">Year</label>
+                <select
+                  name="year"
+                  value={editForm.year}
+                  onChange={(e) => {
+                    handleEditFormChange(e);
+                    setEditForm((prev) => ({
+                      ...prev,
+                      semester: "", // reset semester on year change
+                    }));
+                  }}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
+                >
+                  <option value="">Select Year</option>
+                  {[1, 2, 3, 4].map((yr) => (
+                    <option key={yr} value={yr}>
+                      {yr}
+                    </option>
+                  ))}
+                </select>
               </div>
+                
+              <div>
+                <label className="text-sm font-medium text-gray-700 mb-2 block">Semester</label>
+                <select
+                  name="semester"
+                  value={editForm.semester}
+                  onChange={handleEditFormChange}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
+                  disabled={!editForm.year}
+                >
+                  <option value="">Select Semester</option>
+                  {editForm.year && [
+                    editForm.year * 2 - 1,
+                    editForm.year * 2,
+                  ].map((sem) => (
+                    <option key={sem} value={sem}>
+                      {sem}
+                    </option>
+                  ))}
+                </select>
+              </div>
+                
+              <div>
+                <label className="text-sm font-medium text-gray-700 mb-2 block">Branch</label>
+                <select
+                  name="branch"
+                  value={editForm.branch}
+                  onChange={handleEditFormChange}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
+                >
+                  <option value="">Select Branch</option>
+                  {branches.map((br) => (
+                    <option key={br.id} value={br.branch}>
+                      {br.abbreviation}
+                    </option>
+                  ))}
+                </select>
+              </div>
+                
+              <div>
+                <label className="text-sm font-medium text-gray-700 mb-2 block">Subject</label>
+                <select
+                  name="subject"
+                  value={editForm.subject}
+                  onChange={handleEditFormChange}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
+                >
+                  <option value="">Select Subject</option>
+                  {subjects.map((sub, index) => (
+                      <option key={index} value={sub.subject}>
+                        {sub.subject} ({sub.subjectcode})
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-700 mb-2 block">Resource Type</label>
+                <select
+                  name="type"
+                  value={editForm.type}
+                  onChange={handleEditFormChange}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
+                >
+                  <option value="">Select Resource Type</option>
+                  {["Notes(or)PPT",
+                      "Books",
+                      "Assignments",
+                      "PreviousYearPapers"].map((type) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+              </div>
+                
+              </div>
+            </div>
 
               {/* Submit Button */}
               <div className="pt-2 flex justify-end">
