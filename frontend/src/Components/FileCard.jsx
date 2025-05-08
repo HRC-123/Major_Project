@@ -123,6 +123,7 @@ const FileCard = ({ file }) => {
         body: JSON.stringify({
           title: file.title,
           author: file.author,
+          authorEmail:file.authorEmail,
           type: file.type,
           year: file.year,
           semester: file.semester,
@@ -244,11 +245,15 @@ const FileCard = ({ file }) => {
               onClick={handleBookmark}
               className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg font-medium 
                 transition duration-200 transform hover:scale-105 active:scale-95 text-sm
-                ${bookmarked 
-                  ? "bg-green-100 text-green-700 border border-green-300 hover:bg-green-200" 
-                  : "bg-gray-100 text-gray-600 border border-gray-300 hover:bg-gray-200"}`}
+                ${
+                  bookmarked
+                    ? "bg-green-100 text-green-700 border border-green-300 hover:bg-green-200"
+                    : "bg-gray-100 text-gray-600 border border-gray-300 hover:bg-gray-200"
+                }`}
             >
-              <Bookmark className={`w-4 h-4 ${bookmarked ? "fill-green-500" : ""}`} />
+              <Bookmark
+                className={`w-4 h-4 ${bookmarked ? "fill-green-500" : ""}`}
+              />
               <span>{bookmarked ? "Saved" : "Save"}</span>
             </button>
           </div>
@@ -341,12 +346,26 @@ const FileCard = ({ file }) => {
                     </div>
                   </div>
 
-                  <div className="md:col-span-2">
-                    <label className="text-xs font-medium text-gray-500 block mb-1">
-                      Details
-                    </label>
-                    <div className="p-2 bg-white border border-gray-200 rounded text-sm text-gray-800">
-                      Year {file.year}, Semester {file.semester}, {file.branch}
+                  <div className="md:col-span-2 space-y-4">
+                    {/* Details Section */}
+                    <div>
+                      <label className="block text-xs font-medium text-gray-500 mb-1">
+                        Details
+                      </label>
+                      <div className="p-2 bg-white border border-gray-200 rounded text-sm text-gray-800">
+                        Year {file.year}, Semester {file.semester},{" "}
+                        {file.branch}
+                      </div>
+                    </div>
+
+                    {/* Author Email Section */}
+                    <div>
+                      <label className="block text-xs font-medium text-gray-500 mb-1">
+                        Author Email
+                      </label>
+                      <div className="p-2 bg-white border border-gray-200 rounded text-sm text-gray-800">
+                        {file.authorEmail}
+                      </div>
                     </div>
                   </div>
 

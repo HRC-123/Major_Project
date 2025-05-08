@@ -272,15 +272,17 @@ app.get("/api/files", async (req, res) => {
   
 app.get("/api/uploadedfiles", async (req, res) => {
   try {
-    const { name, email } = req.query;
+    const { name, email,option } = req.query;
 
     // If name and email are provided, filter by those only
-    if (name && email) {
+    if (name && email && option) {
       const { data, error } = await supabase
         .from("documents")
         .select("*")
         .eq("author", name)
-        .eq("authorEmail", email);
+        .eq("authorEmail", email)
+        .eq("type", option);
+        
 
       if (error) throw error;
       return res.json(data);
