@@ -450,6 +450,131 @@ app.post("/api/downvote", async (req, res) => {
   }
 });
 
+app.put('/api/edit-resource', async (req, res) => {
+  try {
+    const { originalTitle, authorEmail, ...updatedFields } = req.body;
+    console.log("1")
+    if (!originalTitle || !authorEmail) {
+      return res.status(400).json({ error: 'Missing required fields.' });
+    }
+
+    // Fetch existing resource by title and authorEmail
+    const { data: existingResource, error: fetchError } = await supabase
+      .from('documents')
+      .select('*')
+      .eq('title', originalTitle)
+      .eq('authorEmail', authorEmail)
+      .single();
+
+    if (fetchError) {
+      console.error(fetchError);
+      return res.status(500).json({ error: 'Failed to fetch resource.' });
+    }
+
+    if (!existingResource) {
+      return res.status(404).json({ error: 'Resource not found.' });
+    }
+
+    // Compare and detect changes
+    const changes = {};
+    Object.keys(updatedFields).forEach((key) => {
+      if (updatedFields[key] !== existingResource[key]) {
+        changes[key] = { from: existingResource[key], to: updatedFields[key] };
+      }
+    });
+
+    if (Object.keys(changes).length === 0) {
+      return res.status(200).json({ message: 'No changes detected.' });
+    }
+
+    // Update only the changed fields
+    const { error: updateError } = await supabase
+      .from('documents')
+      .update(updatedFields)
+      .eq('title', originalTitle)
+      .eq('authorEmail', authorEmail);
+
+    if (updateError) {
+      console.error(updateError);
+      return res.status(500).json({ error: 'Failed to update resource.' });
+    }
+
+    console.log(`Resource updated: ${originalTitle}`);
+    console.log('Changes:', changes);
+
+    res.status(200).json({
+      message: 'Resource updated successfully.',
+      changes,
+    });
+
+  } catch (error) {
+    console.error('Error updating resource:', error);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
+
+
+
+app.delete("/api/delete-resource", async (req, res) => {
+  try {
+    const { url, authorEmail } = req.body;
+    console.log(url);
+    console.log(authorEmail);
+    if (!url || !authorEmail) {
+      return res.status(400).json({ error: "URL and author email are required" });
+    }
+
+    // Find the document by URL and authorEmail
+    const { data: existingData, error: fetchError } = await supabase
+      .from("documents")
+      .select("*")
+      .eq("url", url)
+      .eq("authorEmail", authorEmail)
+      .single();
+
+      console.log(existingData)
+    if (fetchError || !existingData) {
+      console.error(fetchError);
+      return res.status(404).json({ error: "Resource not found or you don't have permission to delete it" });
+    }
+
+    // Check if URL contains 'supabase' and delete the file from storage if it does
+    if (existingData.url.includes("supabase")) {
+      const fileUrlParts = existingData.url.split('/');
+      const filePath = fileUrlParts.slice(fileUrlParts.indexOf('public') + 2).join('/');
+      console.log(filePath)
+      if (filePath) {
+        const { error: deleteStorageError } = await supabase.storage
+          .from(process.env.REACT_APP_SUPABASE_BUCKET)
+          .remove([filePath]);
+
+        if (deleteStorageError) {
+          console.warn("Could not delete file from storage:", deleteStorageError);
+          // Optional: you could choose to return an error here if storage deletion is critical
+        }
+      }
+    }
+
+    // Delete the record from documents table
+    const { error: deleteDbError } = await supabase
+      .from('documents')
+      .delete()
+      .eq('id', existingData.id);
+
+    if (deleteDbError) {
+      console.error(deleteDbError);
+      return res.status(500).json({ error: "Failed to delete resource from database" });
+    }
+
+    res.status(200).json({ message: "Resource deleted successfully" });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+
 // Start Server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
