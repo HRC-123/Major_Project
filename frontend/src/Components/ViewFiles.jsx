@@ -10,7 +10,7 @@ const filters = ["More Upvotes", "Less Downvotes", "Alphabetical Title"];
 function ViewFiles() {
   const { year, branch, subject } = useParams();
   const [files, setFiles] = useState([]);
-  const [option, setOption] = useState(null);
+  const [option, setOption] = useState("Notes(or)PPT");
   const [loading, setLoading] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);

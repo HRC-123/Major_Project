@@ -13,7 +13,7 @@ const Savedfiles = () => {
     const { googleLoginDetails, setGoogleLoginDetails } = useGlobalContext();
     const { email, name } = googleLoginDetails;
     const [files, setFiles] = useState([]);
-    const [option, setOption] = useState(null);
+    const [option, setOption] = useState("Notes(or)PPT");
     const [loading, setLoading] = useState(false);
     const [selectedFilter, setSelectedFilter] = useState(null);
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -22,7 +22,18 @@ const Savedfiles = () => {
     const navigate = useNavigate();
 
     
+  
+  useEffect(() => {
+      if (!email) {
+        toast.error("Please login to view saved files",{id:"email-error"});
+        navigate("/");
+        console.log("Please login to view saved files", { id: "email-error" });
+      }
+  }, []);
+  
+
     useEffect(() => {
+
         const fetchFiles = async () => {
           if (!option) return;
           setLoading(true);

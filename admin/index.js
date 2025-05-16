@@ -5,15 +5,24 @@ import AdminJSSequelize from "@adminjs/sequelize";
 import { Sequelize, DataTypes } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
-// Register the adapter
-// import { supabase } from "./config/database.js"; // Import Supabase client
-
 // Initialize Express
 
 import { createClient } from "@supabase/supabase-js";
 import dotenv from "dotenv";
 import { isValidObjectId } from "mongoose";
 // import Department from "./models/departments.js";
+
+import { useTranslation } from "adminjs";
+import { ComponentLoader } from "adminjs";
+
+const componentLoader = new ComponentLoader();
+
+const Components = {
+  Dashboard: componentLoader.add("Dashboard", "./dashboard.jsx"),
+  // other custom components
+};
+
+
 
 dotenv.config();
 AdminJS.registerAdapter(AdminJSSequelize);
@@ -28,25 +37,7 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
 
 // Create a Supabase client
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-// const connectionString = supabase.database.getConnectionString();
 
-// const sequelize = new Sequelize(
-//   process.env.SUPABASE_DB_NAME,
-//   process.env.SUPABASE_DB_USER,
-//   process.env.SUPABASE_DB_PASSWORD,
-//   {
-//     host: process.env.SUPABASE_HOST,
-//     dialect: "postgres",
-//     port: 5432,
-//     dialectOptions: {
-//       ssl: {
-//         require: true,
-//         rejectUnauthorized: false,
-//       },
-//     },
-//     logging: false,
-//   }
-// );
 
 const sequelize = new Sequelize(
   process.env.SUPABASE_DB_NAME,
@@ -147,12 +138,7 @@ const Subject = sequelize.define(
     branch: {
       type: DataTypes.TEXT, // Use ENUM for valid department values
       allowNull: false,
-      // references: {
-      //   model: Department, // References the Department model
-      //   key: "branch",
-      // },
-      // onUpdate: "CASCADE",
-      // onDelete: "CASCADE",
+  
     },
     sem: {
       type: DataTypes.INTEGER,
@@ -318,45 +304,7 @@ const app = express();
 // Use JSON middleware
 app.use(express.json());
 
-// Configure AdminJS with manually fetched data
-// const adminJs = new AdminJS({
-//   resources: [
-//     {
-//       resource: { data: departments },
-//       options: {
-//         properties: { id: { isVisible: false }, branch: { isVisible: true } },
-//       },
-//     },
-//     // {
-//     //   resource: { data: subjects, id: "id" },
-//     //   options: {
-//     //     properties: {
-//     //       id: { isVisible: false },
-//     //       year: { isVisible: true },
-//     //       branch: { isVisible: true },
-//     //       sem: { isVisible: true },
-//     //       subject: { isVisible: true },
-//     //     },
-//     //   },
-//     // },
-//     // {
-//     //   resource: { data: files, id: "id" },
-//     //   options: {
-//     //     properties: {
-//     //       id: { isVisible: false },
-//     //       year: { isVisible: true },
-//     //       branch: { isVisible: true },
-//     //       sem: { isVisible: true },
-//     //       subject: { isVisible: true },
-//     //       title: { isVisible: true },
-//     //       description: { isVisible: true },
-//     //       link: { isVisible: true },
-//     //     },
-//     //   },
-//     // },
-//   ],
-//   rootPath: "/admin",
-// });
+
 
 const getDepartmentOptions = () => {
   return departments.map((dept) => ({
@@ -365,7 +313,17 @@ const getDepartmentOptions = () => {
   }));
 };
 
+const ADMIN = {
+  email: process.env.ADMIN_EMAIL,
+  password: process.env.ADMIN_PASSWORD,
+};
+
 const adminJs = new AdminJS({
+  dashboard: {
+    component: Components.Dashboard,
+  },
+  componentLoader,
+  
   resources: [
     {
       resource: Department,
@@ -414,11 +372,6 @@ const adminJs = new AdminJS({
                     "Subject resource not found or branch property is undefined"
                   );
                 }
-                // const documentResource = adminJs.findResource("documents");
-                // if (documentResource) {
-                //   documentResource.options.properties.branch.availableValues =
-                //     newOptions;
-                // }
               }
               return response;
             },
@@ -595,7 +548,28 @@ const adminJs = new AdminJS({
   },
 });
 
+
+const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
+  adminJs,
+  {
+    authenticate: async (email, password) => {
+      if (email === ADMIN.email && password === ADMIN.password) {
+        return ADMIN;
+      }
+      return null;
+    },
+    cookieName: "adminjs",
+    cookiePassword: process.env.COOKIE_SECRET || "supersecret",
+  },
+  null,
+  {
+    resave: false,
+    saveUninitialized: true,
+  }
+);
+
 // Build AdminJS Router
+app.use(adminJs.options.rootPath, adminRouter);
 const router = AdminJSExpress.buildRouter(adminJs);
 app.use(adminJs.options.rootPath, router);
 
