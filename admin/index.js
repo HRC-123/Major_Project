@@ -324,6 +324,16 @@ const ADMIN = {
 const adminJs = new AdminJS({
   dashboard: {
     component: Components.Dashboard,
+    handler:
+      async () => {
+        return {
+          departments: departments.length,
+          departmentNames: departments.map(d => d.branch),
+          subjects: subjects.length,
+          documents: documents.length,
+          users:10,
+        }
+      }
   },
   componentLoader,
   
