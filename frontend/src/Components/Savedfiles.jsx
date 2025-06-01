@@ -1,102 +1,107 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context/GlobalContext";
 import { toast } from "react-hot-toast";
 import FileCard from "./FileCard";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
-import { ChevronLeft, Filter, Search, Book, Download, LogOut, Upload } from "lucide-react";
-import Header from './Header';
+import {
+  ChevronLeft,
+  Filter,
+  Search,
+  Book,
+  Download,
+  LogOut,
+  Upload,
+} from "lucide-react";
+import Header from "./Header";
 const options = ["Notes(or)PPT", "Books", "Assignments", "PreviousYearPapers"];
 const filters = ["More Upvotes", "Less Downvotes", "Alphabetical Title"];
 const Savedfiles = () => {
-    const { googleLoginDetails, setGoogleLoginDetails } = useGlobalContext();
-    const { email, name } = googleLoginDetails;
-    const [files, setFiles] = useState([]);
-    const [option, setOption] = useState("Notes(or)PPT");
-    const [loading, setLoading] = useState(false);
-    const [selectedFilter, setSelectedFilter] = useState(null);
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [filteredFiles, setFilteredFiles] = useState([]);
-    const navigate = useNavigate();
+  const { googleLoginDetails, setGoogleLoginDetails } = useGlobalContext();
+  const { email, name } = googleLoginDetails;
+  const [files, setFiles] = useState([]);
+  const [option, setOption] = useState("Notes(or)PPT");
+  const [loading, setLoading] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredFiles, setFilteredFiles] = useState([]);
+  const navigate = useNavigate();
 
-    
-  
   useEffect(() => {
-      if (!email) {
-        toast.error("Please login to view saved files",{id:"email-error"});
-        navigate("/");
-        console.log("Please login to view saved files", { id: "email-error" });
-      }
+    if (!email) {
+      toast.error("Please login to view saved files", { id: "email-error" });
+      navigate("/");
+      console.log("Please login to view saved files", { id: "email-error" });
+    }
   }, []);
-  
 
-    useEffect(() => {
+  useEffect(() => {
+    const fetchFiles = async () => {
+      if (!option) return;
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `https://nitj-studyresources-server.onrender.com/api/savedFiles?user=${email}&type=${option}`
+        );
+        const data = await response.json();
 
-        const fetchFiles = async () => {
-          if (!option) return;
-          setLoading(true);
-          try {
-            const response = await fetch(
-              `http://localhost:5000/api/savedFiles?user=${email}&type=${option}`
-            );
-            const data = await response.json();
-    
-            if (response.ok) {
-              setFiles(data);
-              setFilteredFiles(data);
-              toast.success(`${option} fetched successfully`,{id:"Files-fetching-success"});
-            } else {
-              console.error("Error fetching files:", data.error);
-              toast.error("Error fetching files",{id:"Files-fetching-error"});
-            }
-          } catch (error) {
-            toast.error("Error fetching files",{id:"Files-fetching-error"});
-            console.error("Error fetching files:", error);
-          } finally {
-            setLoading(false);
-          }
-        };
-    
-        fetchFiles();
-    }, [email,option]);
-
-      // Apply search filter
-    useEffect(() => {
-      if (searchQuery.trim() === "") {
-        setFilteredFiles(files);
-        return;
+        if (response.ok) {
+          setFiles(data);
+          setFilteredFiles(data);
+          toast.success(`${option} fetched successfully`, {
+            id: "Files-fetching-success",
+          });
+        } else {
+          console.error("Error fetching files:", data.error);
+          toast.error("Error fetching files", { id: "Files-fetching-error" });
+        }
+      } catch (error) {
+        toast.error("Error fetching files", { id: "Files-fetching-error" });
+        console.error("Error fetching files:", error);
+      } finally {
+        setLoading(false);
       }
-  
-      const filtered = files.filter(
-        (file) =>
-          file.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (file.description &&
-            file.description.toLowerCase().includes(searchQuery.toLowerCase()))
-      );
-      setFilteredFiles(filtered);
-    }, [searchQuery, files]);
+    };
 
-    // Apply sorting based on selected filter
-    useEffect(() => {
+    fetchFiles();
+  }, [email, option]);
+
+  // Apply search filter
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setFilteredFiles(files);
+      return;
+    }
+
+    const filtered = files.filter(
+      (file) =>
+        file.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (file.description &&
+          file.description.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
+    setFilteredFiles(filtered);
+  }, [searchQuery, files]);
+
+  // Apply sorting based on selected filter
+  useEffect(() => {
     if (!selectedFilter) return;
 
     const sorted = [...filteredFiles].sort((a, b) => {
-        if (selectedFilter === "More Upvotes")
+      if (selectedFilter === "More Upvotes")
         return b.upvote.length - a.upvote.length;
-        if (selectedFilter === "Less Downvotes")
+      if (selectedFilter === "Less Downvotes")
         return a.downvote.length - b.downvote.length;
-        if (selectedFilter === "Alphabetical Title")
+      if (selectedFilter === "Alphabetical Title")
         return a.title.localeCompare(b.title);
-        return 0;
+      return 0;
     });
 
     setFilteredFiles(sorted);
-    toast.success(`${selectedFilter} filter applied`,{id:"filter-applied"});
-    }, [selectedFilter]);
+    toast.success(`${selectedFilter} filter applied`, { id: "filter-applied" });
+  }, [selectedFilter]);
 
-    
   return (
     <div className="min-h-screen w-full flex flex-col bg-gray-100 relative">
       {/* Header */}
@@ -339,6 +344,6 @@ const Savedfiles = () => {
       </footer>
     </div>
   );
-}
+};
 
-export default Savedfiles
+export default Savedfiles;

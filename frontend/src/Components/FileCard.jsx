@@ -18,11 +18,11 @@ const FileCard = ({ file }) => {
   );
   const [reportActive, setReportActive] = useState(false);
   const [reportReason, setReportReason] = useState("");
-  
+
   const { googleLoginDetails } = useGlobalContext();
   const { email, name } = googleLoginDetails;
   const [bookmarked, setBookmarked] = useState(() =>
-    email ? file.savedUsers?.includes(email): false
+    email ? file.savedUsers?.includes(email) : false
   );
   const handleUpvote = async () => {
     if (!email) {
@@ -30,11 +30,14 @@ const FileCard = ({ file }) => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:5000/api/upvote", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: file.title, email }),
-      });
+      const response = await fetch(
+        "https://nitj-studyresources-server.onrender.com/api/upvote",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: file.title, email }),
+        }
+      );
 
       const data = await response.json();
       if (data.success) {
@@ -57,14 +60,17 @@ const FileCard = ({ file }) => {
       toast.error("Please login to bookmark.");
       return;
     }
-    
+
     try {
-      const response = await fetch("http://localhost:5000/api/bookmark", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: file.title, email }),
-      });
-      
+      const response = await fetch(
+        "https://nitj-studyresources-server.onrender.com/api/bookmark",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: file.title, email }),
+        }
+      );
+
       const data = await response.json();
       if (data.success) {
         if (data.isBookmarked) {
@@ -86,11 +92,14 @@ const FileCard = ({ file }) => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:5000/api/downvote", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: file.title, email }),
-      });
+      const response = await fetch(
+        "https://nitj-studyresources-server.onrender.com/api/downvote",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: file.title, email }),
+        }
+      );
 
       const data = await response.json();
       if (data.success) {
@@ -117,26 +126,29 @@ const FileCard = ({ file }) => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/report", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: file.title,
-          author: file.author,
-          authorEmail:file.authorEmail,
-          type: file.type,
-          year: file.year,
-          semester: file.semester,
-          branch: file.branch,
-          subject: file.subject,
-          subjectcode: file.subjectcode,
-          description: file.description,
-          url: file.url,
-          reporterEmail: email,
-          reporterName: name,
-          reportReason,
-        }),
-      });
+      const res = await fetch(
+        "https://nitj-studyresources-server.onrender.com/report",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: file.title,
+            author: file.author,
+            authorEmail: file.authorEmail,
+            type: file.type,
+            year: file.year,
+            semester: file.semester,
+            branch: file.branch,
+            subject: file.subject,
+            subjectcode: file.subjectcode,
+            description: file.description,
+            url: file.url,
+            reporterEmail: email,
+            reporterName: name,
+            reportReason,
+          }),
+        }
+      );
 
       const data = await res.json();
 

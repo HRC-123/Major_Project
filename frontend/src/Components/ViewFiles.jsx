@@ -26,7 +26,7 @@ function ViewFiles() {
       setLoading(true);
       try {
         const response = await fetch(
-          `http://localhost:5000/api/files?year=${year}&branch=${branch}&subject=${subject}&type=${option}`
+          `https://nitj-studyresources-server.onrender.com/api/files?year=${year}&branch=${branch}&subject=${subject}&type=${option}`
         );
         const data = await response.json();
 

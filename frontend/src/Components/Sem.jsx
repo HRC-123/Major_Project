@@ -32,7 +32,7 @@ function SemesterPage() {
       try {
         // Fetch subjects for both semesters
         const response = await fetch(
-          `http://localhost:5000/subjects?&year=${year}&branch=${branch}`
+          `https://nitj-studyresources-server.onrender.com/subjects?&year=${year}&branch=${branch}`
         );
 
         if (!response.ok) throw new Error("Failed to fetch subjects");
@@ -42,10 +42,12 @@ function SemesterPage() {
         // Combine both semester subjects
         setSubjectsData(data);
         setFilteredSubjects(data);
-        toast.success("Subjects fetched successfully",{id:"subjects-fetched"});
+        toast.success("Subjects fetched successfully", {
+          id: "subjects-fetched",
+        });
       } catch (error) {
         console.error("Error fetching subjects:", error);
-        toast.error("Error fetching subjects",{id:"fetching-error"});
+        toast.error("Error fetching subjects", { id: "fetching-error" });
       }
     };
 
@@ -64,20 +66,22 @@ function SemesterPage() {
       name: decoded?.name,
       profilePicture: decoded?.picture,
     });
-    toast.success(`Login Successful: ${decoded?.name}`,{id:"login-successful"});
+    toast.success(`Login Successful: ${decoded?.name}`, {
+      id: "login-successful",
+    });
     // navigate("/");
   };
 
   const onLoginFailure = (res) => {
     console.error("Login Failed:", res);
-    toast.error("Login failed. Please try again.",{id:"login-failed"});
+    toast.error("Login failed. Please try again.", { id: "login-failed" });
   };
 
   // Logout handler
   const handleLogout = () => {
     localStorage.clear();
     setGoogleLoginDetails({ email: "", name: "", profilePicture: "" });
-    toast.success("You have successfully logged out.",{id:"logged-out"});
+    toast.success("You have successfully logged out.", { id: "logged-out" });
     // navigate("/");
   };
 

@@ -8,7 +8,7 @@ import { useGlobalContext } from "../context/GlobalContext";
 const options = ["Notes(or)PPT", "Books", "Assignments", "PreviousYearPapers"];
 const filters = ["More Upvotes", "Less Downvotes", "Alphabetical Title"];
 
-const  UploadedFiles = () => {
+const UploadedFiles = () => {
   const { year, branch, subject } = useParams();
   const [files, setFiles] = useState([]);
   const [option, setOption] = useState(null);
@@ -18,8 +18,8 @@ const  UploadedFiles = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredFiles, setFilteredFiles] = useState([]);
 
-   const { googleLoginDetails, setGoogleLoginDetails } = useGlobalContext();
-      const { email, name } = googleLoginDetails;
+  const { googleLoginDetails, setGoogleLoginDetails } = useGlobalContext();
+  const { email, name } = googleLoginDetails;
 
   const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ const  UploadedFiles = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          `http://localhost:5000/api/uploadedfiles?name=${name}&email=${email}&option=${option}`
+          `https://nitj-studyresources-server.onrender.com/api/uploadedfiles?name=${name}&email=${email}&option=${option}`
         );
         const data = await response.json();
 
@@ -357,6 +357,6 @@ const  UploadedFiles = () => {
       </footer>
     </div>
   );
-}
+};
 
 export default UploadedFiles;

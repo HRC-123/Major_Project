@@ -25,9 +25,13 @@ const FileUpload = ({ onClose }) => {
 
   useEffect(() => {
     if (!email || !isNitjEmail(email)) {
-      toast.error("Please login with nitj email to upload",{id:"nitj-email-error"});
+      toast.error("Please login with nitj email to upload", {
+        id: "nitj-email-error",
+      });
       navigate("/");
-      console.log("The email is not from nitj.ac.in",{id:"nitj-email-error"});
+      console.log("The email is not from nitj.ac.in", {
+        id: "nitj-email-error",
+      });
     }
   }, []);
 
@@ -45,7 +49,7 @@ const FileUpload = ({ onClose }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [uploadMethod, setUploadMethod] = useState("file");
-  
+
   // New states for exam year and exam type
   const [selectedExamYear, setSelectedExamYear] = useState("");
   const [selectedExamType, setSelectedExamType] = useState("");
@@ -57,18 +61,20 @@ const FileUpload = ({ onClose }) => {
   const [subjectsData, setSubjectsData] = useState([]);
 
   const yearData = [1, 2, 3, 4];
-  
+
   // Generate exam years (current year - 10 to current year)
   const currentYear = new Date().getFullYear();
   const examYears = Array.from({ length: 11 }, (_, i) => currentYear - 10 + i);
-  
+
   // Exam types
   const examTypes = ["Mid Term", "End Term"];
 
   useEffect(() => {
     async function fetchDepartments() {
       try {
-        const response = await fetch("http://localhost:5000/branches");
+        const response = await fetch(
+          "https://nitj-studyresources-server.onrender.com/branches"
+        );
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -86,7 +92,7 @@ const FileUpload = ({ onClose }) => {
       if (!selectedYear || !selectedBranch || !selectedSemester) return;
       try {
         const response = await fetch(
-          `http://localhost:5000/subjects?year=${selectedYear}&branch=${selectedBranch}&sem=${selectedSemester}`
+          `https://nitj-studyresources-server.onrender.com/subjects?year=${selectedYear}&branch=${selectedBranch}&sem=${selectedSemester}`
         );
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -133,9 +139,12 @@ const FileUpload = ({ onClose }) => {
         toast.error("Please complete all selections.");
         return;
       }
-      
+
       // Additional validation for PreviousYearPapers
-      if (selectedType === "PreviousYearPapers" && (!selectedExamYear || !selectedExamType)) {
+      if (
+        selectedType === "PreviousYearPapers" &&
+        (!selectedExamYear || !selectedExamType)
+      ) {
         toast.error("Please select exam year and exam type.");
         return;
       }
@@ -162,9 +171,12 @@ const FileUpload = ({ onClose }) => {
     ) {
       return toast.error("Please fill in all the fields.");
     }
-    
+
     // Validate exam year and type for PreviousYearPapers
-    if (selectedType === "PreviousYearPapers" && (!selectedExamYear || !selectedExamType)) {
+    if (
+      selectedType === "PreviousYearPapers" &&
+      (!selectedExamYear || !selectedExamType)
+    ) {
       return toast.error("Please select exam year and exam type.");
     }
 
@@ -192,7 +204,7 @@ const FileUpload = ({ onClose }) => {
     formData.append("authorEmail", authorEmail);
     formData.append("title", title);
     formData.append("description", description);
-    
+
     // Add exam year and type for PreviousYearPapers
     if (selectedType === "PreviousYearPapers") {
       formData.append("examYear", selectedExamYear);
@@ -200,10 +212,13 @@ const FileUpload = ({ onClose }) => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://nitj-studyresources-server.onrender.com/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const result = await response.json();
 
@@ -212,14 +227,18 @@ const FileUpload = ({ onClose }) => {
       }
 
       if (file) {
-        toast.success(`File uploaded successfully: ${file.name}`,{id:"file-upload-success"});
+        toast.success(`File uploaded successfully: ${file.name}`, {
+          id: "file-upload-success",
+        });
       } else {
-        toast.success("File imported successfully from URL",{id:"url-import-success"});
+        toast.success("File imported successfully from URL", {
+          id: "url-import-success",
+        });
       }
       navigate("/");
     } catch (error) {
       console.error(error);
-      toast.error("Upload failed!",{id:"upload-error"});
+      toast.error("Upload failed!", { id: "upload-error" });
     } finally {
       setUploading(false);
       setFile(null);
@@ -279,7 +298,6 @@ const FileUpload = ({ onClose }) => {
             <Upload size={18} />
             Uploaded Resources
           </button>
-         
         </div>
       </div>
 

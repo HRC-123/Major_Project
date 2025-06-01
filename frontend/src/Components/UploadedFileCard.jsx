@@ -29,57 +29,59 @@ const UploadedFileCard = ({ file, onFileDeleted }) => {
     branch: file.branch || "",
     subject: file.subject || "",
     subjectcode: file.subjectcode || "",
-    type: file.type || ""
+    type: file.type || "",
   });
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false); // New state to track if this card has been deleted
-  
+
   const { googleLoginDetails } = useGlobalContext();
   const { email, name } = googleLoginDetails;
   const [bookmarked, setBookmarked] = useState(() =>
-    email ? file.savedUsers?.includes(email): false
+    email ? file.savedUsers?.includes(email) : false
   );
 
   const isAuthor = email === file.authorEmail;
 
   const [branches, setBranches] = useState([]);
-const [subjects, setSubjects] = useState([]);
+  const [subjects, setSubjects] = useState([]);
 
-useEffect(() => {
-  async function fetchDepartments() {
-    try {
-      const response = await fetch("http://localhost:5000/branches");
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+  useEffect(() => {
+    async function fetchDepartments() {
+      try {
+        const response = await fetch(
+          "https://nitj-studyresources-server.onrender.com/branches"
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        setBranches(data);
+      } catch (err) {
+        console.error("Error fetching departments:", err);
       }
-      const data = await response.json();
-      setBranches(data);
-    } catch (err) {
-      console.error("Error fetching departments:", err);
     }
-  }
-  fetchDepartments();
-}, []);
+    fetchDepartments();
+  }, []);
 
-useEffect(() => {
-  async function getSubjects() {
-    if (!editForm.year || !editForm.branch || !editForm.semester) return;
-    try {
-      const response = await fetch(
-        `http://localhost:5000/subjects?year=${editForm.year}&branch=${editForm.branch}&sem=${editForm.semester}`
-      );
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+  useEffect(() => {
+    async function getSubjects() {
+      if (!editForm.year || !editForm.branch || !editForm.semester) return;
+      try {
+        const response = await fetch(
+          `https://nitj-studyresources-server.onrender.com/subjects?year=${editForm.year}&branch=${editForm.branch}&sem=${editForm.semester}`
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        setSubjects(data);
+      } catch (err) {
+        console.error("Error fetching subjects:", err);
       }
-      const data = await response.json();
-      setSubjects(data);
-    } catch (err) {
-      console.error("Error fetching subjects:", err);
     }
-  }
-  getSubjects();
-}, [editForm.year, editForm.branch, editForm.semester]);
+    getSubjects();
+  }, [editForm.year, editForm.branch, editForm.semester]);
 
   const handleUpvote = async () => {
     if (!email) {
@@ -87,11 +89,14 @@ useEffect(() => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:5000/api/upvote", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: file.title, email }),
-      });
+      const response = await fetch(
+        "https://nitj-studyresources-server.onrender.com/api/upvote",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: file.title, email }),
+        }
+      );
 
       const data = await response.json();
       if (data.success) {
@@ -114,14 +119,17 @@ useEffect(() => {
       toast.error("Please login to bookmark.");
       return;
     }
-    
+
     try {
-      const response = await fetch("http://localhost:5000/api/bookmark", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: file.title, email }),
-      });
-      
+      const response = await fetch(
+        "https://nitj-studyresources-server.onrender.com/api/bookmark",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: file.title, email }),
+        }
+      );
+
       const data = await response.json();
       if (data.success) {
         if (data.isBookmarked) {
@@ -143,11 +151,14 @@ useEffect(() => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:5000/api/downvote", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: file.title, email }),
-      });
+      const response = await fetch(
+        "https://nitj-studyresources-server.onrender.com/api/downvote",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: file.title, email }),
+        }
+      );
 
       const data = await response.json();
       if (data.success) {
@@ -174,26 +185,29 @@ useEffect(() => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/report", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: file.title,
-          author: file.author,
-          authorEmail:file.authorEmail,
-          type: file.type,
-          year: file.year,
-          semester: file.semester,
-          branch: file.branch,
-          subject: file.subject,
-          subjectcode: file.subjectcode,
-          description: file.description,
-          url: file.url,
-          reporterEmail: email,
-          reporterName: name,
-          reportReason,
-        }),
-      });
+      const res = await fetch(
+        "https://nitj-studyresources-server.onrender.com/report",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: file.title,
+            author: file.author,
+            authorEmail: file.authorEmail,
+            type: file.type,
+            year: file.year,
+            semester: file.semester,
+            branch: file.branch,
+            subject: file.subject,
+            subjectcode: file.subjectcode,
+            description: file.description,
+            url: file.url,
+            reporterEmail: email,
+            reporterName: name,
+            reportReason,
+          }),
+        }
+      );
 
       const data = await res.json();
 
@@ -212,51 +226,54 @@ useEffect(() => {
 
   const handleEditFormChange = (e) => {
     const { name, value } = e.target;
-    setEditForm(prev => ({
+    setEditForm((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleEditSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!editForm.title.trim()) {
       toast.error("Title is required");
       return;
     }
     // Compare old and new values
-  const changes = {};
-  Object.keys(editForm).forEach((key) => {
-    if (editForm[key] !== file[key]) {
-      changes[key] = { from: file[key], to: editForm[key] };
+    const changes = {};
+    Object.keys(editForm).forEach((key) => {
+      if (editForm[key] !== file[key]) {
+        changes[key] = { from: file[key], to: editForm[key] };
+      }
+    });
+
+    if (Object.keys(changes).length === 0) {
+      toast.info("No changes detected.");
+      return;
     }
-  });
 
-  if (Object.keys(changes).length === 0) {
-    toast.info("No changes detected.");
-    return;
-  }
-
-  console.log("Changes made:", changes);
+    console.log("Changes made:", changes);
     try {
-      const response = await fetch("http://localhost:5000/api/edit-resource", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          originalTitle: file.title,
-          authorEmail: email,
-          url: file.url, // Keep the original URL
-          ...editForm
-        }),
-      });
+      const response = await fetch(
+        "https://nitj-studyresources-server.onrender.com/api/edit-resource",
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            originalTitle: file.title,
+            authorEmail: email,
+            url: file.url, // Keep the original URL
+            ...editForm,
+          }),
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok) {
         toast.success("Resource updated successfully!");
         setEditActive(false);
-        
+
         // Update the card with new information
         // In a real app, you might want to reload the data or update the parent component
         Object.assign(file, editForm);
@@ -276,19 +293,22 @@ useEffect(() => {
   const handleDelete = async () => {
     setIsDeleting(true);
     setShowDeleteConfirm(false);
-  
+
     try {
-      const response = await fetch("http://localhost:5000/api/delete-resource", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          url: file.url,
-          authorEmail: email
-        }),
-      });
-  
+      const response = await fetch(
+        "https://nitj-studyresources-server.onrender.com/api/delete-resource",
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            url: file.url,
+            authorEmail: email,
+          }),
+        }
+      );
+
       const data = await response.json();
-  
+
       if (response.ok) {
         toast.success("Resource deleted successfully!");
         // Mark this card as deleted
@@ -634,14 +654,17 @@ useEffect(() => {
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           {/* Blurred Backdrop */}
           <div className="absolute inset-0 backdrop-blur-sm bg-black/30"></div>
-          
+
           {/* Modal */}
           <div className="w-full max-w-md bg-white rounded-lg shadow-xl p-6 z-10">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Delete Resource</h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-4">
+              Delete Resource
+            </h3>
             <p className="text-gray-700 mb-6">
-              Are you sure you want to delete "{file.title}"? This action cannot be undone.
+              Are you sure you want to delete "{file.title}"? This action cannot
+              be undone.
             </p>
-            
+
             <div className="flex justify-end space-x-3">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
@@ -741,106 +764,117 @@ useEffect(() => {
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">Year</label>
-                <select
-                  name="year"
-                  value={editForm.year}
-                  onChange={(e) => {
-                    handleEditFormChange(e);
-                    setEditForm((prev) => ({
-                      ...prev,
-                      semester: "", // reset semester on year change
-                    }));
-                  }}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
-                >
-                  <option value="">Select Year</option>
-                  {[1, 2, 3, 4].map((yr) => (
-                    <option key={yr} value={yr}>
-                      {yr}
-                    </option>
-                  ))}
-                </select>
-              </div>
-                
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">Semester</label>
-                <select
-                  name="semester"
-                  value={editForm.semester}
-                  onChange={handleEditFormChange}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
-                  disabled={!editForm.year}
-                >
-                  <option value="">Select Semester</option>
-                  {editForm.year && [
-                    editForm.year * 2 - 1,
-                    editForm.year * 2,
-                  ].map((sem) => (
-                    <option key={sem} value={sem}>
-                      {sem}
-                    </option>
-                  ))}
-                </select>
-              </div>
-                
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">Branch</label>
-                <select
-                  name="branch"
-                  value={editForm.branch}
-                  onChange={handleEditFormChange}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
-                >
-                  <option value="">Select Branch</option>
-                  {branches.map((br) => (
-                    <option key={br.id} value={br.branch}>
-                      {br.abbreviation}
-                    </option>
-                  ))}
-                </select>
-              </div>
-                
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">Subject</label>
-                <select
-                  name="subject"
-                  value={editForm.subject}
-                  onChange={handleEditFormChange}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
-                >
-                  <option value="">Select Subject</option>
-                  {subjects.map((sub, index) => (
-                      <option key={index} value={sub.subject}>
-                        {sub.subject} ({sub.subjectcode})
-                      </option>
-                    ))}
-                </select>
-              </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-700 mb-2 block">
+                      Year
+                    </label>
+                    <select
+                      name="year"
+                      value={editForm.year}
+                      onChange={(e) => {
+                        handleEditFormChange(e);
+                        setEditForm((prev) => ({
+                          ...prev,
+                          semester: "", // reset semester on year change
+                        }));
+                      }}
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
+                    >
+                      <option value="">Select Year</option>
+                      {[1, 2, 3, 4].map((yr) => (
+                        <option key={yr} value={yr}>
+                          {yr}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">Resource Type</label>
-                <select
-                  name="type"
-                  value={editForm.type}
-                  onChange={handleEditFormChange}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
-                >
-                  <option value="">Select Resource Type</option>
-                  {["Notes(or)PPT",
-                      "Books",
-                      "Assignments",
-                      "PreviousYearPapers"].map((type) => (
-                    <option key={type} value={type}>
-                      {type}
-                    </option>
-                  ))}
-                </select>
+                  <div>
+                    <label className="text-sm font-medium text-gray-700 mb-2 block">
+                      Semester
+                    </label>
+                    <select
+                      name="semester"
+                      value={editForm.semester}
+                      onChange={handleEditFormChange}
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
+                      disabled={!editForm.year}
+                    >
+                      <option value="">Select Semester</option>
+                      {editForm.year &&
+                        [editForm.year * 2 - 1, editForm.year * 2].map(
+                          (sem) => (
+                            <option key={sem} value={sem}>
+                              {sem}
+                            </option>
+                          )
+                        )}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium text-gray-700 mb-2 block">
+                      Branch
+                    </label>
+                    <select
+                      name="branch"
+                      value={editForm.branch}
+                      onChange={handleEditFormChange}
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
+                    >
+                      <option value="">Select Branch</option>
+                      {branches.map((br) => (
+                        <option key={br.id} value={br.branch}>
+                          {br.abbreviation}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium text-gray-700 mb-2 block">
+                      Subject
+                    </label>
+                    <select
+                      name="subject"
+                      value={editForm.subject}
+                      onChange={handleEditFormChange}
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
+                    >
+                      <option value="">Select Subject</option>
+                      {subjects.map((sub, index) => (
+                        <option key={index} value={sub.subject}>
+                          {sub.subject} ({sub.subjectcode})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium text-gray-700 mb-2 block">
+                      Resource Type
+                    </label>
+                    <select
+                      name="type"
+                      value={editForm.type}
+                      onChange={handleEditFormChange}
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50] transition"
+                    >
+                      <option value="">Select Resource Type</option>
+                      {[
+                        "Notes(or)PPT",
+                        "Books",
+                        "Assignments",
+                        "PreviousYearPapers",
+                      ].map((type) => (
+                        <option key={type} value={type}>
+                          {type}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
               </div>
-                
-              </div>
-            </div>
 
               {/* Submit Button */}
               <div className="pt-2 flex justify-end">
