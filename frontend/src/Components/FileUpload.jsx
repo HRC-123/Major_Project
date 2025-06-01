@@ -23,6 +23,9 @@ const FileUpload = ({ onClose }) => {
     return email.endsWith("@nitj.ac.in");
   };
 
+  const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+
   useEffect(() => {
     if (!email || !isNitjEmail(email)) {
       toast.error("Please login with nitj email to upload",{id:"nitj-email-error"});
@@ -68,7 +71,7 @@ const FileUpload = ({ onClose }) => {
   useEffect(() => {
     async function fetchDepartments() {
       try {
-        const response = await fetch("http://localhost:5000/branches");
+        const response = await fetch(`${SERVER_URL}/branches`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -86,7 +89,7 @@ const FileUpload = ({ onClose }) => {
       if (!selectedYear || !selectedBranch || !selectedSemester) return;
       try {
         const response = await fetch(
-          `http://localhost:5000/subjects?year=${selectedYear}&branch=${selectedBranch}&sem=${selectedSemester}`
+          `${SERVER_URL}/subjects?year=${selectedYear}&branch=${selectedBranch}&sem=${selectedSemester}`
         );
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -200,7 +203,7 @@ const FileUpload = ({ onClose }) => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/upload", {
+      const response = await fetch(`${SERVER_URL}/upload`, {
         method: "POST",
         body: formData,
       });

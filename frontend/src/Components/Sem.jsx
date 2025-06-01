@@ -23,6 +23,9 @@ function SemesterPage() {
   const prevSem = sem - 1; // Previous semester
   const navigate = useNavigate();
 
+  const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+
   const { googleLoginDetails, setGoogleLoginDetails } = useGlobalContext();
 
   useEffect(() => {
@@ -32,7 +35,7 @@ function SemesterPage() {
       try {
         // Fetch subjects for both semesters
         const response = await fetch(
-          `http://localhost:5000/subjects?&year=${year}&branch=${branch}`
+          `${SERVER_URL}/subjects?&year=${year}&branch=${branch}`
         );
 
         if (!response.ok) throw new Error("Failed to fetch subjects");

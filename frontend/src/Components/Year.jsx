@@ -32,6 +32,9 @@ const Year = () => {
   const [results, setResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
 
+  const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+
   const searchContainerRef = useRef(null);
 
   const { ref, inView } = useInView({
@@ -57,7 +60,7 @@ const Year = () => {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await fetch("http://localhost:5000/branches");
+        const response = await fetch(`${SERVER_URL}/branches`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -70,7 +73,7 @@ const Year = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:5000/api/files?year=all`
+          `${SERVER_URL}/api/files?year=all`
         );
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -90,7 +93,7 @@ const Year = () => {
     if (!query.trim()) return;
     try {
       const response = await fetch(
-        `http://localhost:5000/search?query=${encodeURIComponent(query)}`
+        `${SERVER_URL}/search?query=${encodeURIComponent(query)}`
       );
       if (!response.ok) throw new Error("Failed to fetch search results");
       const searchData = await response.json();

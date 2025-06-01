@@ -44,12 +44,15 @@ const UploadedFileCard = ({ file, onFileDeleted }) => {
   const isAuthor = email === file.authorEmail;
 
   const [branches, setBranches] = useState([]);
-const [subjects, setSubjects] = useState([]);
+  const [subjects, setSubjects] = useState([]);
+  
+  const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 
 useEffect(() => {
   async function fetchDepartments() {
     try {
-      const response = await fetch("http://localhost:5000/branches");
+      const response = await fetch(`${SERVER_URL}/branches`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -67,7 +70,7 @@ useEffect(() => {
     if (!editForm.year || !editForm.branch || !editForm.semester) return;
     try {
       const response = await fetch(
-        `http://localhost:5000/subjects?year=${editForm.year}&branch=${editForm.branch}&sem=${editForm.semester}`
+        `${SERVER_URL}/subjects?year=${editForm.year}&branch=${editForm.branch}&sem=${editForm.semester}`
       );
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -87,7 +90,7 @@ useEffect(() => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:5000/api/upvote", {
+      const response = await fetch(`${SERVER_URL}/api/upvote`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: file.title, email }),
@@ -116,7 +119,7 @@ useEffect(() => {
     }
     
     try {
-      const response = await fetch("http://localhost:5000/api/bookmark", {
+      const response = await fetch(`${SERVER_URL}/api/bookmark`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: file.title, email }),
@@ -143,7 +146,7 @@ useEffect(() => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:5000/api/downvote", {
+      const response = await fetch(`${SERVER_URL}/api/downvote`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: file.title, email }),
@@ -174,7 +177,7 @@ useEffect(() => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/report", {
+      const res = await fetch(`${SERVER_URL}/report`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -240,7 +243,7 @@ useEffect(() => {
 
   console.log("Changes made:", changes);
     try {
-      const response = await fetch("http://localhost:5000/api/edit-resource", {
+      const response = await fetch(`${SERVER_URL}/api/edit-resource`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -278,7 +281,7 @@ useEffect(() => {
     setShowDeleteConfirm(false);
   
     try {
-      const response = await fetch("http://localhost:5000/api/delete-resource", {
+      const response = await fetch(`${SERVER_URL}/api/delete-resource`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

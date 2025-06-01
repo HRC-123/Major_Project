@@ -11,6 +11,8 @@ import {
   FileText,
 } from "lucide-react";
 
+
+
 const FileCard = ({ file }) => {
   const [upvotes, setUpvotes] = useState(file.upvote ? file.upvote.length : 0);
   const [downvotes, setDownvotes] = useState(
@@ -24,13 +26,15 @@ const FileCard = ({ file }) => {
   const [bookmarked, setBookmarked] = useState(() =>
     email ? file.savedUsers?.includes(email): false
   );
+
+  
   const handleUpvote = async () => {
     if (!email) {
       toast.error("Please login to vote.");
       return;
     }
     try {
-      const response = await fetch("http://localhost:5000/api/upvote", {
+      const response = await fetch(`${SERVER_URL}/api/upvote`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: file.title, email }),
@@ -52,6 +56,9 @@ const FileCard = ({ file }) => {
     }
   };
 
+  const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+
   const handleBookmark = async () => {
     if (!email) {
       toast.error("Please login to bookmark.");
@@ -59,7 +66,7 @@ const FileCard = ({ file }) => {
     }
     
     try {
-      const response = await fetch("http://localhost:5000/api/bookmark", {
+      const response = await fetch(`${SERVER_URL}/api/bookmark`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: file.title, email }),
@@ -86,7 +93,7 @@ const FileCard = ({ file }) => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:5000/api/downvote", {
+      const response = await fetch(`${SERVER_URL}/api/downvote`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: file.title, email }),
@@ -117,7 +124,7 @@ const FileCard = ({ file }) => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/report", {
+      const res = await fetch(`${SERVER_URL}/report`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

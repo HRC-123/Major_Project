@@ -20,6 +20,8 @@ const Savedfiles = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredFiles, setFilteredFiles] = useState([]);
     const navigate = useNavigate();
+    
+    const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
     
   
@@ -39,7 +41,7 @@ const Savedfiles = () => {
           setLoading(true);
           try {
             const response = await fetch(
-              `http://localhost:5000/api/savedFiles?user=${email}&type=${option}`
+              `${SERVER_URL}/api/savedFiles?user=${email}&type=${option}`
             );
             const data = await response.json();
     

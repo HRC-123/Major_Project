@@ -23,6 +23,9 @@ const  UploadedFiles = () => {
 
   const navigate = useNavigate();
 
+  const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+
   useEffect(() => {
     const fetchFiles = async () => {
       if (!option) return;
@@ -30,7 +33,7 @@ const  UploadedFiles = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          `http://localhost:5000/api/uploadedfiles?name=${name}&email=${email}&option=${option}`
+          `${SERVER_URL}/api/uploadedfiles?name=${name}&email=${email}&option=${option}`
         );
         const data = await response.json();
 
