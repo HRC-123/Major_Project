@@ -3,6 +3,8 @@ import React from "react";
 import { Box, H2, Text } from "@adminjs/design-system";
 
 const Dashboard = (props) => {
+
+    console.log(props)
   const stats = props || {};
 
   return (
