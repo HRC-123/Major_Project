@@ -304,6 +304,9 @@ const app = express();
 // Use JSON middleware
 app.use(express.json());
 
+app.get("/", (req, res) => res.redirect("/admin"));
+
+
 
 
 const getDepartmentOptions = () => {
