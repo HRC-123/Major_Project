@@ -24,7 +24,7 @@ import {
   Upload,
 } from "lucide-react";
 
-const NITJAdminDashboard = (props) => {
+const Dashboard = (props) => {
   const [activeTab, setActiveTab] = useState("overview");
   const [notifications, setNotifications] = useState(5);
   const [stats, setStats] = useState({
@@ -231,4 +231,4 @@ const NITJAdminDashboard = (props) => {
   );
 };
 
-export default NITJAdminDashboard;
+export default Dashboard;
