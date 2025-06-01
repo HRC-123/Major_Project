@@ -15,12 +15,12 @@ import { isValidObjectId } from "mongoose";
 import { useTranslation } from "adminjs";
 import { ComponentLoader } from "adminjs";
 
-const componentLoader = new ComponentLoader();
+// const componentLoader = new ComponentLoader();
 
-const Components = {
-  Dashboard: componentLoader.add("Dashboard", "./dashboard.jsx"),
-  // other custom components
-};
+// const Components = {
+//   Dashboard: componentLoader.add("Dashboard", "./dashboard.jsx"),
+//   // other custom components
+// };
 
 
 
@@ -322,20 +322,20 @@ const ADMIN = {
 };
 
 const adminJs = new AdminJS({
-  dashboard: {
-    component: Components.Dashboard,
-    handler:
-      async () => {
-        return {
-          departments: departments.length,
-          departmentNames: departments.map(d => d.branch),
-          subjects: subjects.length,
-          documents: documents.length,
-          users:10,
-        }
-      }
-  },
-  componentLoader,
+  // dashboard: {
+  //   component: Components.Dashboard,
+  //   handler:
+  //     async () => {
+  //       return {
+  //         departments: departments.length,
+  //         departmentNames: departments.map(d => d.branch),
+  //         subjects: subjects.length,
+  //         documents: documents.length,
+  //         users:10,
+  //       }
+  //     }
+  // },
+  // componentLoader,
   
   resources: [
     {
