@@ -19,6 +19,8 @@ const FileUpload = ({ onClose }) => {
   const { email, name } = googleLoginDetails;
   const navigate = useNavigate();
 
+  const MAX_FILE_SIZE_MB = 50;
+
   const isNitjEmail = (email) => {
     return email.endsWith("@nitj.ac.in");
   };
@@ -104,7 +106,19 @@ const FileUpload = ({ onClose }) => {
   }, [selectedYear, selectedBranch, selectedSemester]);
 
   const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
+    const selectedFile = event.target.files[0];
+    if (!selectedFile) return;
+
+    const sizeInMB = selectedFile.size / (1024 * 1024);
+
+    if (sizeInMB > MAX_FILE_SIZE_MB) {
+      toast.error("File size exceeds 50MB limit.", { id: "file-size-error" });
+      setFile(null);
+      event.target.value = ""; 
+      return;
+    }
+
+    setFile(selectedFile);
     setFileUrl("");
   };
 
@@ -282,7 +296,6 @@ const FileUpload = ({ onClose }) => {
             <Upload size={18} />
             Uploaded Resources
           </button>
-         
         </div>
       </div>
 
@@ -594,7 +607,7 @@ const FileUpload = ({ onClose }) => {
                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
                   <input
                     type="file"
-                    accept=".pdf"
+                    accept=".pdf,.pptx,.docx"
                     onChange={handleFileChange}
                     className="hidden"
                     id="file-upload"
@@ -605,11 +618,9 @@ const FileUpload = ({ onClose }) => {
                   >
                     <File size={36} className="text-[#2C3E50] mb-2" />
                     <span className="text-sm font-medium text-[#2C3E50]">
-                      Choose PDF file
+                      Choose PDF or PPTX or DOCX file
                     </span>
-                    <span className="text-xs text-gray-500 mt-1">
-                      or drag and drop here
-                    </span>
+                    
                   </label>
                   {file && (
                     <div className="mt-4 text-sm text-gray-700">

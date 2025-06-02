@@ -75,7 +75,7 @@ const Header = ({hideContribute,hideSaved}) => {
               />
             </div>
             <div>
-              <h1 className="text-xl font-bold">NITJ Study Resources</h1>
+              <h1 className="text-xl font-bold">NITJ Study Resources Hub</h1>
               <p className="text-xs text-yellow-200">
                 National Institute of Technology, Jalandhar
               </p>
