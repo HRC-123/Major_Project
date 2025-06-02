@@ -14,17 +14,31 @@ const Header = ({hideContribute,hideSaved}) => {
   
   const navigate = useNavigate();
 
-  const onLoginSuccess = (res) => {
+  const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+  const onLoginSuccess = async(res) => {
     const decoded = jwtDecode(res.credential);
     localStorage.setItem("email", decoded?.email);
     localStorage.setItem("name", decoded?.name);
     localStorage.setItem("profilePicture", decoded?.picture);
-
+    const email = decoded?.email || "";
+    const name = decoded?.name || "";
+    const profilePicture = decoded?.picture || "";
     setGoogleLoginDetails({
       email: decoded?.email,
       name: decoded?.name,
       profilePicture: decoded?.picture,
     });
+
+    await fetch(`${SERVER_URL}/save-user`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, name }),
+    });
+
+
     toast.success(`Login Successful: ${decoded?.name}`, {
       id: "login-successful",
     });

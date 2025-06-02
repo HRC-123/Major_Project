@@ -574,6 +574,68 @@ app.delete("/api/delete-resource", async (req, res) => {
   }
 });
 
+app.post("/save-user", async (req, res) => {
+  const { email, name } = req.body;
+
+  if (!email || !name) {
+    return res.status(400).json({ error: "Missing user details" });
+  }
+
+  try {
+    // Check if user already exists
+    const { data: existingUser, error: fetchError } = await supabase
+      .from("users")
+      .select("id") // only select id to reduce data
+      .eq("email", email)
+      .maybeSingle();
+
+    if (fetchError) throw fetchError;
+
+    if (!existingUser) {
+      // Insert if not exists
+      const { error: insertError } = await supabase
+        .from("users")
+        .insert([{ email, name }]);
+
+      if (insertError) throw insertError;
+    }
+
+    res.json({ success: true, message: "User saved or already exists" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/user-count", async (req, res) => {
+  try {
+    const { count, error } = await supabase
+      .from("users")
+      .select("*", { count: "exact", head: true }); // Only count, no data
+
+    if (error) throw error;
+
+    res.json({ userCount: count });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/subject-count", async (req, res) => {
+  try {
+    const { count, error } = await supabase
+      .from("subjects")
+      .select("*", { count: "exact", head: true }); // Only count, no data
+
+    if (error) throw error;
+
+    res.json({ subjectCount: count });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+
 
 // Start Server
 app.listen(port, () => {
