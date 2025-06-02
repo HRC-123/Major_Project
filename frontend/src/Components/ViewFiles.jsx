@@ -267,9 +267,9 @@ function ViewFiles() {
         {!loading && files.length === 0 && option && (
           <div className="flex flex-col items-center bg-white rounded-lg shadow-md p-10 max-w-lg mx-auto mt-8">
             <img
-              src="/api/placeholder/100/100"
+              src="/nofiles1.png"
               alt="No files"
-              className="w-24 h-24 opacity-50 mb-4"
+              className="w-32 h-32 opacity-100 mb-4"
             />
             <p className="text-2xl font-semibold text-gray-600">
               No resources available
