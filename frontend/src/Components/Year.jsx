@@ -20,7 +20,6 @@ import Header from "./Header";
 import { useInView } from "react-intersection-observer";
 
 const Year = () => {
- 
   const { year } = data;
   const navigate = useNavigate();
 
@@ -31,9 +30,10 @@ const Year = () => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
+  const [usersCount, setUsersCount] = useState(0);
+  const [subjectsCount, setSubjectsCount] = useState(0);
 
   const SERVER_URL = process.env.REACT_APP_SERVER_URL;
-
 
   const searchContainerRef = useRef(null);
 
@@ -68,24 +68,56 @@ const Year = () => {
         setDepartmentsData(fetchedData);
       } catch (error) {
         console.error("Error fetching departments:", error);
-        toast.error("Error fetching documents");
+        toast.error("Error fetching departments");
       }
 
       try {
-        const response = await fetch(
-          `${SERVER_URL}/api/files?year=all`
-        );
+        const response = await fetch(`${SERVER_URL}/api/files?year=all`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const fetchedData = await response.json();
         setDocumentsLength(fetchedData.length);
       } catch (error) {
-        console.error("Error fetching departments:", error);
-        toast.error("Error fetching documents",{id:"document-fetching-error"});
+        console.error("Error fetching ddocuments:", error);
+        toast.error("Error fetching documents", {
+          id: "document-fetching-error",
+        });
       }
     };
     fetchDepartments();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserCount = async () => {
+      try {
+        const res = await fetch(`${SERVER_URL}/user-count`);
+        const data = await res.json();
+        if (data.userCount !== undefined) {
+          setUsersCount(data.userCount);
+        }
+      } catch (err) {
+        console.error("Failed to fetch user count", err);
+      }
+    };
+
+    fetchUserCount();
+  }, []);
+
+  useEffect(() => {
+    const fetchSubjectsCount = async () => {
+      try {
+        const res = await fetch(`${SERVER_URL}/subject-count`);
+        const data = await res.json();
+        if (data.subjectCount !== undefined) {
+          setSubjectsCount(data.subjectCount);
+        }
+      } catch (err) {
+        console.error("Failed to fetch subject count", err);
+      }
+    };
+
+    fetchSubjectsCount();
   }, []);
 
   // Search functionality
@@ -105,12 +137,10 @@ const Year = () => {
     }
   };
 
-
-
   return (
     <div className="min-h-screen w-full flex flex-col bg-gray-100 relative">
       {/* NITJ-inspired Header */}
-      <Header hideContribute={true} hideSaved={true}/>
+      <Header hideContribute={true} hideSaved={true} />
 
       {/* Search Bar (MyHerupa-inspired) */}
       <div
@@ -247,6 +277,33 @@ const Year = () => {
               <ExternalLink className="w-5 h-5 mr-2 text-[#2C3E50]" />
               <span>NITJ Website</span>
             </a>
+            <a
+              href="https://v1.nitj.ac.in/erp/login"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
+            >
+              <ExternalLink className="w-5 h-5 mr-2 text-[#2C3E50]" />
+              <span>ERP NITJ</span>
+            </a>
+            <a
+              href="https://ctp.nitj.ac.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
+            >
+              <ExternalLink className="w-5 h-5 mr-2 text-[#2C3E50]" />
+              <span>Placements Website</span>
+            </a>
+            <a
+              href="http://lib.nitj.ac.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
+            >
+              <ExternalLink className="w-5 h-5 mr-2 text-[#2C3E50]" />
+              <span>Library NITJ</span>
+            </a>
             {/* <a
               href="#"
               className="flex items-center p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
@@ -277,7 +334,7 @@ const Year = () => {
             <div className="w-6 h-6 bg-[#2C3E50] rounded-full mr-2"></div>
             Select Your Year
           </h3>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3 justify-center">
             {year.map((yr, index) => (
               <button
                 key={index}
@@ -332,73 +389,73 @@ const Year = () => {
 
         {/* Statistics Section */}
       </main>
-        <div
-          ref={ref}
-          className="relative bg-cover bg-center bg-fixed w-full py-16 mb-1"
-          style={{ backgroundImage: "url('/placementStats.jpg')" }}
-        >
-          {/* Dark overlay */}
-          <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+      <div
+        ref={ref}
+        className="relative bg-cover bg-center bg-fixed w-full py-16 mb-1"
+        style={{ backgroundImage: "url('/placementStats.jpg')" }}
+      >
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black bg-opacity-60"></div>
 
-          {/* Content */}
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-              {/* Left Stats Block */}
-              <div className="md:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-6 text-white text-center">
-                {/* Study Materials */}
-                <div>
-                  <div className="text-4xl sm:text-5xl font-bold">
-                    {inView && <CountUp end={documentsLength} duration={2} />}+
-                  </div>
-                  <div className="text-sm sm:text-base mt-1 font-medium tracking-wider uppercase">
-                    Study Materials
-                  </div>
+        {/* Content */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+            {/* Left Stats Block */}
+            <div className="md:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-6 text-white text-center">
+              {/* Study Materials */}
+              <div>
+                <div className="text-4xl sm:text-5xl font-bold">
+                  {inView && <CountUp end={documentsLength} duration={2} />}+
                 </div>
-
-                {/* Departments */}
-                <div>
-                  <div className="text-4xl sm:text-5xl font-bold">
-                    {inView && (
-                      <CountUp end={departmentsData.length} duration={2} />
-                    )}
-                    +
-                  </div>
-                  <div className="text-sm sm:text-base mt-1 font-medium tracking-wider uppercase">
-                    Departments
-                  </div>
-                </div>
-
-                {/* Past Papers */}
-                <div>
-                  <div className="text-4xl sm:text-5xl font-bold">
-                    {inView && <CountUp end={5} duration={2} />}+
-                  </div>
-                  <div className="text-sm sm:text-base mt-1 font-medium tracking-wider uppercase">
-                    Past Papers
-                  </div>
-                </div>
-
-                {/* Users */}
-                <div>
-                  <div className="text-4xl sm:text-5xl font-bold">
-                    {inView && <CountUp end={30} duration={2} />}+
-                  </div>
-                  <div className="text-sm sm:text-base mt-1 font-medium tracking-wider uppercase">
-                    Active Users
-                  </div>
+                <div className="text-sm sm:text-base mt-1 font-medium tracking-wider uppercase">
+                  Study Materials
                 </div>
               </div>
 
-              {/* Right Title Block */}
-              <div className="text-white text-right">
-                <div className="text-3xl sm:text-4xl font-bold">#STATS</div>
-                <div className="text-xl sm:text-2xl font-medium">
-                  THAT POWER US
+              {/* Departments */}
+              <div>
+                <div className="text-4xl sm:text-5xl font-bold">
+                  {inView && (
+                    <CountUp end={departmentsData.length} duration={2} />
+                  )}
+                  +
                 </div>
+                <div className="text-sm sm:text-base mt-1 font-medium tracking-wider uppercase">
+                  Departments
+                </div>
+              </div>
+
+              {/* Past Papers */}
+              <div>
+                <div className="text-4xl sm:text-5xl font-bold">
+                  {inView && <CountUp end={subjectsCount} duration={2} />}+
+                </div>
+                <div className="text-sm sm:text-base mt-1 font-medium tracking-wider uppercase">
+                  Subjects
+                </div>
+              </div>
+
+              {/* Users */}
+              <div>
+                <div className="text-4xl sm:text-5xl font-bold">
+                  {inView && <CountUp end={usersCount} duration={2} />}+
+                </div>
+                <div className="text-sm sm:text-base mt-1 font-medium tracking-wider uppercase">
+                  Active Users
+                </div>
+              </div>
+            </div>
+
+            {/* Right Title Block */}
+            <div className="text-white text-right">
+              <div className="text-3xl sm:text-4xl font-bold">#STATS</div>
+              <div className="text-xl sm:text-2xl font-medium">
+                THAT POWER US
               </div>
             </div>
           </div>
         </div>
+      </div>
 
       {/* Footer - NITJ inspired with more details */}
       <footer className="relative text-white py-8">
