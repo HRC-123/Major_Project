@@ -68,7 +68,7 @@ const Year = () => {
         setDepartmentsData(fetchedData);
       } catch (error) {
         console.error("Error fetching departments:", error);
-        toast.error("Error fetching departments");
+        toast.error("Error fetching departments",{id:"Document-fetching-error"});
       }
 
       try {
@@ -79,7 +79,7 @@ const Year = () => {
         const fetchedData = await response.json();
         setDocumentsLength(fetchedData.length);
       } catch (error) {
-        console.error("Error fetching ddocuments:", error);
+        console.error("Error fetching documents:", error);
         toast.error("Error fetching documents", {
           id: "document-fetching-error",
         });
