@@ -481,7 +481,7 @@ const Year = () => {
                 share study materials, past papers, and resources.
               </p>
             </div>
-            <div className="grid grid-cols-2 gap-8">
+            <div className="grid  gap-8">
               <div>
                 <h5 className="font-bold mb-3 text-yellow-200">Quick Links</h5>
                 <ul className="space-y-2 text-sm">
@@ -491,23 +491,31 @@ const Year = () => {
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-yellow-200 transition">
+                    <a
+                      href="/upload"
+                      className="hover:text-yellow-200 transition"
+                    >
                       Upload
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-yellow-200 transition">
+                    <a href="" className="hover:text-yellow-200 transition">
                       About
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-yellow-200 transition">
+                    <a
+                      href="https://www.nitj.ac.in/admin/phonebook.html"
+                      className="hover:text-yellow-200 transition"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       Contact
                     </a>
                   </li>
                 </ul>
               </div>
-              <div>
+              {/* <div>
                 <h5 className="font-bold mb-3 text-yellow-200">Resources</h5>
                 <ul className="space-y-2 text-sm">
                   <li>
@@ -531,7 +539,7 @@ const Year = () => {
                     </a>
                   </li>
                 </ul>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="pt-4  text-center text-sm">
