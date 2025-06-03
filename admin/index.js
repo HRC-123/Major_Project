@@ -9,11 +9,11 @@ import { v4 as uuidv4 } from "uuid";
 
 import { createClient } from "@supabase/supabase-js";
 import dotenv from "dotenv";
-import { isValidObjectId } from "mongoose";
+// import { isValidObjectId } from "mongoose";
 // import Department from "./models/departments.js";
 
-import { useTranslation } from "adminjs";
-import { ComponentLoader } from "adminjs";
+// import { useTranslation } from "adminjs";
+// import { ComponentLoader } from "adminjs";
 
 // const componentLoader = new ComponentLoader();
 
@@ -336,7 +336,7 @@ const adminJs = new AdminJS({
   //     }
   // },
   // componentLoader,
-  
+
   resources: [
     {
       resource: Department,
@@ -556,8 +556,8 @@ const adminJs = new AdminJS({
   rootPath: "/admin",
   branding: {
     companyName: "NITJ Admin",
-    logo: false, // or provide a URL to a custom logo
-    softwareBrothers: false, // remove the "Software Brothers" link
+    logo: false,
+    softwareBrothers: false, 
   },
 });
 
